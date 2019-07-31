@@ -1,0 +1,26 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  "prettier.disableLanguages": ["js"],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/public": true,
+    "**/node_modules": true,
+    "**/build": true,
+    "**/src/scss/style.css": true
+  },
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.DS_Store": true,
+    "**/public/**": true,
+    "**/node_modules/**": true,
+    "**/build/**": true,
+    "**/src/scss/style.css": true
+  }
+}
