@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NoData = props => (
+const NoData = ({ totalColumns, noDataText }) => (
   <tbody>
     <tr>
       <td
         className="text-center font-weight-normal"
-        colSpan={props.totalColumns}
+        colSpan={totalColumns}
       >
-        No data found
+        {noDataText}
       </td>
     </tr>
   </tbody>
 );
 
-NoData.propTypes = { totalColumns: PropTypes.number.isRequired };
+NoData.propTypes = { 
+  totalColumns: PropTypes.number.isRequired,
+  noDataText: PropTypes.string.isRequired
+};
 
 const ExpandableRowComponent = () => (
   <p>Please add your custom ExpandableRowComponent to component props</p>

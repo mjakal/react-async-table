@@ -5,11 +5,12 @@ const propTypes = {
   selectAllItems: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
+  actionsColumnTitle: PropTypes.string.isRequired,
   onMultipleSelect: PropTypes.func.isRequired
 };
 
 const ReactAsyncTableHeader = props => {
-  const { selectAllItems, columns, options, onMultipleSelect } = props;
+  const { selectAllItems, columns, options, actionsColumnTitle, onMultipleSelect } = props;
 
   return (
     <thead>
@@ -28,7 +29,7 @@ const ReactAsyncTableHeader = props => {
         {columns.map((column, index) => (
           <th key={index}>{column.text}</th>
         ))}
-        {options.defaultActionsColumn && <th>Actions</th>}
+        {options.defaultActionsColumn && <th>{actionsColumnTitle}</th>}
       </tr>
     </thead>
   );

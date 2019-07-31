@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import { InputGroup, Input } from 'reactstrap';
 
 const propTypes = {
   placeholder: PropTypes.string,
@@ -39,11 +39,6 @@ class SearchBox extends React.Component {
 
     return (
       <InputGroup>
-        <InputGroupAddon addonType="prepend">
-          <InputGroupText>
-            <i className="far fa-search" />
-          </InputGroupText>
-        </InputGroupAddon>
         <Input
           type="text"
           name="search"

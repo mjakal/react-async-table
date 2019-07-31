@@ -9,6 +9,7 @@ const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   totalColumns: PropTypes.number.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
+  translations: PropTypes.objectOf(PropTypes.string).isRequired,
   expandableRowComponent: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
@@ -24,11 +25,18 @@ const ReactAsyncTableBody = props => {
     selectedItems,
     expandRow,
     columns,
+    translations,
     expandableRowComponent,
     totalColumns,
     options
   } = props;
   const itemID = item[keyField];
+  const {
+    editAction,
+    editActionIcon,
+    deleteAction,
+    deleteActionIcon
+  } = translations;
   const ExpandableComponent = expandableRowComponent;
 
   const onExpand = e => props.onExpand(e, itemID);
@@ -78,18 +86,18 @@ const ReactAsyncTableBody = props => {
                 onClick={onEdit}
                 data-html="true"
                 data-toggle="tooltip"
-                title="Edit"
+                title={editAction}
               >
-                <i className="far fa-pencil action-icon" />
+                {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
               </button>
               <button
                 type="button"
                 className="btn btn-link"
                 data-toggle="tooltip"
-                title="Delete"
+                title={deleteAction}
                 onClick={onDelete}
               >
-                <i className="far fa-trash-alt action-icon" />
+                {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
               </button>
             </span>
           </td>

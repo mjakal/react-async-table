@@ -3,10 +3,28 @@ import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from '../src/index';
 import 'bootstrap/scss/bootstrap.scss';
 
-const contacts = [
+const items = [
   {
     id: 1,
-    display_name: 'Testing Data',
+    display_name: 'Test Data 1',
+    number: '123456789',
+    mobile: '123456789'
+  },
+  {
+    id: 2,
+    display_name: 'Test Data 2',
+    number: '123456789',
+    mobile: '123456789'
+  },
+  {
+    id: 3,
+    display_name: 'Test Data 3',
+    number: '123456789',
+    mobile: '123456789'
+  },
+  {
+    id: 4,
+    display_name: 'Test Data 4',
     number: '123456789',
     mobile: '123456789'
   }
@@ -79,38 +97,55 @@ class Example extends React.Component {
     ];
 
     return (
-      <Card>
-        <CardHeader>
-          <span className="btn btn-outline-light active btn-no-click">
-            <b> React Async Table Example</b>
-          </span>
-        </CardHeader>
-        <CardBody>
-          <ReactAsyncTable
-            keyField="id"
-            columns={columns}
-            items={contacts}
-            currentPage={1}
-            itemsPerPage={10}
-            totalItems={contacts.length}
-            delay={300}
-            options={{
-              searchBox: true,
-              insertButton: true,
-              multipleSelect: true,
-              expandable: true,
-              defaultActionsColumn: true,
-              pagination: true
-            }}
-            expandableRowComponent={ExpandableRowComponent}
-            onChangePage={this.onChangePage}
-            onSearch={this.onSearch}
-            onInsert={this.onInsert}
-            onEdit={this.onEdit}
-            onMultipleDelete={this.onMultipleDelete}
-          />
-        </CardBody>
-      </Card>
+      <div className="container">
+        <Card>
+          <CardHeader>
+            <span className="btn btn-outline-light active btn-no-click">
+              <b> React Async Table Example</b>
+            </span>
+          </CardHeader>
+          <CardBody>
+            <ReactAsyncTable
+              keyField="id"
+              columns={columns}
+              items={items}
+              currentPage={1}
+              itemsPerPage={10}
+              totalItems={items.length}
+              delay={300}
+              options={{
+                searchBox: true,
+                insertButton: true,
+                multipleSelect: true,
+                expandable: true,
+                defaultActionsColumn: true,
+                pagination: true
+              }}
+              translations={{
+                searchPlaceholder: 'Search...',
+                addButton: 'Add',
+                addButtonIcon: '',
+                deleteButton: 'Delete',
+                deleteButtonIcon: '',
+                actionsColumnTitle: 'Actions',
+                editAction: 'Edit',
+                editActionIcon: '',
+                deleteAction: 'Delete',
+                deleteActionIcon: '',
+                noDataText: 'No data found',
+                paginationFirst: 'First Page',
+                paginationLast: 'Last Page'
+              }}
+              expandableRowComponent={ExpandableRowComponent}
+              onChangePage={this.onChangePage}
+              onSearch={this.onSearch}
+              onInsert={this.onInsert}
+              onEdit={this.onEdit}
+              onMultipleDelete={this.onMultipleDelete}
+            />
+          </CardBody>
+        </Card>
+      </div>
     );
   }
 }

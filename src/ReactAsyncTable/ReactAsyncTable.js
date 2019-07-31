@@ -26,6 +26,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   options: PropTypes.objectOf(PropTypes.bool),
+  translations: PropTypes.objectOf(PropTypes.string),
   expandableRowComponent: PropTypes.func,
   onSearch: PropTypes.func.isRequired,
   onChangePage: PropTypes.func.isRequired,
@@ -46,6 +47,21 @@ const defaultProps = {
     expandable: false,
     defaultActionsColumn: false,
     pagination: true
+  },
+  translations: {
+    searchPlaceholder: 'Search...',
+    addButton: 'Add',
+    addButtonIcon: '',
+    deleteButton: 'Delete',
+    deleteButtonIcon: '',
+    actionsColumnTitle: 'Actions',
+    editAction: 'Edit',
+    editActionIcon: '',
+    deleteAction: 'Delete',
+    deleteActionIcon: '',
+    noDataText: 'No data found',
+    paginationFirst: 'First',
+    paginationLast: 'Last'
   },
   expandableRowComponent: ExpandableRowComponent,
   onInsert: onInsert,
@@ -172,6 +188,7 @@ class ReactAsyncTable extends Component {
       itemsPerPage,
       totalItems,
       options,
+      translations,
       delay,
       expandableRowComponent,
       onSearch,
@@ -179,12 +196,23 @@ class ReactAsyncTable extends Component {
       onInsert,
       onColumnClick
     } = this.props;
+    const {
+      searchPlaceholder,
+      addButton,
+      addButtonIcon,
+      deleteButton,
+      deleteButtonIcon,
+      actionsColumnTitle,
+      noDataText,
+      paginationFirst,
+      paginationLast
+    } = translations;
     // Set number of table columns
     const totalColumns =
       columns.length +
       (options.multipleSelect ? 1 : 0) +
       (options.defaultActionsColumn ? 1 : 0);
-
+    
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
     }, delay);
@@ -195,7 +223,7 @@ class ReactAsyncTable extends Component {
           <Col xl="3" lg="4" md="6" sm="12">
             {options.searchBox && (
               <SearchBox
-                placeholderText="Search..."
+                placeholder={searchPlaceholder}
                 onChange={debounceSearch}
               />
             )}
@@ -204,7 +232,7 @@ class ReactAsyncTable extends Component {
             <span className="float-right">
               {options.insertButton && (
                 <Button type="button" onClick={onInsert} color="primary">
-                  <i className="far fa-plus" /> Add
+                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
                 </Button>
               )}{' '}
               {options.multipleSelect && (
@@ -213,7 +241,7 @@ class ReactAsyncTable extends Component {
                   onClick={this.onMultipleDelete}
                   color="danger"
                 >
-                  <i className="far fa-user-times" /> Delete
+                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton}
                 </Button>
               )}
             </span>
@@ -226,9 +254,12 @@ class ReactAsyncTable extends Component {
                 selectAllItems={selectAllItems}
                 columns={columns}
                 options={options}
+                actionsColumnTitle={actionsColumnTitle}
                 onMultipleSelect={this.onMultipleSelect}
               />
-              {items.length === 0 && <NoData totalColumns={totalColumns} />}
+              {items.length === 0 && (
+                <NoData totalColumns={totalColumns} noDataText={noDataText} />
+              )}
               {items.length > 0 &&
                 items.map(item => (
                   <ReactAsyncTableBody
@@ -240,6 +271,7 @@ class ReactAsyncTable extends Component {
                     columns={columns}
                     totalColumns={totalColumns}
                     options={options}
+                    translations={translations}
                     expandableRowComponent={expandableRowComponent}
                     onSelect={this.onSelect}
                     onExpand={this.onExpand}
@@ -259,8 +291,8 @@ class ReactAsyncTable extends Component {
                 pageSize={itemsPerPage}
                 items={totalItems}
                 onChangePage={onChangePage}
-                firstLink="First"
-                lastLink="Last"
+                firstLink={paginationFirst}
+                lastLink={paginationLast}
               />
             )}
           </Col>
