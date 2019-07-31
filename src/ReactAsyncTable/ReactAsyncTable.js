@@ -75,7 +75,7 @@ class ReactAsyncTable extends Component {
 
   componentDidUpdate(prevPrps) {
     // reset selected items on items array update
-    if (this.props.multipleSelect && prevPrps.items !== this.props.items) {
+    if (this.props.options.multipleSelect && prevPrps.items !== this.props.items) {
       this.setState({
         selectAllItems: false,
         selectedItems: {},

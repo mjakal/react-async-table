@@ -57,7 +57,7 @@ class SearchBox extends React.Component {
             className="btn async-table-search-clear"
             onClick={this.onClear}
           >
-            <i className="far fa-times" />
+            &times;
           </button>
         )}
       </InputGroup>

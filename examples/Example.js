@@ -10,7 +10,6 @@ const contacts = [
     number: '123456789',
     mobile: '123456789'
   }
-
 ];
 
 const CellFormatter = ({ columnKey, row, onColumnClick }) => (

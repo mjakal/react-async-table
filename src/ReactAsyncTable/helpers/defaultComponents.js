@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export const NoData = props => (
+const NoData = props => (
   <tbody>
     <tr>
       <td
@@ -13,6 +14,12 @@ export const NoData = props => (
   </tbody>
 );
 
-export const ExpandableRowComponent = props => (
+NoData.propTypes = { totalColumns: PropTypes.number.isRequired };
+
+const ExpandableRowComponent = () => (
   <p>Please add your custom ExpandableRowComponent to component props</p>
 );
+
+ExpandableRowComponent.propTypes = { row: PropTypes.object };
+
+export { NoData, ExpandableRowComponent };

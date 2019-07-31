@@ -1,16 +1,24 @@
 {
   "name": "react-async-table",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Async Data Table",
   "main": "./dist/index.js",
+  "author": {
+    "name": "Martin Jakal",
+    "email": "mjakal@gmail.com",
+    "url": "https://github.com/mjakal/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjakal/react-async-table"
+  },
   "scripts": {
     "build": "webpack --config webpack.config.babel.js",
     "build-examples": "webpack --config examples/webpack.config.babel.js --progress",
     "clean": "rm -rf dist coverage",
     "coverage": "jest --coverage",
     "lint": "eslint ./src",
-    "prepublish": "npm run clean && npm run build",
-    "prepublish-default": "npm run clean && npm run test && npm run build",
+    "prepublish": "npm run clean && npm run test && npm run build",
     "start": "webpack-dev-server --config examples/webpack.config.live.babel.js",
     "test": "npm run lint && npm run coverage"
   },
