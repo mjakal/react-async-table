@@ -1,0 +1,28 @@
+.async-table-style thead tr th .async-table-header-checkbox {
+  margin: -19px 0px 0px 0px;
+  padding: 0 0 0 0;
+}
+
+.async-table-style tbody tr td {
+  vertical-align: middle;
+}
+
+.async-table-style tbody tr td .async-table-body-checkbox {
+  margin: -5px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+}
+
+.async-table-style tbody tr td.action-col {
+  text-align: center;
+  position: relative;
+  min-width: 100px;
+}
+
+.async-table-style tbody tr td.action-col span button {
+  padding: 0px 5px 0px 5px;
+}
+
+.async-table-search-clear {
+  margin-left: -40px;
+  z-index: 100;
+}
