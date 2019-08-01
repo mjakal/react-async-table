@@ -64,7 +64,7 @@ class Example extends React.Component {
   }
 
   onInsert() {
-    console.log('onInsert handler', search);
+    console.log('onInsert handler');
   }
 
   onEdit(rowID) {
@@ -124,17 +124,19 @@ class Example extends React.Component {
               translations={{
                 searchPlaceholder: 'Search...',
                 addButton: 'Add',
-                addButtonIcon: '',
                 deleteButton: 'Delete',
-                deleteButtonIcon: '',
                 actionsColumnTitle: 'Actions',
                 editAction: 'Edit',
-                editActionIcon: '',
                 deleteAction: 'Delete',
-                deleteActionIcon: '',
                 noDataText: 'No data found',
-                paginationFirst: 'First Page',
-                paginationLast: 'Last Page'
+                paginationFirst: 'First',
+                paginationLast: 'Last'
+              }}
+              icons={{
+                addButtonIcon: '',
+                deleteButtonIcon: '',
+                editActionIcon: '',
+                deleteActionIcon: ''
               }}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}

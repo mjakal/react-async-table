@@ -10,6 +10,7 @@ const propTypes = {
   totalColumns: PropTypes.number.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
+  icons: PropTypes.objectOf(PropTypes.string).isRequired,
   expandableRowComponent: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
@@ -26,17 +27,14 @@ const ReactAsyncTableBody = props => {
     expandRow,
     columns,
     translations,
+    icons,
     expandableRowComponent,
     totalColumns,
     options
   } = props;
   const itemID = item[keyField];
-  const {
-    editAction,
-    editActionIcon,
-    deleteAction,
-    deleteActionIcon
-  } = translations;
+  const { editAction, deleteAction } = translations;
+  const { editActionIcon, deleteActionIcon } = icons;
   const ExpandableComponent = expandableRowComponent;
 
   const onExpand = e => props.onExpand(e, itemID);

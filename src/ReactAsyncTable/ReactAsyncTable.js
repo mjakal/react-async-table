@@ -6,6 +6,8 @@ import SearchBox from './components/SearchBox/SearchBox';
 import ReactAsyncTableHeader from './ReactAsyncTableHeader';
 import ReactAsyncTableBody from './ReactAsyncTableBody';
 import {
+  onChangePage,
+  onSearch,
   onInsert,
   onEdit,
   onDelete,
@@ -27,9 +29,10 @@ const propTypes = {
   delay: PropTypes.number,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
+  icons: PropTypes.objectOf(PropTypes.string),
   expandableRowComponent: PropTypes.func,
-  onSearch: PropTypes.func.isRequired,
-  onChangePage: PropTypes.func.isRequired,
+  onChangePage: PropTypes.func,
+  onSearch: PropTypes.func,
   onInsert: PropTypes.func,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
@@ -51,19 +54,23 @@ const defaultProps = {
   translations: {
     searchPlaceholder: 'Search...',
     addButton: 'Add',
-    addButtonIcon: '',
     deleteButton: 'Delete',
-    deleteButtonIcon: '',
     actionsColumnTitle: 'Actions',
     editAction: 'Edit',
-    editActionIcon: '',
     deleteAction: 'Delete',
-    deleteActionIcon: '',
     noDataText: 'No data found',
     paginationFirst: 'First',
     paginationLast: 'Last'
   },
+  icons: {
+    addButtonIcon: '',
+    deleteButtonIcon: '',
+    editActionIcon: '',
+    deleteActionIcon: '',
+  },
   expandableRowComponent: ExpandableRowComponent,
+  onChangePage: onChangePage,
+  onSearch: onSearch,
   onInsert: onInsert,
   onEdit: onEdit,
   onDelete: onDelete,
@@ -189,6 +196,7 @@ class ReactAsyncTable extends Component {
       totalItems,
       options,
       translations,
+      icons,
       delay,
       expandableRowComponent,
       onSearch,
@@ -199,14 +207,16 @@ class ReactAsyncTable extends Component {
     const {
       searchPlaceholder,
       addButton,
-      addButtonIcon,
       deleteButton,
-      deleteButtonIcon,
       actionsColumnTitle,
       noDataText,
       paginationFirst,
       paginationLast
     } = translations;
+    const {
+      addButtonIcon,
+      deleteButtonIcon
+    } = icons;
     // Set number of table columns
     const totalColumns =
       columns.length +
@@ -272,6 +282,7 @@ class ReactAsyncTable extends Component {
                     totalColumns={totalColumns}
                     options={options}
                     translations={translations}
+                    icons={icons}
                     expandableRowComponent={expandableRowComponent}
                     onSelect={this.onSelect}
                     onExpand={this.onExpand}

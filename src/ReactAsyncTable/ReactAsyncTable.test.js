@@ -38,8 +38,8 @@ describe('ReactAsyncTable', () => {
       itemsPerPage={10}
       totalItems={items.length}
       delay={300}
-      onChangePage={page => console.log('page', page)}
-      onSearch={search => console.log('page', search)}
+      onChangePage={() => null}
+      onSearch={() => null}
     />);
     
     expect(wrapper).toHaveLength(1);
