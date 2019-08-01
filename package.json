@@ -1,6 +1,6 @@
 {
   "name": "react-async-table",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React Async Data Table",
   "main": "./dist/index.js",
   "author": {

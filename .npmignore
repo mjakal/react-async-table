@@ -19,6 +19,8 @@ src
 test
 examples
 CHANGELOG.md
+jest.config.js
+webpack.config.babel.js
 .travis.yml
 .editorconfig
 .eslintignore

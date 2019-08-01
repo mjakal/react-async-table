@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+export const Loader = () => (
+  <p>Loading data, please wait...</p>
+);
+
 const NoData = ({ totalColumns, noDataText }) => (
   <tbody>
     <tr>

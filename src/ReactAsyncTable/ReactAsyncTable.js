@@ -14,13 +14,14 @@ import {
   onMultipleDelete,
   onColumnClick
 } from './helpers/defaultEvents';
-import { NoData, ExpandableRowComponent } from './helpers/defaultComponents';
+import { Loader, NoData, ExpandableRowComponent } from './helpers/defaultComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -30,6 +31,7 @@ const propTypes = {
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
+  loader: PropTypes.func,
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
@@ -41,6 +43,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  isLoading: false,
   itemsPerPage: 10,
   delay: 300,
   options: {
@@ -68,6 +71,7 @@ const defaultProps = {
     editActionIcon: '',
     deleteActionIcon: '',
   },
+  loader: Loader,
   expandableRowComponent: ExpandableRowComponent,
   onChangePage: onChangePage,
   onSearch: onSearch,
@@ -189,6 +193,7 @@ class ReactAsyncTable extends Component {
     const { selectAllItems, selectedItems, expandRow } = this.state;
     const {
       keyField,
+      isLoading,
       columns,
       items,
       currentPage,
@@ -198,6 +203,7 @@ class ReactAsyncTable extends Component {
       translations,
       icons,
       delay,
+      loader,
       expandableRowComponent,
       onSearch,
       onChangePage,
@@ -217,6 +223,7 @@ class ReactAsyncTable extends Component {
       addButtonIcon,
       deleteButtonIcon
     } = icons;
+    const Loader = loader;
     // Set number of table columns
     const totalColumns =
       columns.length +
@@ -229,48 +236,54 @@ class ReactAsyncTable extends Component {
 
     return (
       <div>
-        <Row className="form-group">
-          <Col xl="3" lg="4" md="6" sm="12">
-            {options.searchBox && (
-              <SearchBox
-                placeholder={searchPlaceholder}
-                onChange={debounceSearch}
-              />
-            )}
-          </Col>
-          <Col xl="9" lg="8" md="6" sm="12">
-            <span className="float-right">
-              {options.insertButton && (
-                <Button type="button" onClick={onInsert} color="primary">
-                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                </Button>
-              )}{' '}
-              {options.multipleSelect && (
-                <Button
-                  type="button"
-                  onClick={this.onMultipleDelete}
-                  color="danger"
-                >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton}
-                </Button>
-              )}
-            </span>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="12">
-            <Table className="async-table-style" responsive>
-              <ReactAsyncTableHeader
-                selectAllItems={selectAllItems}
-                columns={columns}
-                options={options}
-                actionsColumnTitle={actionsColumnTitle}
-                onMultipleSelect={this.onMultipleSelect}
-              />
-              {items.length === 0 && (
-                <NoData totalColumns={totalColumns} noDataText={noDataText} />
-              )}
-              {items.length > 0 &&
+        {isLoading ? (
+          <div className="animated fadeIn">
+            <Loader />
+          </div>
+        ) : (
+          <div className="animated fadeIn">
+            <Row className="form-group">
+              <Col xl="3" lg="4" md="6" sm="12">
+                {options.searchBox && (
+                  <SearchBox
+                    placeholder={searchPlaceholder}
+                    onChange={debounceSearch}
+                  />
+                )}
+              </Col>
+              <Col xl="9" lg="8" md="6" sm="12">
+                <span className="float-right">
+                  {options.insertButton && (
+                    <Button type="button" onClick={onInsert} color="primary">
+                      {addButtonIcon && <i className={addButtonIcon} />} {addButton}
+                    </Button>
+                  )}{' '}
+                  {options.multipleSelect && (
+                    <Button
+                      type="button"
+                      onClick={this.onMultipleDelete}
+                      color="danger"
+                    >
+                      {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton}
+                    </Button>
+                  )}
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="12">
+                <Table className="async-table-style" responsive>
+                  <ReactAsyncTableHeader
+                    selectAllItems={selectAllItems}
+                    columns={columns}
+                    options={options}
+                    actionsColumnTitle={actionsColumnTitle}
+                    onMultipleSelect={this.onMultipleSelect}
+                  />
+                  {items.length === 0 && (
+                    <NoData totalColumns={totalColumns} noDataText={noDataText} />
+                  )}
+                  {items.length > 0 &&
                 items.map(item => (
                   <ReactAsyncTableBody
                     key={item[keyField]}
@@ -291,23 +304,25 @@ class ReactAsyncTable extends Component {
                     onColumnClick={onColumnClick}
                   />
                 ))}
-            </Table>
-          </Col>
-        </Row>
-        <Row className="form-group">
-          <Col md="12">
-            {options.pagination && (
-              <Paginate
-                currentPage={currentPage}
-                pageSize={itemsPerPage}
-                items={totalItems}
-                onChangePage={onChangePage}
-                firstLink={paginationFirst}
-                lastLink={paginationLast}
-              />
-            )}
-          </Col>
-        </Row>
+                </Table>
+              </Col>
+            </Row>
+            <Row className="form-group">
+              <Col md="12">
+                {options.pagination && (
+                  <Paginate
+                    currentPage={currentPage}
+                    pageSize={itemsPerPage}
+                    items={totalItems}
+                    onChangePage={onChangePage}
+                    firstLink={paginationFirst}
+                    lastLink={paginationLast}
+                  />
+                )}
+              </Col>
+            </Row>
+          </div>
+        )}
       </div>
     );
   }

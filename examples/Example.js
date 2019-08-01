@@ -30,6 +30,10 @@ const items = [
   }
 ];
 
+const ExampleLoader = () => (
+  <p>This is an example loader component...</p>
+);
+
 const CellFormatter = ({ columnKey, row, onColumnClick }) => (
   <button className="btn btn-link" onClick={onColumnClick}>
     {row[columnKey]}
@@ -44,7 +48,10 @@ class Example extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { page: 1 };
+    this.state = { 
+      page: 1,
+      isLoading: true
+    };
 
     this.onChangePage = this.onChangePage.bind(this);
     this.onSearch = this.onSearch.bind(this);
@@ -53,7 +60,9 @@ class Example extends React.Component {
     this.onMultipleDelete = this.onMultipleDelete.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    setTimeout(() => this.setState({ isLoading: false }), 2000);
+  }
 
   onChangePage(page) {
     console.log('onChangePage handler', page);
@@ -107,6 +116,7 @@ class Example extends React.Component {
           <CardBody>
             <ReactAsyncTable
               keyField="id"
+              isLoading={this.state.isLoading}
               columns={columns}
               items={items}
               currentPage={1}
@@ -138,6 +148,7 @@ class Example extends React.Component {
                 editActionIcon: '',
                 deleteActionIcon: ''
               }}
+              loader={ExampleLoader}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
               onSearch={this.onSearch}
