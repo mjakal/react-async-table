@@ -1,44 +1,22 @@
 import React from 'react';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from '../src/index';
+import { items } from './sampleData';
 import 'bootstrap/scss/bootstrap.scss';
-
-const items = [
-  {
-    id: 1,
-    display_name: 'Test Data 1',
-    number: '123456789',
-    mobile: '123456789'
-  },
-  {
-    id: 2,
-    display_name: 'Test Data 2',
-    number: '123456789',
-    mobile: '123456789'
-  },
-  {
-    id: 3,
-    display_name: 'Test Data 3',
-    number: '123456789',
-    mobile: '123456789'
-  },
-  {
-    id: 4,
-    display_name: 'Test Data 4',
-    number: '123456789',
-    mobile: '123456789'
-  }
-];
 
 const ExampleLoader = () => (
   <p>This is an example loader component...</p>
 );
 
-const CellFormatter = ({ columnKey, row, onColumnClick }) => (
-  <button className="btn btn-link" onClick={onColumnClick}>
-    {row[columnKey]}
-  </button>
-);
+const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
+  const onClick = () => onColumnClick(columnKey, row);
+  
+  return (
+    <button className="btn btn-link" onClick={onClick}>
+      {row[columnKey] ? 'Yes' : 'No'}
+    </button>
+  );
+}
 
 const ExpandableRowComponent = ({ row }) => (
   <p>Testing expandable row custom component Row ID: {row.id}</p>
@@ -49,10 +27,15 @@ class Example extends React.Component {
     super(props);
 
     this.state = { 
+      isLoading: true,
+      search: '',
+      items: [],
       page: 1,
-      isLoading: true
+      itemsPerPage: 20,
+      totalItems: 0
     };
 
+    this.fakeAsyncAction = this.fakeAsyncAction.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onInsert = this.onInsert.bind(this);
@@ -61,15 +44,32 @@ class Example extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ isLoading: false }), 2000);
+    this.fakeAsyncAction();
+  }
+
+  fakeAsyncAction() {
+    setTimeout(() => {
+      const { search, page, itemsPerPage } = this.state;
+      const currentIndex = (page - 1) * itemsPerPage;
+
+      const filteredItems = items.filter(item => item.title.indexOf(search.toLowerCase()) !== -1);
+      
+      this.setState(() => ({
+        isLoading: false,
+        items: filteredItems.slice(currentIndex, currentIndex + itemsPerPage),
+        totalItems: filteredItems.length,
+      }));
+    }, 2000);
   }
 
   onChangePage(page) {
-    console.log('onChangePage handler', page);
+    this.setState({ page });
+    this.fakeAsyncAction(page);
   }
 
   onSearch(search) {
-    console.log('onSearch handler', search);
+    this.setState({ search, page: 1 });
+    this.fakeAsyncAction();
   }
 
   onInsert() {
@@ -77,11 +77,26 @@ class Example extends React.Component {
   }
 
   onEdit(rowID) {
-    console.log('onEdit handler', rowID);
+    console.log('onEdit handler');
+    console.log('id:', rowID);
+  }
+
+  onDelete(rowID, page) {
+    console.log('onDelete handler', rowID, page);
+    console.log('id:', rowID);
+    console.log('page:', page);
   }
 
   onMultipleDelete(values, page) {
-    console.log('onMultipleDelete handler', values,page);
+    console.log('onMultipleDelete handler');
+    console.log('ids:', values);
+    console.log('page:', page);
+  }
+
+  onColumnClick(columnKey, row) {
+    console.log('onColumnClick handler');
+    console.log('column:', columnKey);
+    console.log('row data:', row);
   }
 
   render() {
@@ -91,17 +106,17 @@ class Example extends React.Component {
         text: 'ID'
       },
       {
-        dataField: 'display_name',
-        text: 'Name'
+        dataField: 'userId',
+        text: 'User ID'
       },
       {
-        dataField: 'number',
-        formatedField: CellFormatter,
-        text: 'Number'
+        dataField: 'title',
+        text: 'Title'
       },
       {
-        dataField: 'mobile',
-        text: 'Mobile'
+        dataField: 'completed',
+        text: 'Completed',
+        formatedField: ExampleFormatedField
       }
     ];
 
@@ -118,10 +133,10 @@ class Example extends React.Component {
               keyField="id"
               isLoading={this.state.isLoading}
               columns={columns}
-              items={items}
-              currentPage={1}
-              itemsPerPage={10}
-              totalItems={items.length}
+              items={this.state.items}
+              currentPage={this.state.page}
+              itemsPerPage={this.state.itemsPerPage}
+              totalItems={this.state.totalItems}
               delay={300}
               options={{
                 searchBox: true,
@@ -152,8 +167,10 @@ class Example extends React.Component {
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
               onSearch={this.onSearch}
+              onColumnClick={this.onColumnClick}
               onInsert={this.onInsert}
               onEdit={this.onEdit}
+              onDelete={this.onDelete}
               onMultipleDelete={this.onMultipleDelete}
             />
           </CardBody>
