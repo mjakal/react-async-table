@@ -1,19 +1,22 @@
 import React from 'react';
+import 'bootstrap/scss/bootstrap.scss';
+import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from '../src/index';
-import { items } from './sampleData';
-import 'bootstrap/scss/bootstrap.scss';
+import { tasks } from './sampleData';
 
 const ExampleLoader = () => (
   <p>This is an example loader component...</p>
 );
 
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
+  const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
+  const columnText = row[columnKey] ? 'Completed' : 'Pending';
   const onClick = () => onColumnClick(columnKey, row);
   
   return (
     <button className="btn btn-link" onClick={onClick}>
-      {row[columnKey] ? 'Yes' : 'No'}
+      <i className={columnIcon} /> {columnText}
     </button>
   );
 }
@@ -21,6 +24,26 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
 const ExpandableRowComponent = ({ row }) => (
   <p>Testing expandable row custom component Row ID: {row.id}</p>
 );
+
+const columns = [
+  {
+    dataField: 'id',
+    text: 'ID'
+  },
+  {
+    dataField: 'userId',
+    text: 'User ID'
+  },
+  {
+    dataField: 'title',
+    text: 'Task'
+  },
+  {
+    dataField: 'completed',
+    text: 'Status',
+    formatedField: ExampleFormatedField
+  }
+];
 
 class Example extends React.Component {
   constructor(props) {
@@ -31,7 +54,7 @@ class Example extends React.Component {
       search: '',
       items: [],
       page: 1,
-      itemsPerPage: 20,
+      itemsPerPage: 10,
       totalItems: 0
     };
 
@@ -48,23 +71,25 @@ class Example extends React.Component {
   }
 
   fakeAsyncAction() {
+    const dataDelay = Math.floor(Math.random() * (1000 - 300 + 1) + 300);
+
     setTimeout(() => {
       const { search, page, itemsPerPage } = this.state;
       const currentIndex = (page - 1) * itemsPerPage;
 
-      const filteredItems = items.filter(item => item.title.indexOf(search.toLowerCase()) !== -1);
+      const filteredItems = tasks.filter(item => item.title.indexOf(search.toLowerCase()) !== -1);
       
       this.setState(() => ({
         isLoading: false,
         items: filteredItems.slice(currentIndex, currentIndex + itemsPerPage),
         totalItems: filteredItems.length,
       }));
-    }, 2000);
+    }, dataDelay);
   }
 
   onChangePage(page) {
     this.setState({ page });
-    this.fakeAsyncAction(page);
+    this.fakeAsyncAction();
   }
 
   onSearch(search) {
@@ -100,25 +125,7 @@ class Example extends React.Component {
   }
 
   render() {
-    const columns = [
-      {
-        dataField: 'id',
-        text: 'ID'
-      },
-      {
-        dataField: 'userId',
-        text: 'User ID'
-      },
-      {
-        dataField: 'title',
-        text: 'Title'
-      },
-      {
-        dataField: 'completed',
-        text: 'Completed',
-        formatedField: ExampleFormatedField
-      }
-    ];
+    const { isLoading, items, page, itemsPerPage, totalItems  } = this.state;
 
     return (
       <div className="container">
@@ -131,12 +138,12 @@ class Example extends React.Component {
           <CardBody>
             <ReactAsyncTable
               keyField="id"
-              isLoading={this.state.isLoading}
+              isLoading={isLoading}
               columns={columns}
-              items={this.state.items}
-              currentPage={this.state.page}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.state.totalItems}
+              items={items}
+              currentPage={page}
+              itemsPerPage={itemsPerPage}
+              totalItems={totalItems}
               delay={300}
               options={{
                 searchBox: true,
@@ -158,10 +165,10 @@ class Example extends React.Component {
                 paginationLast: 'Last'
               }}
               icons={{
-                addButtonIcon: '',
-                deleteButtonIcon: '',
-                editActionIcon: '',
-                deleteActionIcon: ''
+                addButtonIcon: 'fa fa-plus',
+                deleteButtonIcon: 'fa fa-trash',
+                editActionIcon: 'fa fa-pencil',
+                deleteActionIcon: 'fa fa-trash'
               }}
               loader={ExampleLoader}
               expandableRowComponent={ExpandableRowComponent}

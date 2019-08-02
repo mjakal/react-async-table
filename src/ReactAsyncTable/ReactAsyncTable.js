@@ -310,14 +310,16 @@ class ReactAsyncTable extends Component {
             <Row className="form-group">
               <Col md="12">
                 {options.pagination && (
-                  <Paginate
-                    currentPage={currentPage}
-                    pageSize={itemsPerPage}
-                    items={totalItems}
-                    onChangePage={onChangePage}
-                    firstLink={paginationFirst}
-                    lastLink={paginationLast}
-                  />
+                  <span className="float-right">
+                    <Paginate
+                      currentPage={currentPage}
+                      pageSize={itemsPerPage}
+                      items={totalItems}
+                      onChangePage={onChangePage}
+                      firstLink={paginationFirst}
+                      lastLink={paginationLast}
+                    />
+                  </span>
                 )}
               </Col>
             </Row>

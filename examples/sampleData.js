@@ -1,4 +1,4 @@
-export const items = [
+export const tasks = [
   {
     "userId": 1,
     "id": 1,
