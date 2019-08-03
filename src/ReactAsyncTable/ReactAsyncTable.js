@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Row, Col } from 'reactstrap';
 import Paginate from './components/Pagination/Pagination';
 import SearchBox from './components/SearchBox/SearchBox';
 import ReactAsyncTableHeader from './ReactAsyncTableHeader';
@@ -14,7 +13,7 @@ import {
   onMultipleDelete,
   onColumnClick
 } from './helpers/defaultEvents';
-import { Loader, NoData, ExpandableRowComponent } from './helpers/defaultComponents';
+import { Loader, NoData, ExpandableRowComponent } from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
@@ -242,48 +241,53 @@ class ReactAsyncTable extends Component {
           </div>
         ) : (
           <div className="animated fadeIn">
-            <Row className="form-group">
-              <Col xl="3" lg="4" md="6" sm="12">
+            <div className="row form-group">
+              <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 {options.searchBox && (
                   <SearchBox
                     placeholder={searchPlaceholder}
                     onChange={debounceSearch}
                   />
                 )}
-              </Col>
-              <Col xl="9" lg="8" md="6" sm="12">
+              </div>
+              <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
                 <span className="float-right">
                   {options.insertButton && (
-                    <Button type="button" onClick={onInsert} color="primary">
+                    <button 
+                      type="button" 
+                      className="btn btn-primary" 
+                      onClick={onInsert}
+                    >
                       {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                    </Button>
+                    </button>
                   )}{' '}
                   {options.multipleSelect && (
-                    <Button
+                    <button
                       type="button"
+                      className="btn btn-danger"
                       onClick={this.onMultipleDelete}
-                      color="danger"
                     >
                       {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton}
-                    </Button>
+                    </button>
                   )}
                 </span>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="12">
-                <Table className="async-table-style" responsive>
-                  <ReactAsyncTableHeader
-                    selectAllItems={selectAllItems}
-                    columns={columns}
-                    options={options}
-                    actionsColumnTitle={actionsColumnTitle}
-                    onMultipleSelect={this.onMultipleSelect}
-                  />
-                  {items.length === 0 && (
-                    <NoData totalColumns={totalColumns} noDataText={noDataText} />
-                  )}
-                  {items.length > 0 &&
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="table-responsive">
+                  <table className="table async-table-style">
+                    <ReactAsyncTableHeader
+                      selectAllItems={selectAllItems}
+                      columns={columns}
+                      options={options}
+                      actionsColumnTitle={actionsColumnTitle}
+                      onMultipleSelect={this.onMultipleSelect}
+                    />
+                    {items.length === 0 && (
+                      <NoData totalColumns={totalColumns} noDataText={noDataText} />
+                    )}
+                    {items.length > 0 &&
                 items.map(item => (
                   <ReactAsyncTableBody
                     key={item[keyField]}
@@ -304,12 +308,13 @@ class ReactAsyncTable extends Component {
                     onColumnClick={onColumnClick}
                   />
                 ))}
-                </Table>
-              </Col>
-            </Row>
-            <Row className="form-group">
-              <Col md="12">
-                {options.pagination && (
+                  </table>
+                </div>
+              </div>
+            </div>
+            {options.pagination && (
+              <div className="row form-group">
+                <div className="col-md-12">
                   <span className="float-right">
                     <Paginate
                       currentPage={currentPage}
@@ -320,9 +325,9 @@ class ReactAsyncTable extends Component {
                       lastLink={paginationLast}
                     />
                   </span>
-                )}
-              </Col>
-            </Row>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

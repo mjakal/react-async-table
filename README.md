@@ -26,7 +26,8 @@ React Async Table component requires the following to be installed in your proje
 
 - bootstrap >= 4.0.0
 - react >= 16.3.0
-- reactstrap >= 6.0.0
+
+* react-dom >= 16.3.0
 
 ## Installation
 
@@ -91,7 +92,8 @@ import 'bootstrap/scss/bootstrap.scss';
 import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from 'react-async-table';
-import { tasks } from './sampleData';
+
+const tasks = [ ... ];
 
 const ExampleLoader = () => (
   <p>This is an example loader component...</p>

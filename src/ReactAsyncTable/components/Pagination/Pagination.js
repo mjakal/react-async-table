@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { PaginationItem, PaginationLink } from './PaginationComponents';
 
 const propTypes = {
   items: PropTypes.number.isRequired,
@@ -17,6 +17,29 @@ const defaultProps = {
   lastLink: 'Last'
 };
 
+/*
+const PaginationItem = props => {
+  const { active, disabled, children } = props;
+  const isActive = active ? 'active' : '';
+  const isDisabled = disabled ? 'disabled' : '';
+
+  return (
+    <li className={`page-item ${isActive} ${isDisabled}`}>
+      {children}
+    </li>
+  );
+}
+
+const PaginationLink = props => (
+  <button 
+    className="page-link" 
+    onClick={props.onClick}
+  >
+    {props.children}
+  </button>
+);
+*/  
+
 class Paginate extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +47,8 @@ class Paginate extends React.Component {
     this.state = {
       pager: {}
     };
+
+    this.setPage = this.setPage.bind(this);
   }
 
   componentDidMount() {
@@ -103,7 +128,7 @@ class Paginate extends React.Component {
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
     // create an array of pages for pager control
-    var pages = this.range(startPage, endPage + 1);
+    const pages = this.range(startPage, endPage + 1);
 
     // return object with all pager properties required by the view
     return {
@@ -128,37 +153,41 @@ class Paginate extends React.Component {
     }
 
     return (
-      <Pagination>
-        <PaginationItem disabled={pager.currentPage === 1}>
-          <PaginationLink onClick={() => this.setPage(1)}>
-            {this.props.firstLink}
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem disabled={pager.currentPage === 1}>
-          <PaginationLink
-            onClick={() => this.setPage(pager.currentPage - 1)}
-            previous
-          />
-        </PaginationItem>
-        {pager.pages.map((page, index) => (
-          <PaginationItem key={index} active={pager.currentPage === page}>
-            <PaginationLink onClick={() => this.setPage(page)}>
-              {page}
+      <nav aria-label="pagination">
+        <ul className="pagination">
+          <PaginationItem disabled={pager.currentPage === 1}>
+            <PaginationLink page={1} onClick={this.setPage}>
+              {this.props.firstLink}
             </PaginationLink>
           </PaginationItem>
-        ))}
-        <PaginationItem disabled={pager.currentPage === pager.totalPages}>
-          <PaginationLink
-            onClick={() => this.setPage(pager.currentPage + 1)}
-            next
-          />
-        </PaginationItem>
-        <PaginationItem disabled={pager.currentPage === pager.totalPages}>
-          <PaginationLink onClick={() => this.setPage(pager.totalPages)}>
-            {this.props.lastLink}
-          </PaginationLink>
-        </PaginationItem>
-      </Pagination>
+          <PaginationItem disabled={pager.currentPage === 1}>
+            <PaginationLink
+              page={pager.currentPage - 1}
+              onClick={this.setPage}
+              previous
+            />
+          </PaginationItem>
+          {pager.pages.map((page, index) => (
+            <PaginationItem key={index} active={pager.currentPage === page}>
+              <PaginationLink page={page} onClick={this.setPage}>
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem disabled={pager.currentPage === pager.totalPages}>
+            <PaginationLink
+              page={pager.currentPage + 1}
+              onClick={this.setPage}
+              next
+            />
+          </PaginationItem>
+          <PaginationItem disabled={pager.currentPage === pager.totalPages}>
+            <PaginationLink page={pager.totalPages} onClick={this.setPage}>
+              {this.props.lastLink}
+            </PaginationLink>
+          </PaginationItem>
+        </ul>
+      </nav>
     );
   }
 }

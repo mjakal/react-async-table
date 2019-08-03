@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InputGroup, Input } from 'reactstrap';
 
 const propTypes = {
   placeholder: PropTypes.string,
@@ -38,9 +37,10 @@ class SearchBox extends React.Component {
     const { placeholder } = this.props;
 
     return (
-      <InputGroup>
-        <Input
+      <div className="input-group">
+        <input
           type="text"
+          className="form-control"
           name="search"
           value={searchTerm}
           placeholder={placeholder}
@@ -55,7 +55,7 @@ class SearchBox extends React.Component {
             &times;
           </button>
         )}
-      </InputGroup>
+      </div>
     );
   }
 }

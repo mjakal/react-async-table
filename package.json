@@ -1,6 +1,6 @@
 {
   "name": "react-async-table",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React Bootstrap Async Table",
   "main": "./dist/index.js",
   "author": {
@@ -8,6 +8,14 @@
     "email": "mjakal@gmail.com",
     "url": "https://github.com/mjakal/"
   },
+  "keywords": [
+    "react",
+    "bootstrap",
+    "table",
+    "asynchronous",
+    "grid",
+    "react-component"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/mjakal/react-async-table"
@@ -57,8 +65,7 @@
   "peerDependencies": {
     "bootstrap": ">= 4.0.0",
     "react": ">= 16.3.0",
-    "react-dom": ">= 16.3.0",
-    "reactstrap": ">= 6.0.0"
+    "react-dom": ">= 16.3.0"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
