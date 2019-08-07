@@ -52,13 +52,14 @@ const defaultProps = {
     insertButton: false,
     multipleSelect: false,
     expandable: false,
-    defaultActionsColumn: false,
+    actionsColumn: false,
     pagination: true
   },
   translations: {
     searchPlaceholder: 'Search...',
     addButton: 'Add',
     deleteButton: 'Delete',
+    sortTitle: 'Sort',
     actionsColumnTitle: 'Actions',
     editAction: 'Edit',
     deleteAction: 'Delete',
@@ -69,6 +70,7 @@ const defaultProps = {
   icons: {
     addButtonIcon: '',
     deleteButtonIcon: '',
+    sortIcon: '',
     editActionIcon: '',
     deleteActionIcon: '',
   },
@@ -110,10 +112,10 @@ class ReactAsyncTable extends Component {
 
     // Set the default sort order
     for (const col of columns) {
-      if (col.sortable && col.defaultSortOrder) {
+      if (col.sort && col.sortOrder) {
         this.setState({ 
           sortField: col.dataField,
-          sortOrder: col.defaultSortOrder
+          sortOrder: col.sortOrder
         });
         break;
       }
@@ -248,6 +250,7 @@ class ReactAsyncTable extends Component {
       searchPlaceholder,
       addButton,
       deleteButton,
+      sortTitle,
       actionsColumnTitle,
       noDataText,
       paginationFirst,
@@ -255,14 +258,15 @@ class ReactAsyncTable extends Component {
     } = translations;
     const {
       addButtonIcon,
-      deleteButtonIcon
+      deleteButtonIcon,
+      sortIcon
     } = icons;
     const Loader = loader;
     // Set number of table columns
     const totalColumns =
       columns.length +
       (options.multipleSelect ? 1 : 0) +
-      (options.defaultActionsColumn ? 1 : 0);
+      (options.actionsColumn ? 1 : 0);
     
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
@@ -316,6 +320,8 @@ class ReactAsyncTable extends Component {
                       selectAllItems={selectAllItems}
                       columns={columns}
                       options={options}
+                      sortTitle={sortTitle}
+                      sortIcon={sortIcon}
                       actionsColumnTitle={actionsColumnTitle}
                       onMultipleSelect={this.onMultipleSelect}
                       onSort={this.onSort}

@@ -37,8 +37,8 @@ const columns = [
   {
     dataField: 'title',
     text: 'Task',
-    sortable: true,
-    defaultSortOrder: 'asc' // values: asc|desc
+    sort: true,
+    sortOrder: 'asc' // values: asc|desc
   },
   {
     dataField: 'completed',
@@ -158,13 +158,14 @@ class Example extends React.Component {
                 insertButton: true,
                 multipleSelect: true,
                 expandable: true,
-                defaultActionsColumn: true,
+                actionsColumn: true,
                 pagination: true
               }}
               translations={{
                 searchPlaceholder: 'Search...',
                 addButton: 'Add',
                 deleteButton: 'Delete',
+                sortTitle: 'Sort',
                 actionsColumnTitle: 'Actions',
                 editAction: 'Edit',
                 deleteAction: 'Delete',
@@ -175,6 +176,7 @@ class Example extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                sortIcon: 'fa fa-sort',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
               }}

@@ -75,7 +75,7 @@ const ReactAsyncTableBody = props => {
 
           return <td key={index}>{cellWrapper}</td>;
         })}
-        {options.defaultActionsColumn && (
+        {options.actionsColumn && (
           <td className="action-col">
             <span>
               <button

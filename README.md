@@ -128,8 +128,8 @@ const columns = [
   {
     dataField: 'title',
     text: 'Task',
-    sortable: true,
-    defaultSortOrder: 'asc' // values: asc|desc
+    sort: true,
+    sortOrder: 'asc' // values: asc|desc
   },
   {
     dataField: 'completed',
@@ -249,13 +249,14 @@ class Example extends React.Component {
                 insertButton: true,
                 multipleSelect: true,
                 expandable: true,
-                defaultActionsColumn: true,
+                actionsColumn: true,
                 pagination: true
               }}
               translations={{
                 searchPlaceholder: 'Search...',
                 addButton: 'Add',
                 deleteButton: 'Delete',
+                sortTitle: 'Sort',
                 actionsColumnTitle: 'Actions',
                 editAction: 'Edit',
                 deleteAction: 'Delete',
@@ -266,6 +267,7 @@ class Example extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                sortIcon: 'fa fa-sort',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
               }}
@@ -292,7 +294,7 @@ export default Example;
 
 ## Testing & Development
 
-Install the latest version of node and npm on your system and clone the repo.
+Install the latest version of node and npm on your system, then follow the steps below.
 
 ```
 # Clone the repo

@@ -5,13 +5,24 @@ const propTypes = {
   selectAllItems: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
+  sortTitle: PropTypes.string.isRequired,
+  sortIcon: PropTypes.string.isRequired,
   actionsColumnTitle: PropTypes.string.isRequired,
   onMultipleSelect: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired
 };
 
 const ReactAsyncTableHeader = props => {
-  const { selectAllItems, columns, options, actionsColumnTitle, onMultipleSelect, onSort } = props;
+  const { 
+    selectAllItems, 
+    columns, 
+    options, 
+    sortTitle, 
+    sortIcon, 
+    actionsColumnTitle, 
+    onMultipleSelect, 
+    onSort 
+  } = props;
 
   return (
     <thead>
@@ -30,17 +41,19 @@ const ReactAsyncTableHeader = props => {
         {columns.map((column, index) => (
           <th key={index}>
             {column.text}
-            {column.sortable && (
+            {column.sort && (
               <span
                 className="pull-right sort-button"
+                data-toggle="tooltip"
+                title={sortTitle}
                 onClick={() => onSort(column.dataField)}
               >
-                &#8661;
+                {sortIcon ? <i className={sortIcon} /> : <i>&#8661;</i>}
               </span>
             )}
           </th>
         ))}
-        {options.defaultActionsColumn && <th>{actionsColumnTitle}</th>}
+        {options.actionsColumn && <th>{actionsColumnTitle}</th>}
       </tr>
     </thead>
   );
