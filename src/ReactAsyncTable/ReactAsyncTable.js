@@ -105,6 +105,21 @@ class ReactAsyncTable extends Component {
     this.onMultipleDelete = this.onMultipleDelete.bind(this);
   }
 
+  componentDidMount() {
+    const { columns } = this.props;
+
+    // Set the default sort order
+    for (const col of columns) {
+      if (col.sortable && col.defaultSortOrder) {
+        this.setState({ 
+          sortField: col.dataField,
+          sortOrder: col.defaultSortOrder
+        });
+        break;
+      }
+    }
+  }
+
   componentDidUpdate(prevPrps) {
     // reset selected items on items array update
     if (this.props.options.multipleSelect && prevPrps.items !== this.props.items) {

@@ -37,7 +37,8 @@ const columns = [
   {
     dataField: 'title',
     text: 'Task',
-    sortable: true
+    sortable: true,
+    defaultSortOrder: 'asc' // values: asc|desc
   },
   {
     dataField: 'completed',

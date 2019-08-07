@@ -11,6 +11,7 @@ If you want to bring balance to the force and want a simple but flexible solutio
 
 - Declarative configuration
 - Filterable
+- Sortable
 - Selectable rows
 - Customizable loading screen
 - Customizable expandable rows
@@ -122,11 +123,13 @@ const columns = [
   },
   {
     dataField: 'userId',
-    text: 'User ID'
+    text: 'User ID',
   },
   {
     dataField: 'title',
-    text: 'Task'
+    text: 'Task',
+    sortable: true,
+    defaultSortOrder: 'asc' // values: asc|desc
   },
   {
     dataField: 'completed',
@@ -185,6 +188,12 @@ class Example extends React.Component {
   onSearch(search) {
     this.setState({ search, page: 1 });
     this.fakeAsyncAction();
+  }
+
+  onSort(sortField, sortOrder) {
+    console.log('onSort handler');
+    console.log('sortField:', sortField);
+    console.log('sortOrder:', sortOrder);
   }
 
   onInsert() {
@@ -264,6 +273,7 @@ class Example extends React.Component {
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
               onSearch={this.onSearch}
+              onSort={this.onSort}
               onColumnClick={this.onColumnClick}
               onInsert={this.onInsert}
               onEdit={this.onEdit}
@@ -285,14 +295,31 @@ export default Example;
 Install the latest version of node and npm on your system and clone the repo.
 
 ```
-git clone https://github.com/mjakal/react-async-table.git
+# Clone the repo
+$ git clone https://github.com/mjakal/react-async-table.git
+
+# Change dir to the cloned repo
+$ cd react-async-table
+
+# Install all dependencies
+$ npm install
+
+# Start the development server, then go to localhost:8080
+$ npm storybook
 ```
 
-Then, cd into react-async-table folder and run these commands.
+### Other useful commands
 
 ```
-npm install
-npm start
-```
+# Create production build
+$ npm run build
 
-Open your favorite browser and navigate to http://localhost:8080
+# Build example project
+$ npm run build-examples
+
+# Run lint
+$ npm run lint
+
+# Run test suite
+$ npm run test
+```
