@@ -6,11 +6,12 @@ const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   actionsColumnTitle: PropTypes.string.isRequired,
-  onMultipleSelect: PropTypes.func.isRequired
+  onMultipleSelect: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired
 };
 
 const ReactAsyncTableHeader = props => {
-  const { selectAllItems, columns, options, actionsColumnTitle, onMultipleSelect } = props;
+  const { selectAllItems, columns, options, actionsColumnTitle, onMultipleSelect, onSort } = props;
 
   return (
     <thead>
@@ -27,7 +28,17 @@ const ReactAsyncTableHeader = props => {
           </th>
         )}
         {columns.map((column, index) => (
-          <th key={index}>{column.text}</th>
+          <th key={index}>
+            {column.text}
+            {column.sortable && (
+              <span 
+                className="async-table-sort pull-right"
+                onClick={() => onSort(column.dataField)}
+              >
+                &#8661;
+              </span>
+            )}
+          </th>
         ))}
         {options.defaultActionsColumn && <th>{actionsColumnTitle}</th>}
       </tr>

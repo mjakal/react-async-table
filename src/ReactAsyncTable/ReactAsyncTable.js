@@ -7,6 +7,7 @@ import ReactAsyncTableBody from './ReactAsyncTableBody';
 import {
   onChangePage,
   onSearch,
+  onSort,
   onInsert,
   onEdit,
   onDelete,
@@ -34,6 +35,7 @@ const propTypes = {
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
+  onSort: PropTypes.func,
   onInsert: PropTypes.func,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
@@ -74,11 +76,12 @@ const defaultProps = {
   expandableRowComponent: ExpandableRowComponent,
   onChangePage: onChangePage,
   onSearch: onSearch,
+  onSort: onSort,
   onInsert: onInsert,
   onEdit: onEdit,
   onDelete: onDelete,
   onMultipleDelete: onMultipleDelete,
-  onColumnClick: onColumnClick
+  onColumnClick: onColumnClick,
 };
 
 class ReactAsyncTable extends Component {
@@ -86,6 +89,8 @@ class ReactAsyncTable extends Component {
     super(props);
 
     this.state = {
+      sortField: '',
+      sortOrder: '',
       selectAllItems: false,
       selectedItems: {},
       expandRow: {}
@@ -93,6 +98,7 @@ class ReactAsyncTable extends Component {
 
     this.onExpand = this.onExpand.bind(this);
     this.onMultipleSelect = this.onMultipleSelect.bind(this);
+    this.onSort = this.onSort.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -125,6 +131,20 @@ class ReactAsyncTable extends Component {
       [name]: value,
       selectedItems
     });
+  }
+
+  onSort(columnKey) {
+    const { sortField, sortOrder } = this.state;
+    let nextOrder = '';
+
+    if (sortField === columnKey) {
+      nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      nextOrder = 'asc';
+    }
+
+    this.setState({ sortField: columnKey, sortOrder: nextOrder });
+    this.props.onSort(columnKey, nextOrder);
   }
 
   onExpand(event, rowID) {
@@ -283,6 +303,7 @@ class ReactAsyncTable extends Component {
                       options={options}
                       actionsColumnTitle={actionsColumnTitle}
                       onMultipleSelect={this.onMultipleSelect}
+                      onSort={this.onSort}
                     />
                     {items.length === 0 && (
                       <NoData totalColumns={totalColumns} noDataText={noDataText} />

@@ -32,11 +32,12 @@ const columns = [
   },
   {
     dataField: 'userId',
-    text: 'User ID'
+    text: 'User ID',
   },
   {
     dataField: 'title',
-    text: 'Task'
+    text: 'Task',
+    sortable: true
   },
   {
     dataField: 'completed',
@@ -95,6 +96,12 @@ class Example extends React.Component {
   onSearch(search) {
     this.setState({ search, page: 1 });
     this.fakeAsyncAction();
+  }
+
+  onSort(sortField, sortOrder) {
+    console.log('onSort handler');
+    console.log('sortField:', sortField);
+    console.log('sortOrder:', sortOrder);
   }
 
   onInsert() {
@@ -174,6 +181,7 @@ class Example extends React.Component {
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
               onSearch={this.onSearch}
+              onSort={this.onSort}
               onColumnClick={this.onColumnClick}
               onInsert={this.onInsert}
               onEdit={this.onEdit}

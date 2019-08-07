@@ -6,6 +6,10 @@ export const onSearch = () => {
   throw Error('Add onSearch(search) method to component props');
 }
 
+export const onSort = () => {
+  throw Error('Add onSort(sortField, sortOrder) method to component props');
+}
+
 export const onInsert = () => {
   throw Error('Add onInsert() method to component props');
 };
