@@ -19,7 +19,7 @@ const ReactAsyncTableHeader = props => {
         {options.multipleSelect && (
           <th>
             <input
-              className="form-check-input async-table-header-checkbox"
+              className="form-check-input header-checkbox"
               type="checkbox"
               name="selectAllItems"
               onChange={onMultipleSelect}
@@ -31,8 +31,8 @@ const ReactAsyncTableHeader = props => {
           <th key={index}>
             {column.text}
             {column.sortable && (
-              <span 
-                className="async-table-sort pull-right"
+              <span
+                className="pull-right sort-button"
                 onClick={() => onSort(column.dataField)}
               >
                 &#8661;

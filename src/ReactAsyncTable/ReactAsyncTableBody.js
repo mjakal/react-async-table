@@ -48,7 +48,7 @@ const ReactAsyncTableBody = props => {
         {options.multipleSelect && (
           <td>
             <input
-              className="form-check-input async-table-body-checkbox"
+              className="form-check-input body-checkbox"
               type="checkbox"
               name={itemID}
               onClick={onSelectClick}
