@@ -12,6 +12,7 @@ import {
   onEdit,
   onDelete,
   onMultipleDelete,
+  onAction,
   onColumnClick
 } from './helpers/defaultEvents';
 import { Loader, NoData, ExpandableRowComponent } from './ReactAsyncTableComponents';
@@ -32,6 +33,7 @@ const propTypes = {
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
   loader: PropTypes.func,
+  actionsComponent: PropTypes.func,
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
@@ -39,6 +41,7 @@ const propTypes = {
   onInsert: PropTypes.func,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onAction: PropTypes.func,
   onColumnClick: PropTypes.func,
   onMultipleDelete: PropTypes.func
 };
@@ -83,6 +86,7 @@ const defaultProps = {
   onEdit: onEdit,
   onDelete: onDelete,
   onMultipleDelete: onMultipleDelete,
+  onAction: onAction,
   onColumnClick: onColumnClick,
 };
 
@@ -101,7 +105,6 @@ class ReactAsyncTable extends Component {
     this.onExpand = this.onExpand.bind(this);
     this.onMultipleSelect = this.onMultipleSelect.bind(this);
     this.onSort = this.onSort.bind(this);
-    this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onMultipleDelete = this.onMultipleDelete.bind(this);
@@ -164,7 +167,7 @@ class ReactAsyncTable extends Component {
     this.props.onSort(columnKey, nextOrder);
   }
 
-  onExpand(event, rowID) {
+  onExpand(rowID) {
     const { options } = this.props;
 
     // Early exit if options.expandable prop is set to false
@@ -191,15 +194,7 @@ class ReactAsyncTable extends Component {
     this.setState({ selectedItems });
   }
 
-  onEdit(event, rowID) {
-    event.stopPropagation();
-
-    this.props.onEdit(rowID);
-  }
-
-  onDelete(event, rowID) {
-    event.stopPropagation();
-
+  onDelete(rowID) {
     const { currentPage, itemsPerPage, totalItems } = this.props;
 
     const goToPage = setCurrentPage(currentPage, itemsPerPage, totalItems - 1);
@@ -240,10 +235,13 @@ class ReactAsyncTable extends Component {
       icons,
       delay,
       loader,
+      actionsComponent,
       expandableRowComponent,
       onSearch,
       onChangePage,
       onInsert,
+      onEdit,
+      onAction,
       onColumnClick
     } = this.props;
     const {
@@ -336,6 +334,7 @@ class ReactAsyncTable extends Component {
                     keyField={keyField}
                     item={item}
                     selectedItems={selectedItems}
+                    actionsComponent={actionsComponent}
                     expandRow={expandRow}
                     columns={columns}
                     totalColumns={totalColumns}
@@ -345,8 +344,9 @@ class ReactAsyncTable extends Component {
                     expandableRowComponent={expandableRowComponent}
                     onSelect={this.onSelect}
                     onExpand={this.onExpand}
-                    onEdit={this.onEdit}
+                    onEdit={onEdit}
                     onDelete={this.onDelete}
+                    onAction={onAction}
                     onColumnClick={onColumnClick}
                   />
                 ))}

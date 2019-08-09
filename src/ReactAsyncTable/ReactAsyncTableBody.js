@@ -11,11 +11,13 @@ const propTypes = {
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
+  actionsComponent: PropTypes.func,
   expandableRowComponent: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onAction: PropTypes.func,
   onColumnClick: PropTypes.func.isRequired
 };
 
@@ -28,6 +30,7 @@ const ReactAsyncTableBody = props => {
     columns,
     translations,
     icons,
+    actionsComponent,
     expandableRowComponent,
     totalColumns,
     options
@@ -37,10 +40,78 @@ const ReactAsyncTableBody = props => {
   const { editActionIcon, deleteActionIcon } = icons;
   const ExpandableComponent = expandableRowComponent;
 
-  const onExpand = e => props.onExpand(e, itemID);
+  const onExpand = () => props.onExpand(itemID);
   const onSelectClick = e => e.stopPropagation();
-  const onEdit = e => props.onEdit(e, itemID);
-  const onDelete = e => props.onDelete(e, itemID);
+  const onEdit = e => {
+    e.stopPropagation();
+    
+    props.onEdit(e, itemID);
+  };
+  const onDelete = e => {
+    e.stopPropagation();
+
+    props.onDelete(itemID);
+  };
+  const onAction = (e, type, rowID) => {
+    e.stopPropagation();
+
+    props.onAction(type, rowID);
+  };
+
+  const ColumnComponent = ({ column }) => {
+    const Component = column.formatedField;
+    const columnKey = column.dataField || '';
+
+    return (
+      <td>
+        {Component ? (
+          <Component
+            columnKey={columnKey}
+            row={item}
+            onColumnClick={props.onColumnClick}
+          />
+        ) : (
+          <span>{item[columnKey]}</span>
+        )}
+      </td>
+    );
+  };
+
+  ColumnComponent.propTypes = { column: PropTypes.object.isRequired };
+
+  const ActionsComponent = () => {
+    const Component = actionsComponent;
+
+    return (
+      <td className="action-col">
+        {Component ? (
+          <Component rowID={itemID} onAction={onAction} />
+        ) : (
+          <span>
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={onEdit}
+              data-html="true"
+              data-toggle="tooltip"
+              title={editAction}
+            >
+              {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
+            </button>
+            <button
+              type="button"
+              className="btn btn-link"
+              data-toggle="tooltip"
+              title={deleteAction}
+              onClick={onDelete}
+            >
+              {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
+            </button>
+          </span>
+        )}
+      </td>
+    );
+  };
 
   return (
     <tbody>
@@ -57,48 +128,11 @@ const ReactAsyncTableBody = props => {
             />
           </td>
         )}
-        {columns.map((column, index) => {
-          const cellData = item[column.dataField];
-          let cellWrapper = cellData;
-
-          // Format Cell using custom component
-          if (column.formatedField) {
-            const Component = column.formatedField;
-            cellWrapper = (
-              <Component
-                columnKey={column.dataField}
-                row={item}
-                onColumnClick={props.onColumnClick}
-              />
-            );
-          }
-
-          return <td key={index}>{cellWrapper}</td>;
-        })}
+        {columns.map((column, index) => (
+          <ColumnComponent key={index} column={column} />
+        ))}
         {options.actionsColumn && (
-          <td className="action-col">
-            <span>
-              <button
-                type="button"
-                className="btn btn-link"
-                onClick={onEdit}
-                data-html="true"
-                data-toggle="tooltip"
-                title={editAction}
-              >
-                {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
-              </button>
-              <button
-                type="button"
-                className="btn btn-link"
-                data-toggle="tooltip"
-                title={deleteAction}
-                onClick={onDelete}
-              >
-                {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
-              </button>
-            </span>
-          </td>
+          <ActionsComponent />
         )}
       </tr>
       {options.expandable && (

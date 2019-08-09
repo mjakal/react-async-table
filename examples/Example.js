@@ -21,6 +21,39 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   );
 }
 
+const ExampleActionsComponent = ({ rowID, onAction }) => (
+  <span>
+    <button
+      type="button"
+      className="btn btn-link"
+      onClick={e => onAction(e, 'ACTION_1', rowID)}
+      data-html="true"
+      data-toggle="tooltip"
+      title="Action 1"
+    >
+      <i className="fa fa-plus" />
+    </button>
+    <button
+      type="button"
+      className="btn btn-link"
+      data-toggle="tooltip"
+      title="Action 2"
+      onClick={e => onAction(e, 'ACTION_2', rowID)}
+    >
+      <i className="fa fa-pencil" />
+    </button>
+    <button
+      type="button"
+      className="btn btn-link"
+      data-toggle="tooltip"
+      title="Action 3"
+      onClick={e => onAction(e, 'ACTION_3', rowID)}
+    >
+      <i className="fa fa-minus" />
+    </button>
+  </span>
+);
+
 const ExpandableRowComponent = ({ row }) => (
   <p>Testing expandable row custom component Row ID: {row.id}</p>
 );
@@ -115,9 +148,15 @@ class Example extends React.Component {
   }
 
   onDelete(rowID, page) {
-    console.log('onDelete handler', rowID, page);
+    console.log('onDelete handler');
     console.log('id:', rowID);
     console.log('page:', page);
+  }
+
+  onAction(type, rowID) {
+    console.log('onAction handler');
+    console.log('type:', type);
+    console.log('rowID:', rowID);
   }
 
   onMultipleDelete(values, page) {
@@ -181,6 +220,7 @@ class Example extends React.Component {
                 deleteActionIcon: 'fa fa-trash'
               }}
               loader={ExampleLoader}
+              actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
               onSearch={this.onSearch}
@@ -189,6 +229,7 @@ class Example extends React.Component {
               onInsert={this.onInsert}
               onEdit={this.onEdit}
               onDelete={this.onDelete}
+              onAction={this.onAction}
               onMultipleDelete={this.onMultipleDelete}
             />
           </CardBody>

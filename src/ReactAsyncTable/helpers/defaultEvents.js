@@ -26,6 +26,10 @@ export const onMultipleDelete = () => {
   throw Error('Add onMultipleDelete(values, goToPage) method to component props');
 };
 
+export const onAction = () => {
+  throw Error('Add onAction(type, rowID) method to component props');
+};
+
 export const onColumnClick = () => {
   throw Error('Add onColumnClick() method to component props');
 };
