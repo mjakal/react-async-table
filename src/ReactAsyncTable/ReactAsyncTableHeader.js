@@ -43,7 +43,7 @@ const ReactAsyncTableHeader = props => {
             {column.text}
             {column.sort && (
               <span
-                className="pull-right sort-button"
+                className="sort-button"
                 data-toggle="tooltip"
                 title={sortTitle}
                 onClick={() => onSort(column.dataField)}
