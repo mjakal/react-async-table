@@ -47,7 +47,6 @@ const ReactAsyncTableHeader = props => {
               <button 
                 type="button"
                 className="btn btn-link"
-                data-toggle="tooltip" 
                 data-html="true"
                 data-toggle="tooltip"
                 title={column.tooltip}
