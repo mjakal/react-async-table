@@ -73,6 +73,7 @@ const defaultProps = {
   icons: {
     addButtonIcon: '',
     deleteButtonIcon: '',
+    tooltipIcon: '',
     sortIcon: '',
     editActionIcon: '',
     deleteActionIcon: '',
@@ -257,6 +258,7 @@ class ReactAsyncTable extends Component {
     const {
       addButtonIcon,
       deleteButtonIcon,
+      tooltipIcon,
       sortIcon
     } = icons;
     const Loader = loader;
@@ -318,6 +320,7 @@ class ReactAsyncTable extends Component {
                       selectAllItems={selectAllItems}
                       columns={columns}
                       options={options}
+                      tooltipIcon={tooltipIcon}
                       sortTitle={sortTitle}
                       sortIcon={sortIcon}
                       actionsColumnTitle={actionsColumnTitle}

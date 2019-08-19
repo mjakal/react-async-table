@@ -5,9 +5,10 @@ const propTypes = {
   selectAllItems: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
-  sortTitle: PropTypes.string.isRequired,
-  sortIcon: PropTypes.string.isRequired,
-  actionsColumnTitle: PropTypes.string.isRequired,
+  tooltipIcon: PropTypes.string,
+  sortTitle: PropTypes.string,
+  sortIcon: PropTypes.string,
+  actionsColumnTitle: PropTypes.string,
   onMultipleSelect: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired
 };
@@ -17,6 +18,7 @@ const ReactAsyncTableHeader = props => {
     selectAllItems, 
     columns, 
     options, 
+    tooltipIcon,
     sortTitle, 
     sortIcon, 
     actionsColumnTitle, 
@@ -41,15 +43,29 @@ const ReactAsyncTableHeader = props => {
         {columns.map((column, index) => (
           <th key={index}>
             {column.text}
+            {column.tooltip && (
+              <button 
+                type="button"
+                className="btn btn-link"
+                data-toggle="tooltip" 
+                data-html="true"
+                data-toggle="tooltip"
+                title={column.tooltip}
+              >
+                {tooltipIcon ? <i className={tooltipIcon} /> : <i>?</i>}
+              </button>
+            )}
             {column.sort && (
-              <span
-                className="sort-button"
+              <button
+                type="button"
+                className="btn btn-link sort-button"
+                data-html="true"
                 data-toggle="tooltip"
                 title={sortTitle}
                 onClick={() => onSort(column.dataField)}
               >
                 {sortIcon ? <i className={sortIcon} /> : <i>&#8661;</i>}
-              </span>
+              </button>
             )}
           </th>
         ))}

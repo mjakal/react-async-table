@@ -70,6 +70,7 @@ const columns = [
   {
     dataField: 'title',
     text: 'Task',
+    tooltip: 'Example Tooltip',
     sort: true,
     sortOrder: 'asc' // values: asc|desc
   },
@@ -215,6 +216,7 @@ class Example extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'

@@ -11,9 +11,13 @@
     .header-checkbox {
       margin: -6px 0px 0px 0px;
     }
-    span.sort-button {
+    button.btn-link {
+      margin: 0px 5px 0px 5px;
+      padding: 0;
+      text-decoration: none;
+    }
+    button.sort-button {
       float: right !important;
-      cursor: pointer;
     }
   }
   tbody tr td {
