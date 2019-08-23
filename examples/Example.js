@@ -9,6 +9,26 @@ const ExampleLoader = () => (
   <p>This is an example loader component...</p>
 );
 
+const ExampleHeaderActions = ({ onHeaderAction }) => (
+  <span>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={e => onHeaderAction('HEADER_ACTION_1')}
+    >
+      Action 1
+    </button>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={e => onHeaderAction('HEADER_ACTION_2')}
+    >
+      Action 2
+    </button>
+  </span>
+);
+  
+
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
@@ -154,6 +174,11 @@ class Example extends React.Component {
     console.log('page:', page);
   }
 
+  onHeaderAction(type) {
+    console.log('onHeaderAction handler');
+    console.log('type:', type);
+  }
+  
   onAction(type, rowID) {
     console.log('onAction handler');
     console.log('type:', type);
@@ -222,6 +247,7 @@ class Example extends React.Component {
                 deleteActionIcon: 'fa fa-trash'
               }}
               loader={ExampleLoader}
+              headerActions={ExampleHeaderActions}
               actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
@@ -231,6 +257,7 @@ class Example extends React.Component {
               onInsert={this.onInsert}
               onEdit={this.onEdit}
               onDelete={this.onDelete}
+              onHeaderAction={this.onHeaderAction}
               onAction={this.onAction}
               onMultipleDelete={this.onMultipleDelete}
             />

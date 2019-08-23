@@ -12,6 +12,7 @@ import {
   onEdit,
   onDelete,
   onMultipleDelete,
+  onHeaderAction,
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
@@ -34,6 +35,7 @@ const propTypes = {
   icons: PropTypes.objectOf(PropTypes.string),
   loader: PropTypes.func,
   actionsComponent: PropTypes.func,
+  headerActions: PropTypes.func,
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
@@ -41,6 +43,7 @@ const propTypes = {
   onInsert: PropTypes.func,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onHeaderAction: PropTypes.func,
   onAction: PropTypes.func,
   onColumnClick: PropTypes.func,
   onMultipleDelete: PropTypes.func
@@ -87,6 +90,7 @@ const defaultProps = {
   onEdit: onEdit,
   onDelete: onDelete,
   onMultipleDelete: onMultipleDelete,
+  onHeaderAction: onHeaderAction,
   onAction: onAction,
   onColumnClick: onColumnClick,
 };
@@ -236,12 +240,14 @@ class ReactAsyncTable extends Component {
       icons,
       delay,
       loader,
+      headerActions,
       actionsComponent,
       expandableRowComponent,
       onSearch,
       onChangePage,
       onInsert,
       onEdit,
+      onHeaderAction,
       onAction,
       onColumnClick
     } = this.props;
@@ -268,6 +274,8 @@ class ReactAsyncTable extends Component {
       (options.multipleSelect ? 1 : 0) +
       (options.actionsColumn ? 1 : 0);
     
+    const HeaderActions = headerActions;
+
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
     }, delay);
@@ -290,7 +298,7 @@ class ReactAsyncTable extends Component {
                 )}
               </div>
               <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
-                <span className="float-right">
+                <span className="async-table-header-actions float-right">
                   {options.insertButton && (
                     <button 
                       type="button" 
@@ -299,7 +307,8 @@ class ReactAsyncTable extends Component {
                     >
                       {addButtonIcon && <i className={addButtonIcon} />} {addButton}
                     </button>
-                  )}{' '}
+                  )}
+                  {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
                   {options.multipleSelect && (
                     <button
                       type="button"

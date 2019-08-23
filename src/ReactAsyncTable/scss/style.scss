@@ -5,6 +5,12 @@
   z-index: 100;
 }
 
+.async-table-header-actions {
+  button {
+    margin: 0px 0px 0px 5px;
+  }
+}
+
 .async-table-style {
   thead tr th {
     vertical-align: middle;
