@@ -30,6 +30,7 @@ const propTypes = {
   itemsPerPage: PropTypes.number,
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
+  clearSearch: PropTypes.bool,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
@@ -53,6 +54,7 @@ const defaultProps = {
   isLoading: false,
   itemsPerPage: 10,
   delay: 300,
+  clearSearch: false,
   options: {
     searchBox: true,
     insertButton: false,
@@ -249,7 +251,8 @@ class ReactAsyncTable extends Component {
       onEdit,
       onHeaderAction,
       onAction,
-      onColumnClick
+      onColumnClick,
+      clearSearch
     } = this.props;
     const {
       searchPlaceholder,
@@ -293,6 +296,7 @@ class ReactAsyncTable extends Component {
                 {options.searchBox && (
                   <SearchBox
                     placeholder={searchPlaceholder}
+                    clearSearch={clearSearch}
                     onChange={debounceSearch}
                   />
                 )}

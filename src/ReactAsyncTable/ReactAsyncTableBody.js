@@ -136,7 +136,7 @@ const ReactAsyncTableBody = props => {
         )}
       </tr>
       {options.expandable && (
-        <tr className={`collapse ${expandRow[itemID] && 'show'}`}>
+        <tr className={`collapse ${expandRow[itemID] ? 'show' : ''}`}>
           <td colSpan={totalColumns}>
             <ExpandableComponent row={item} />
           </td>
