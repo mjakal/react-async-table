@@ -100,6 +100,25 @@ const ExampleLoader = () => (
   <p>This is an example loader component...</p>
 );
 
+const ExampleHeaderActions = ({ onHeaderAction }) => (
+  <span>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={e => onHeaderAction('HEADER_ACTION_1')}
+    >
+      Action 1
+    </button>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={e => onHeaderAction('HEADER_ACTION_2')}
+    >
+      Action 2
+    </button>
+  </span>
+);
+
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
@@ -117,7 +136,7 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
     <button
       type="button"
       className="btn btn-link"
-      onClick={e => onAction(e, 'ACTION_1', rowID)}
+      onClick={e => onAction(e, 'EDIT_ITEM', rowID)}
       data-html="true"
       data-toggle="tooltip"
       title="Action 1"
@@ -129,7 +148,7 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
       className="btn btn-link"
       data-toggle="tooltip"
       title="Action 2"
-      onClick={e => onAction(e, 'ACTION_2', rowID)}
+      onClick={e => onAction(e, 'CUSTOM_ACTION', rowID)}
     >
       <i className="fa fa-pencil" />
     </button>
@@ -138,16 +157,21 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
       className="btn btn-link"
       data-toggle="tooltip"
       title="Action 3"
-      onClick={e => onAction(e, 'ACTION_3', rowID)}
+      onClick={e => onAction(e, 'DELETE_ITEM', rowID)}
     >
       <i className="fa fa-minus" />
     </button>
   </span>
 );
 
-const ExpandableRowComponent = ({ row }) => (
-  <p>Testing expandable row custom component Row ID: {row.id}</p>
-);
+const ExpandableRowComponent = ({ row }) => {
+  /*
+  return (
+    <p>Testing expandable row custom component Row ID: {row.id}</p>
+  );
+  */
+  return null;
+}
 
 const columns = [
   {
@@ -161,6 +185,7 @@ const columns = [
   {
     dataField: 'title',
     text: 'Task',
+    tooltip: 'Example Tooltip',
     sort: true,
     sortOrder: 'asc' // values: asc|desc
   },
@@ -244,6 +269,11 @@ class Example extends React.Component {
     console.log('page:', page);
   }
 
+  onHeaderAction(type) {
+    console.log('onHeaderAction handler');
+    console.log('type:', type);
+  }
+
   onAction(type, rowID) {
     console.log('onAction handler');
     console.log('type:', type);
@@ -263,7 +293,14 @@ class Example extends React.Component {
   }
 
   render() {
-    const { isLoading, items, page, itemsPerPage, totalItems  } = this.state;
+    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
+    let clearSearch = false;
+
+    // Warning this is hacky as hell but it works for me :)
+    // Clear search box from your component
+    // if (search) clearSearch = true;
+
+    console.log('clear', clearSearch);
 
     return (
       <div className="container">
@@ -282,6 +319,7 @@ class Example extends React.Component {
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
+              clearSearch={clearSearch}
               delay={300}
               options={{
                 searchBox: true,
@@ -306,11 +344,13 @@ class Example extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
               }}
               loader={ExampleLoader}
+              headerActions={ExampleHeaderActions}
               actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
@@ -320,6 +360,7 @@ class Example extends React.Component {
               onInsert={this.onInsert}
               onEdit={this.onEdit}
               onDelete={this.onDelete}
+              onHeaderAction={this.onHeaderAction}
               onAction={this.onAction}
               onMultipleDelete={this.onMultipleDelete}
             />

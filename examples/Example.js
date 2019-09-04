@@ -82,7 +82,6 @@ const ExpandableRowComponent = ({ row }) => {
   return null;
 }
 
-
 const columns = [
   {
     dataField: 'id',

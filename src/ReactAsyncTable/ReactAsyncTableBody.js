@@ -38,6 +38,7 @@ const ReactAsyncTableBody = props => {
   const itemID = item[keyField];
   const { editAction, deleteAction } = translations;
   const { editActionIcon, deleteActionIcon } = icons;
+  const isExpandable = options.expandable;
   const ExpandableComponent = expandableRowComponent;
 
   const onExpand = () => props.onExpand(itemID);
@@ -126,7 +127,7 @@ const ReactAsyncTableBody = props => {
 
   return (
     <tbody>
-      <tr onClick={onExpand}>
+      <tr className={isExpandable ? 'expandable-row' : ''} onClick={onExpand}>
         {options.multipleSelect && (
           <td>
             <input
@@ -146,7 +147,7 @@ const ReactAsyncTableBody = props => {
           <ActionsComponent />
         )}
       </tr>
-      {options.expandable && (
+      {isExpandable && (
         <tr className={`collapse ${expandRow[itemID] ? 'show' : ''}`}>
           <td colSpan={totalColumns}>
             <ExpandableComponent row={item} />

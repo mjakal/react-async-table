@@ -9,6 +9,9 @@
   button {
     margin: 0px 0px 0px 5px;
   }
+  .badge {
+    padding-top: 5px;
+  }
 }
 
 .async-table-style {
@@ -25,6 +28,9 @@
     button.sort-button {
       float: right !important;
     }
+  }
+  tbody tr.expandable-row {
+    cursor: pointer;
   }
   tbody tr td {
     vertical-align: middle;
