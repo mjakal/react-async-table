@@ -104,6 +104,7 @@ class ReactAsyncTable extends Component {
     this.state = {
       sortField: '',
       sortOrder: '',
+      selectedCount: 0,
       selectAllItems: false,
       selectedItems: {},
       expandRow: {}
@@ -136,28 +137,12 @@ class ReactAsyncTable extends Component {
     // reset selected items on items array update
     if (this.props.options.multipleSelect && prevPrps.items !== this.props.items) {
       this.setState({
+        selectedCount: 0,
         selectAllItems: false,
         selectedItems: {},
         expandRow: {}
       });
     }
-  }
-
-  onMultipleSelect(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    const { selectedItems } = this.state;
-    const { keyField, items } = this.props;
-
-    for (const item of items) {
-      selectedItems[item[keyField]] = value;
-    }
-
-    this.setState({
-      [name]: value,
-      selectedItems
-    });
   }
 
   onSort(columnKey) {
@@ -172,33 +157,6 @@ class ReactAsyncTable extends Component {
 
     this.setState({ sortField: columnKey, sortOrder: nextOrder });
     this.props.onSort(columnKey, nextOrder);
-  }
-
-  onExpand(rowID) {
-    const { options } = this.props;
-
-    // Early exit if options.expandable prop is set to false
-    if (!options.expandable) {
-      event.preventDefault();
-      return;
-    }
-
-    const { expandRow } = this.state;
-    const prevValue = expandRow[rowID] || false;
-
-    expandRow[rowID] = !prevValue;
-    this.setState({ expandRow });
-  }
-
-  onSelect(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    const { selectedItems } = this.state;
-
-    selectedItems[name] = value;
-
-    this.setState({ selectedItems });
   }
 
   onDelete(rowID) {
@@ -227,8 +185,55 @@ class ReactAsyncTable extends Component {
     this.props.onMultipleDelete(values, goToPage);
   }
 
+  onExpand(rowID) {
+    const { options } = this.props;
+
+    // Early exit if options.expandable prop is set to false
+    if (!options.expandable) {
+      event.preventDefault();
+      return;
+    }
+
+    const { expandRow } = this.state;
+    const prevValue = expandRow[rowID] || false;
+
+    expandRow[rowID] = !prevValue;
+    this.setState({ expandRow });
+  }
+
+  onSelect(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    const { selectedCount, selectedItems } = this.state;
+    const itemCount = value ? selectedCount + 1 : selectedCount - 1;
+
+    selectedItems[name] = value;
+
+    this.setState({ selectedCount: itemCount, selectedItems });
+  }
+
+  onMultipleSelect(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    const { selectedItems } = this.state;
+    const { keyField, items } = this.props;
+    const itemCount = value ? items.length : 0;
+
+    for (const item of items) {
+      selectedItems[item[keyField]] = value;
+    }
+
+    this.setState({
+      [name]: value,
+      selectedCount: itemCount,
+      selectedItems
+    });
+  }
+
   render() {
-    const { selectAllItems, selectedItems, expandRow } = this.state;
+    const { selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
     const {
       keyField,
       isLoading,
@@ -318,8 +323,9 @@ class ReactAsyncTable extends Component {
                       type="button"
                       className="btn btn-danger"
                       onClick={this.onMultipleDelete}
+                      disabled={selectedCount === 0}
                     >
-                      {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton}
+                      {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
                     </button>
                   )}
                 </span>
