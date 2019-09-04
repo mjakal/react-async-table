@@ -55,6 +55,17 @@ const ReactAsyncTableBody = props => {
   const onAction = (e, type, rowID) => {
     e.stopPropagation();
 
+    switch (type) {
+      case 'EDIT_ITEM':
+        props.onEdit(itemID);
+        return;
+      case 'DELETE_ITEM': 
+        props.onDelete(itemID);
+        return;
+      default:
+        break;
+    }
+
     props.onAction(type, rowID);
   };
 

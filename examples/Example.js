@@ -45,7 +45,7 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
     <button
       type="button"
       className="btn btn-link"
-      onClick={e => onAction(e, 'ACTION_1', rowID)}
+      onClick={e => onAction(e, 'EDIT_ITEM', rowID)}
       data-html="true"
       data-toggle="tooltip"
       title="Action 1"
@@ -57,7 +57,7 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
       className="btn btn-link"
       data-toggle="tooltip"
       title="Action 2"
-      onClick={e => onAction(e, 'ACTION_2', rowID)}
+      onClick={e => onAction(e, 'CUSTOM_ACTION', rowID)}
     >
       <i className="fa fa-pencil" />
     </button>
@@ -66,7 +66,7 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
       className="btn btn-link"
       data-toggle="tooltip"
       title="Action 3"
-      onClick={e => onAction(e, 'ACTION_3', rowID)}
+      onClick={e => onAction(e, 'DELETE_ITEM', rowID)}
     >
       <i className="fa fa-minus" />
     </button>
