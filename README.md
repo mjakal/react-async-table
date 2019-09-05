@@ -165,12 +165,9 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
 );
 
 const ExpandableRowComponent = ({ row }) => {
-  /*
   return (
     <p>Testing expandable row custom component Row ID: {row.id}</p>
   );
-  */
-  return null;
 }
 
 const columns = [
