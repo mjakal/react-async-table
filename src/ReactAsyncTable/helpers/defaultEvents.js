@@ -31,7 +31,7 @@ export const onHeaderAction = () => {
 };
 
 export const onAction = () => {
-  throw Error('Add onAction(type, rowID) method to component props');
+  throw Error('Add onAction(type, row) method to component props');
 };
 
 export const onColumnClick = () => {

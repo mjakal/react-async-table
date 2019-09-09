@@ -53,7 +53,7 @@ const ReactAsyncTableBody = props => {
 
     props.onDelete(itemID);
   };
-  const onAction = (e, type, rowID) => {
+  const onAction = (e, type) => {
     e.stopPropagation();
 
     switch (type) {
@@ -67,7 +67,7 @@ const ReactAsyncTableBody = props => {
         break;
     }
 
-    props.onAction(type, rowID);
+    props.onAction(type, item);
   };
 
   const ColumnComponent = ({ column }) => {

@@ -131,24 +131,15 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   );
 }
 
-const ExampleActionsComponent = ({ rowID, onAction }) => (
+const ExampleActionsComponent = ({ onAction }) => (
   <span>
     <button
       type="button"
       className="btn btn-link"
-      onClick={e => onAction(e, 'EDIT_ITEM', rowID)}
+      onClick={e => onAction(e, 'EDIT_ITEM')}
       data-html="true"
       data-toggle="tooltip"
-      title="Action 1"
-    >
-      <i className="fa fa-plus" />
-    </button>
-    <button
-      type="button"
-      className="btn btn-link"
-      data-toggle="tooltip"
-      title="Action 2"
-      onClick={e => onAction(e, 'CUSTOM_ACTION', rowID)}
+      title="Edit Item"
     >
       <i className="fa fa-pencil" />
     </button>
@@ -156,8 +147,17 @@ const ExampleActionsComponent = ({ rowID, onAction }) => (
       type="button"
       className="btn btn-link"
       data-toggle="tooltip"
-      title="Action 3"
-      onClick={e => onAction(e, 'DELETE_ITEM', rowID)}
+      title="Custom Action"
+      onClick={e => onAction(e, 'CUSTOM_ACTION')}
+    >
+      <i className="fa fa-plus" />
+    </button>
+    <button
+      type="button"
+      className="btn btn-link"
+      data-toggle="tooltip"
+      title="Delete Item"
+      onClick={e => onAction(e, 'DELETE_ITEM')}
     >
       <i className="fa fa-minus" />
     </button>
@@ -271,10 +271,10 @@ class Example extends React.Component {
     console.log('type:', type);
   }
 
-  onAction(type, rowID) {
+  onAction(type, row) {
     console.log('onAction handler');
     console.log('type:', type);
-    console.log('rowID:', rowID);
+    console.log('row:', row);
   }
 
   onMultipleDelete(values, page) {
