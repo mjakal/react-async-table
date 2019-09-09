@@ -97,7 +97,7 @@ const ReactAsyncTableBody = props => {
     return (
       <td className="action-col">
         {Component ? (
-          <Component rowID={itemID} onAction={onAction} />
+          <Component row={item} onAction={onAction} />
         ) : (
           <span>
             <button

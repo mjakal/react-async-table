@@ -40,38 +40,42 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   );
 }
 
-const ExampleActionsComponent = ({ onAction }) => (
-  <span>
-    <button
-      type="button"
-      className="btn btn-link"
-      onClick={e => onAction(e, 'EDIT_ITEM')}
-      data-html="true"
-      data-toggle="tooltip"
-      title="Edit Item"
-    >
-      <i className="fa fa-pencil" />
-    </button>
-    <button
-      type="button"
-      className="btn btn-link"
-      data-toggle="tooltip"
-      title="Custom Action"
-      onClick={e => onAction(e, 'CUSTOM_ACTION')}
-    >
-      <i className="fa fa-plus" />
-    </button>
-    <button
-      type="button"
-      className="btn btn-link"
-      data-toggle="tooltip"
-      title="Delete Item"
-      onClick={e => onAction(e, 'DELETE_ITEM')}
-    >
-      <i className="fa fa-minus" />
-    </button>
-  </span>
-);
+const ExampleActionsComponent = ({ row, onAction }) => {
+  console.log('row:', row);
+  
+  return (
+    <span>
+      <button
+        type="button"
+        className="btn btn-link"
+        onClick={e => onAction(e, 'EDIT_ITEM')}
+        data-html="true"
+        data-toggle="tooltip"
+        title="Edit Item"
+      >
+        <i className="fa fa-pencil" />
+      </button>
+      <button
+        type="button"
+        className="btn btn-link"
+        data-toggle="tooltip"
+        title="Custom Action"
+        onClick={e => onAction(e, 'CUSTOM_ACTION')}
+      >
+        <i className="fa fa-plus" />
+      </button>
+      <button
+        type="button"
+        className="btn btn-link"
+        data-toggle="tooltip"
+        title="Delete Item"
+        onClick={e => onAction(e, 'DELETE_ITEM')}
+      >
+        <i className="fa fa-minus" />
+      </button>
+    </span>
+  );
+}
 
 const ExpandableRowComponent = ({ row }) => {
   return (
