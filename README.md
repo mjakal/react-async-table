@@ -267,7 +267,7 @@ class Example extends React.Component {
   onDelete(rowID, page) {
     console.log('onDelete handler');
     console.log('id:', rowID);
-    console.log('page:', page);
+    console.log('page:', page)
   }
 
   onHeaderAction(type) {
