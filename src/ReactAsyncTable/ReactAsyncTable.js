@@ -24,6 +24,7 @@ import './scss/style.scss';
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
+  requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -52,6 +53,7 @@ const propTypes = {
 
 const defaultProps = {
   isLoading: false,
+  requestFailed: false,
   itemsPerPage: 10,
   delay: 300,
   clearSearch: false,
@@ -72,6 +74,7 @@ const defaultProps = {
     editAction: 'Edit',
     deleteAction: 'Delete',
     noDataText: 'No data found',
+    requestFailedText: 'API request failed',
     paginationFirst: 'First',
     paginationLast: 'Last'
   },
@@ -237,6 +240,7 @@ class ReactAsyncTable extends Component {
     const {
       keyField,
       isLoading,
+      requestFailed,
       columns,
       items,
       currentPage,
@@ -266,6 +270,7 @@ class ReactAsyncTable extends Component {
       sortTitle,
       actionsColumnTitle,
       noDataText,
+      requestFailedText,
       paginationFirst,
       paginationLast
     } = translations;
@@ -283,6 +288,9 @@ class ReactAsyncTable extends Component {
       (options.actionsColumn ? 1 : 0);
     
     const HeaderActions = headerActions;
+    const displayNoDataComponent = requestFailed || items.length === 0;
+    const displayTableData = !requestFailed && items.length > 0;
+    const displayPagination = !requestFailed && options.pagination;
 
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
@@ -296,41 +304,43 @@ class ReactAsyncTable extends Component {
           </div>
         ) : (
           <div className="animated fadeIn">
-            <div className="row form-group">
-              <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                {options.searchBox && (
-                  <SearchBox
-                    placeholder={searchPlaceholder}
-                    clearSearch={clearSearch}
-                    onChange={debounceSearch}
-                  />
-                )}
-              </div>
-              <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
-                <span className="async-table-header-actions float-right">
-                  {options.insertButton && (
-                    <button 
-                      type="button" 
-                      className="btn btn-primary" 
-                      onClick={onInsert}
-                    >
-                      {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                    </button>
+            {!requestFailed &&(
+              <div className="row form-group">
+                <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                  {options.searchBox && (
+                    <SearchBox
+                      placeholder={searchPlaceholder}
+                      clearSearch={clearSearch}
+                      onChange={debounceSearch}
+                    />
                   )}
-                  {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
-                  {options.multipleSelect && (
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={this.onMultipleDelete}
-                      disabled={selectedCount === 0}
-                    >
-                      {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
-                    </button>
-                  )}
-                </span>
+                </div>
+                <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
+                  <span className="async-table-header-actions float-right">
+                    {options.insertButton && (
+                      <button 
+                        type="button" 
+                        className="btn btn-primary" 
+                        onClick={onInsert}
+                      >
+                        {addButtonIcon && <i className={addButtonIcon} />} {addButton}
+                      </button>
+                    )}
+                    {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
+                    {options.multipleSelect && (
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={this.onMultipleDelete}
+                        disabled={selectedCount === 0}
+                      >
+                        {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
+                      </button>
+                    )}
+                  </span>
+                </div>  
               </div>
-            </div>
+            )}
             <div className="row">
               <div className="col-md-12">
                 <div className="table-responsive">
@@ -346,10 +356,13 @@ class ReactAsyncTable extends Component {
                       onMultipleSelect={this.onMultipleSelect}
                       onSort={this.onSort}
                     />
-                    {items.length === 0 && (
-                      <NoData totalColumns={totalColumns} noDataText={noDataText} />
+                    {displayNoDataComponent && (
+                      <NoData 
+                        totalColumns={totalColumns} 
+                        noDataText={requestFailed ? requestFailedText : noDataText}
+                      />
                     )}
-                    {items.length > 0 &&
+                    {displayTableData &&
                 items.map(item => (
                   <ReactAsyncTableBody
                     key={item[keyField]}
@@ -376,7 +389,7 @@ class ReactAsyncTable extends Component {
                 </div>
               </div>
             </div>
-            {options.pagination && (
+            {displayPagination && (
               <div className="row form-group">
                 <div className="col-md-12">
                   <span className="float-right">

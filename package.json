@@ -1,6 +1,6 @@
 {
   "name": "react-async-table",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "React Bootstrap Async Table",
   "main": "./dist/index.js",
   "author": {
@@ -8,6 +8,9 @@
     "email": "mjakal@gmail.com",
     "url": "https://github.com/mjakal/"
   },
+  "contributors": [
+    "paulao47 (https://github.com/paulao47)"
+  ],
   "keywords": [
     "react",
     "bootstrap",

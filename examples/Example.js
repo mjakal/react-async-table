@@ -224,6 +224,7 @@ class Example extends React.Component {
             <ReactAsyncTable
               keyField="id"
               isLoading={isLoading}
+              requestFailed={false}
               columns={columns}
               items={items}
               currentPage={page}
@@ -248,6 +249,7 @@ class Example extends React.Component {
                 editAction: 'Edit',
                 deleteAction: 'Delete',
                 noDataText: 'No data found',
+                requestFailedText: 'API request failed',
                 paginationFirst: 'First',
                 paginationLast: 'Last'
               }}
