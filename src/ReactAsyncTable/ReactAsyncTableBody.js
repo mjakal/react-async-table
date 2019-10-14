@@ -130,14 +130,16 @@ const ReactAsyncTableBody = props => {
       <tr className={isExpandable ? 'expandable-row' : ''} onClick={onExpand}>
         {options.multipleSelect && (
           <td>
-            <input
-              className="form-check-input body-checkbox"
-              type="checkbox"
-              name={itemID}
-              onClick={onSelectClick}
-              onChange={props.onSelect}
-              checked={selectedItems[itemID] || false}
-            />
+            <div className="form-check">
+              <input
+                className="form-check-input position-static"
+                type="checkbox"
+                name={itemID}
+                onClick={onSelectClick}
+                onChange={props.onSelect}
+                checked={selectedItems[itemID] || false}
+              />
+            </div>
           </td>
         )}
         {columns.map((column, index) => (

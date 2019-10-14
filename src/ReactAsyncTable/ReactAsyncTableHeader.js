@@ -31,13 +31,15 @@ const ReactAsyncTableHeader = props => {
       <tr>
         {options.multipleSelect && (
           <th>
-            <input
-              className="form-check-input header-checkbox"
-              type="checkbox"
-              name="selectAllItems"
-              onChange={onMultipleSelect}
-              checked={selectAllItems}
-            />
+            <div className="form-check">
+              <input
+                className="form-check-input position-static"
+                type="checkbox"
+                name="selectAllItems"
+                onChange={onMultipleSelect}
+                checked={selectAllItems}
+              />
+            </div>
           </th>
         )}
         {columns.map((column, index) => (

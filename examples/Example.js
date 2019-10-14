@@ -41,8 +41,6 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
 }
 
 const ExampleActionsComponent = ({ row, onAction }) => {
-  console.log('row:', row);
-  
   return (
     <span>
       <button
