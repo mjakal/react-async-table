@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   placeholder: PropTypes.string,
-  clearSearch: PropTypes.bool,
+  query: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
 };
 
@@ -21,15 +21,12 @@ class SearchBox extends React.Component {
     this.onClear = this.onClear.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    const { clearSearch } = this.props;
-    if (prevProps.clearSearch !== clearSearch && clearSearch) this.setState({ searchTerm: '' });
+  componentDidMount() {
+    const { query } = this.props;
+    this.setState({ searchTerm: query });
   }
 
   onChange(event) {
-    // Early exit if HOC set clearSearch to true
-    if (this.props.clearSearch) return;
-
     const searchTerm = event.target.value;
 
     this.setState({ searchTerm });

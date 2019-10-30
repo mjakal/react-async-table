@@ -24,6 +24,7 @@ import './scss/style.scss';
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
+  query: PropTypes.string.isRequired,
   requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
@@ -31,7 +32,6 @@ const propTypes = {
   itemsPerPage: PropTypes.number,
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
-  clearSearch: PropTypes.bool,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
@@ -56,7 +56,6 @@ const defaultProps = {
   requestFailed: false,
   itemsPerPage: 10,
   delay: 300,
-  clearSearch: false,
   options: {
     searchBox: true,
     insertButton: false,
@@ -240,6 +239,7 @@ class ReactAsyncTable extends Component {
     const {
       keyField,
       isLoading,
+      query,
       requestFailed,
       columns,
       items,
@@ -260,8 +260,7 @@ class ReactAsyncTable extends Component {
       onEdit,
       onHeaderAction,
       onAction,
-      onColumnClick,
-      clearSearch
+      onColumnClick
     } = this.props;
     const {
       searchPlaceholder,
@@ -290,121 +289,117 @@ class ReactAsyncTable extends Component {
     const HeaderActions = headerActions;
     const displayNoDataComponent = requestFailed || items.length === 0;
     const displayTableData = !requestFailed && items.length > 0;
-    const displayPagination = !requestFailed && options.pagination;
+    const displayPagination = !isLoading && !requestFailed && options.pagination;
 
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
     }, delay);
 
     return (
-      <div>
-        {isLoading ? (
-          <div className="animated fadeIn">
-            <Loader />
+      <div className="animated fadeIn">
+        <div className="row form-group">
+          <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            {options.searchBox && (
+              <SearchBox
+                placeholder={searchPlaceholder}
+                query={query}
+                onChange={debounceSearch}
+              />
+            )}
           </div>
-        ) : (
-          <div className="animated fadeIn">
-            {!requestFailed &&(
-              <div className="row form-group">
-                <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                  {options.searchBox && (
-                    <SearchBox
-                      placeholder={searchPlaceholder}
-                      clearSearch={clearSearch}
-                      onChange={debounceSearch}
+          <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
+            <span className="async-table-header-actions float-right">
+              {options.insertButton && (
+                <button 
+                  type="button" 
+                  className="btn btn-primary" 
+                  onClick={onInsert}
+                  disabled={requestFailed || isLoading}
+                >
+                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
+                </button>
+              )}
+              {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
+              {options.multipleSelect && (
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={this.onMultipleDelete}
+                  disabled={selectedCount === 0}
+                >
+                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
+                </button>
+              )}
+            </span>
+          </div>  
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            {isLoading ? (
+              <div className="animated fadeIn">
+                <Loader />
+              </div>
+            ) : (
+              <div className="table-responsive">
+                <table className="table async-table-style">
+                  <ReactAsyncTableHeader
+                    selectAllItems={selectAllItems}
+                    columns={columns}
+                    options={options}
+                    tooltipIcon={tooltipIcon}
+                    sortTitle={sortTitle}
+                    sortIcon={sortIcon}
+                    actionsColumnTitle={actionsColumnTitle}
+                    onMultipleSelect={this.onMultipleSelect}
+                    onSort={this.onSort}
+                  />
+                  {displayNoDataComponent && (
+                    <NoData 
+                      totalColumns={totalColumns} 
+                      noDataText={requestFailed ? requestFailedText : noDataText}
                     />
                   )}
-                </div>
-                <div className="col-sm-12 col-md-6 col-lg-8 col-xl-9">
-                  <span className="async-table-header-actions float-right">
-                    {options.insertButton && (
-                      <button 
-                        type="button" 
-                        className="btn btn-primary" 
-                        onClick={onInsert}
-                      >
-                        {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                      </button>
-                    )}
-                    {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
-                    {options.multipleSelect && (
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={this.onMultipleDelete}
-                        disabled={selectedCount === 0}
-                      >
-                        {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
-                      </button>
-                    )}
-                  </span>
-                </div>  
-              </div>
-            )}
-            <div className="row">
-              <div className="col-md-12">
-                <div className="table-responsive">
-                  <table className="table async-table-style">
-                    <ReactAsyncTableHeader
-                      selectAllItems={selectAllItems}
+                  {displayTableData && items.map(item => (
+                    <ReactAsyncTableBody
+                      key={item[keyField]}
+                      keyField={keyField}
+                      item={item}
+                      selectedItems={selectedItems}
+                      actionsComponent={actionsComponent}
+                      expandRow={expandRow}
                       columns={columns}
+                      totalColumns={totalColumns}
                       options={options}
-                      tooltipIcon={tooltipIcon}
-                      sortTitle={sortTitle}
-                      sortIcon={sortIcon}
-                      actionsColumnTitle={actionsColumnTitle}
-                      onMultipleSelect={this.onMultipleSelect}
-                      onSort={this.onSort}
+                      translations={translations}
+                      icons={icons}
+                      expandableRowComponent={expandableRowComponent}
+                      onSelect={this.onSelect}
+                      onExpand={this.onExpand}
+                      onEdit={onEdit}
+                      onDelete={this.onDelete}
+                      onAction={onAction}
+                      onColumnClick={onColumnClick}
                     />
-                    {displayNoDataComponent && (
-                      <NoData 
-                        totalColumns={totalColumns} 
-                        noDataText={requestFailed ? requestFailedText : noDataText}
-                      />
-                    )}
-                    {displayTableData &&
-                items.map(item => (
-                  <ReactAsyncTableBody
-                    key={item[keyField]}
-                    keyField={keyField}
-                    item={item}
-                    selectedItems={selectedItems}
-                    actionsComponent={actionsComponent}
-                    expandRow={expandRow}
-                    columns={columns}
-                    totalColumns={totalColumns}
-                    options={options}
-                    translations={translations}
-                    icons={icons}
-                    expandableRowComponent={expandableRowComponent}
-                    onSelect={this.onSelect}
-                    onExpand={this.onExpand}
-                    onEdit={onEdit}
-                    onDelete={this.onDelete}
-                    onAction={onAction}
-                    onColumnClick={onColumnClick}
-                  />
-                ))}
-                  </table>
-                </div>
-              </div>
-            </div>
-            {displayPagination && (
-              <div className="row form-group">
-                <div className="col-md-12">
-                  <span className="float-right">
-                    <Paginate
-                      currentPage={currentPage}
-                      pageSize={itemsPerPage}
-                      items={totalItems}
-                      onChangePage={onChangePage}
-                      firstLink={paginationFirst}
-                      lastLink={paginationLast}
-                    />
-                  </span>
-                </div>
+                  ))}
+                </table>
               </div>
             )}
+          </div>
+        </div>
+        {displayPagination && (
+          <div className="row form-group">
+            <div className="col-md-12">
+              <span className="float-right">
+                <Paginate
+                  currentPage={currentPage}
+                  pageSize={itemsPerPage}
+                  items={totalItems}
+                  onChangePage={onChangePage}
+                  firstLink={paginationFirst}
+                  lastLink={paginationLast}
+                />
+              </span>
+            </div>
           </div>
         )}
       </div>

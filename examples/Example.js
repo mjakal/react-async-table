@@ -147,12 +147,12 @@ class Example extends React.Component {
   }
 
   onChangePage(page) {
-    this.setState({ page });
+    this.setState({ page, isLoading: true });
     this.fakeAsyncAction();
   }
 
   onSearch(search) {
-    this.setState({ search, page: 1 });
+    this.setState({ search, page: 1, isLoading: true });
     this.fakeAsyncAction();
   }
 
@@ -202,14 +202,7 @@ class Example extends React.Component {
 
   render() {
     const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
-    let clearSearch = false;
     
-    // Warning this is hacky as hell but it works for me :)
-    // Clear search box from your component
-    // if (search) clearSearch = true;
-
-    console.log('clear', clearSearch);
-
     return (
       <div className="container">
         <Card>
@@ -222,13 +215,13 @@ class Example extends React.Component {
             <ReactAsyncTable
               keyField="id"
               isLoading={isLoading}
+              query={search}
               requestFailed={false}
               columns={columns}
               items={items}
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
-              clearSearch={clearSearch}
               delay={300}
               options={{
                 searchBox: true,
