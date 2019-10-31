@@ -23,7 +23,17 @@ class SearchBox extends React.Component {
 
   componentDidMount() {
     const { query } = this.props;
+    
     this.setState({ searchTerm: query });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.query !== this.props.query) {
+      // Reset search box if query is an empty string
+      if (!this.props.query && this.state.searchTerm) {
+        this.setState({ searchTerm: '' });
+      }
+    }
   }
 
   onChange(event) {
