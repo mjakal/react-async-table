@@ -73,6 +73,7 @@ class Example extends React.Component {
       <ReactAsyncTable
         keyField="id"
         columns={columns}
+        query={''}
         items={tasks}
         currentPage={1}
         itemsPerPage={10}
@@ -132,8 +133,6 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
 }
 
 const ExampleActionsComponent = ({ row, onAction }) => {
-  console.log('row:', row);
-
   return (
     <span>
       <button
@@ -240,12 +239,12 @@ class Example extends React.Component {
   }
 
   onChangePage(page) {
-    this.setState({ page });
+    this.setState({ page, isLoading: true });
     this.fakeAsyncAction();
   }
 
   onSearch(search) {
-    this.setState({ search, page: 1 });
+    this.setState({ search, page: 1, isLoading: true });
     this.fakeAsyncAction();
   }
 
@@ -267,7 +266,7 @@ class Example extends React.Component {
   onDelete(rowID, page) {
     console.log('onDelete handler');
     console.log('id:', rowID);
-    console.log('page:', page)
+    console.log('page:', page);
   }
 
   onHeaderAction(type) {
@@ -295,13 +294,6 @@ class Example extends React.Component {
 
   render() {
     const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
-    let clearSearch = false;
-
-    // Warning this is hacky as hell but it works for me :)
-    // Clear search box from your component
-    // if (search) clearSearch = true;
-
-    console.log('clear', clearSearch);
 
     return (
       <div className="container">
@@ -315,13 +307,13 @@ class Example extends React.Component {
             <ReactAsyncTable
               keyField="id"
               isLoading={isLoading}
+              query={search}
               requestFailed={false}
               columns={columns}
               items={items}
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
-              clearSearch={clearSearch}
               delay={300}
               options={{
                 searchBox: true,
