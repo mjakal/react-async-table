@@ -33,6 +33,7 @@ describe('ReactAsyncTable', () => {
     const wrapper = shallow(<ReactAsyncTable 
       keyField="id"
       columns={columns}
+      query={''}
       items={items}
       currentPage={1}
       itemsPerPage={10}
