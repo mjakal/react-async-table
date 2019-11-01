@@ -384,7 +384,7 @@ $ cd react-async-table
 $ npm install
 
 # Start the development server, then go to localhost:8080
-$ npm storybook
+$ npm start
 ```
 
 ### Other useful commands
