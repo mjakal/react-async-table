@@ -73,7 +73,7 @@ const ReactAsyncTableBody = props => {
 
   const ColumnComponent = ({ column }) => {
     // Early exit if row has no data
-    if (!isEmpty(item)) return (<td />);
+    if (isEmpty(item)) return (<td />);
 
     const Component = column.formatedField;
     const columnKey = column.dataField || '';
