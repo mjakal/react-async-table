@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isEmpty } from './helpers/helpers';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
@@ -71,6 +72,9 @@ const ReactAsyncTableBody = props => {
   };
 
   const ColumnComponent = ({ column }) => {
+    // Early exit if row has no data
+    if (!isEmpty(item)) return (<td />);
+
     const Component = column.formatedField;
     const columnKey = column.dataField || '';
 

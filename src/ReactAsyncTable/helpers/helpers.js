@@ -1,3 +1,7 @@
+export const isEmpty = object => {
+  return (object && Object.keys(object).length);
+}
+
 export const debounce = (callback, wait) => {
   let timeout = null;
   return (...args) => {
