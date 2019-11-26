@@ -166,9 +166,10 @@ class Example extends React.Component {
     console.log('onInsert handler');
   }
 
-  onEdit(rowID) {
+  onEdit(rowID, row) {
     console.log('onEdit handler');
     console.log('id:', rowID);
+    console.log('row:', row);
   }
 
   onDelete(rowID, page) {

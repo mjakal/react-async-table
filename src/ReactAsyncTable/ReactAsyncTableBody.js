@@ -47,7 +47,7 @@ const ReactAsyncTableBody = props => {
   const onEdit = e => {
     e.stopPropagation();
     
-    props.onEdit(itemID);
+    props.onEdit(itemID, item);
   };
   const onDelete = e => {
     e.stopPropagation();
@@ -59,7 +59,7 @@ const ReactAsyncTableBody = props => {
 
     switch (type) {
       case 'EDIT_ITEM':
-        props.onEdit(itemID);
+        props.onEdit(itemID, item);
         return;
       case 'DELETE_ITEM': 
         props.onDelete(itemID);
