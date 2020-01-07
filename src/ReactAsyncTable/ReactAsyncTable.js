@@ -170,12 +170,16 @@ class ReactAsyncTable extends Component {
   }
 
   onMultipleDelete() {
-    const { currentPage, itemsPerPage, totalItems } = this.props;
+    const { keyField, items, currentPage, itemsPerPage, totalItems } = this.props;
     const { selectedItems } = this.state;
     const values = [];
 
+    // detect keyField data type
+    const itemID = items[0][keyField];
+    const isString = typeof itemID === 'string';
+
     for (const [key, value] of Object.entries(selectedItems)) {
-      if (value) values.push(parseInt(key, 10));
+      if (value) values.push(isString ? key : parseInt(key, 10));
     }
 
     const goToPage = setCurrentPage(
