@@ -38,25 +38,18 @@ const ReactAsyncTableBody = props => {
   } = props;
   const itemID = item[keyField];
   const { editAction, deleteAction } = translations;
-  const { editActionIcon, deleteActionIcon } = icons;
+  const { expandIcon, editActionIcon, deleteActionIcon } = icons;
   const isExpandable = options.expandable;
   const ExpandableComponent = expandableRowComponent;
 
   const onExpand = () => props.onExpand(itemID);
-  const onSelectClick = e => e.stopPropagation();
-  const onEdit = e => {
-    e.stopPropagation();
-    
+  const onEdit = () => {
     props.onEdit(itemID, item);
   };
-  const onDelete = e => {
-    e.stopPropagation();
-
+  const onDelete = () => {
     props.onDelete(itemID);
   };
   const onAction = (e, type) => {
-    e.stopPropagation();
-
     switch (type) {
       case 'EDIT_ITEM':
         props.onEdit(itemID, item);
@@ -131,7 +124,7 @@ const ReactAsyncTableBody = props => {
 
   return (
     <tbody>
-      <tr className={isExpandable ? 'expandable-row' : ''} onClick={onExpand}>
+      <tr>
         {options.multipleSelect && (
           <td>
             <div className="form-check">
@@ -139,11 +132,23 @@ const ReactAsyncTableBody = props => {
                 className="form-check-input position-static"
                 type="checkbox"
                 name={itemID}
-                onClick={onSelectClick}
                 onChange={props.onSelect}
                 checked={selectedItems[itemID] || false}
               />
             </div>
+          </td>
+        )}
+        {isExpandable && (
+          <td>
+            <button 
+              type="button"
+              className="btn btn-link"
+              data-html="true"
+              data-toggle="tooltip"
+              title="Expand"
+              onClick={onExpand}>
+              {expandIcon ? <i className={expandIcon} /> : <span>&#8661;</span>}
+            </button>
           </td>
         )}
         {columns.map((column, index) => (

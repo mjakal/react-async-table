@@ -29,8 +29,10 @@
       float: right !important;
     }
   }
-  tbody tr.expandable-row {
-    cursor: pointer;
+  tbody tr td button.btn-link {
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
   }
   tbody tr td {
     vertical-align: middle;

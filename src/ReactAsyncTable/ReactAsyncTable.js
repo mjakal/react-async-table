@@ -82,6 +82,7 @@ const defaultProps = {
     deleteButtonIcon: '',
     tooltipIcon: '',
     sortIcon: '',
+    expandIcon: '',
     editActionIcon: '',
     deleteActionIcon: '',
   },
@@ -288,6 +289,7 @@ class ReactAsyncTable extends Component {
     const totalColumns =
       columns.length +
       (options.multipleSelect ? 1 : 0) +
+      (options.expandable ? 1 : 0) +
       (options.actionsColumn ? 1 : 0);
     
     const HeaderActions = headerActions;

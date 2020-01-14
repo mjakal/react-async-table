@@ -22,5 +22,8 @@
     "**/node_modules/**": true,
     "**/build/**": true,
     "**/src/scss/style.css": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   }
 }

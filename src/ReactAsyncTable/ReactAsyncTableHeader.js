@@ -42,6 +42,7 @@ const ReactAsyncTableHeader = props => {
             </div>
           </th>
         )}
+        {options.expandable && (<th></th>)}
         {columns.map((column, index) => (
           <th key={index}>
             {column.text}

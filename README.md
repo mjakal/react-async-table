@@ -341,6 +341,7 @@ class Example extends React.Component {
                 deleteButtonIcon: 'fa fa-trash',
                 tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
+                expandIcon: 'fa fa-expand',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
               }}
