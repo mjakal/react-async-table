@@ -220,6 +220,8 @@ class Example extends React.Component {
               requestFailed={false}
               columns={columns}
               items={items}
+              tableClass="table-outline"
+              tableHeaderClass="htead-light"
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}

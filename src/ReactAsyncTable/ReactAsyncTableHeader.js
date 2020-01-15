@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
+  tableHeaderClass: PropTypes.string,
   selectAllItems: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
@@ -15,6 +16,7 @@ const propTypes = {
 
 const ReactAsyncTableHeader = props => {
   const { 
+    tableHeaderClass,
     selectAllItems, 
     columns, 
     options, 
@@ -27,7 +29,7 @@ const ReactAsyncTableHeader = props => {
   } = props;
 
   return (
-    <thead>
+    <thead className={tableHeaderClass}>
       <tr>
         {options.multipleSelect && (
           <th>

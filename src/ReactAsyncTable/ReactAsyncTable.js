@@ -32,6 +32,8 @@ const propTypes = {
   itemsPerPage: PropTypes.number,
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
+  tableClass: PropTypes.string,
+  tableHeaderClass: PropTypes.string,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
@@ -56,6 +58,8 @@ const defaultProps = {
   requestFailed: false,
   itemsPerPage: 10,
   delay: 300,
+  tableClass: '',
+  tableHeaderClass: '',
   options: {
     searchBox: true,
     insertButton: false,
@@ -251,6 +255,8 @@ class ReactAsyncTable extends Component {
       currentPage,
       itemsPerPage,
       totalItems,
+      tableClass,
+      tableHeaderClass,
       options,
       translations,
       icons,
@@ -347,8 +353,9 @@ class ReactAsyncTable extends Component {
               </div>
             ) : (
               <div className="table-responsive">
-                <table className="table async-table-style">
+                <table className={`table async-table-style ${tableClass}`}>
                   <ReactAsyncTableHeader
+                    tableHeaderClass={tableHeaderClass}
                     selectAllItems={selectAllItems}
                     columns={columns}
                     options={options}
