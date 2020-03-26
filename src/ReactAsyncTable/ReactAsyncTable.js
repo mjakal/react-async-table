@@ -310,7 +310,7 @@ class ReactAsyncTable extends Component {
     return (
       <div className="animated fadeIn">
         <div className="row form-group">
-          <div className="col-sm-12 order-sm-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
+          <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
             {options.searchBox && (
               <SearchBox
                 placeholder={searchPlaceholder}
@@ -319,7 +319,7 @@ class ReactAsyncTable extends Component {
               />
             )}
           </div>
-          <div className="col-sm-12 order-sm-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
+          <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
             <span className="async-table-header-actions float-right">
               {options.insertButton && (
                 <button 
