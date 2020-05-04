@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
+  styles: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
   query: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
@@ -50,7 +51,7 @@ class SearchBox extends React.Component {
 
   render() {
     const { searchTerm } = this.state;
-    const { placeholder } = this.props;
+    const { styles, placeholder } = this.props;
 
     return (
       <div className="input-group">
@@ -65,7 +66,7 @@ class SearchBox extends React.Component {
         {searchTerm && (
           <button
             type="button"
-            className="btn async-table-search-clear"
+            className={`${styles.async_table__search_clear} btn`}
             onClick={this.onClear}
           >
             &times;

@@ -1,13 +1,10 @@
 import React from 'react';
-import 'bootstrap/scss/bootstrap.scss';
-import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
-import ReactAsyncTable from '../src/index';
+import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 import { tasks } from './sampleData';
 
-const ExampleLoader = () => (
-  <p>This is an example loader component...</p>
-);
+const ExampleLoader = () => <p>This is an example loader component...</p>;
 
 const ExampleHeaderActions = ({ onHeaderAction }) => (
   <span>
@@ -32,13 +29,13 @@ const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
   const onClick = () => onColumnClick(columnKey, row);
-  
+
   return (
     <button className="btn btn-link" onClick={onClick}>
       <i className={columnIcon} /> {columnText}
     </button>
   );
-}
+};
 
 const ExampleActionsComponent = ({ row, onAction }) => {
   return (
@@ -73,13 +70,11 @@ const ExampleActionsComponent = ({ row, onAction }) => {
       </button>
     </span>
   );
-}
+};
 
 const ExpandableRowComponent = ({ row }) => {
-  return (
-    <p>Testing expandable row custom component Row ID: {row.id}</p>
-  );
-}
+  return <p>Testing expandable row custom component Row ID: {row.id}</p>;
+};
 
 const columns = [
   {
@@ -88,7 +83,7 @@ const columns = [
   },
   {
     dataField: 'userId',
-    text: 'User ID',
+    text: 'User ID'
   },
   {
     dataField: 'title',
@@ -104,11 +99,11 @@ const columns = [
   }
 ];
 
-class Example extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       isLoading: true,
       search: '',
       items: [],
@@ -136,12 +131,14 @@ class Example extends React.Component {
       const { search, page, itemsPerPage } = this.state;
       const currentIndex = (page - 1) * itemsPerPage;
 
-      const filteredItems = tasks.filter(item => item.title.indexOf(search.toLowerCase()) !== -1);
-      
+      const filteredItems = tasks.filter(
+        item => item.title.indexOf(search.toLowerCase()) !== -1
+      );
+
       this.setState(() => ({
         isLoading: false,
         items: filteredItems.slice(currentIndex, currentIndex + itemsPerPage),
-        totalItems: filteredItems.length,
+        totalItems: filteredItems.length
       }));
     }, dataDelay);
   }
@@ -182,7 +179,7 @@ class Example extends React.Component {
     console.log('onHeaderAction handler');
     console.log('type:', type);
   }
-  
+
   onAction(type, row) {
     console.log('onAction handler');
     console.log('type:', type);
@@ -202,8 +199,15 @@ class Example extends React.Component {
   }
 
   render() {
-    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
-    
+    const {
+      isLoading,
+      items,
+      page,
+      search,
+      itemsPerPage,
+      totalItems
+    } = this.state;
+
     return (
       <div className="container">
         <Card>
@@ -278,4 +282,4 @@ class Example extends React.Component {
   }
 }
 
-export default Example;
+export default App;

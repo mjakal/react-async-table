@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { isEmpty } from './helpers/helpers';
 
 const propTypes = {
+  styles: PropTypes.object.isRequired,
   keyField: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   selectedItems: PropTypes.object.isRequired,
@@ -24,6 +25,7 @@ const propTypes = {
 
 const ReactAsyncTableBody = props => {
   const {
+    styles,
     keyField,
     item,
     selectedItems,
@@ -92,7 +94,7 @@ const ReactAsyncTableBody = props => {
     const Component = actionsComponent;
 
     return (
-      <td className="action-col">
+      <td className={styles.action_col}>
         {Component ? (
           <Component row={item} onAction={onAction} />
         ) : (

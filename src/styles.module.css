@@ -1,0 +1,56 @@
+/* custom collapse style */
+
+.async_table__search_clear {
+  margin-left: -40px;
+  z-index: 100;
+}
+
+.async_table__header_actions button {
+  margin: 0px 0px 0px 5px;
+}
+
+.async_table__header_actions .badge {
+  padding-top: 5px !important;
+}
+
+.async_table__style thead tr th {
+  vertical-align: middle;
+}
+
+.async_table__style thead tr th .header-checkbox {
+  margin: -6px 0px 0px 0px;
+}
+
+.async_table__style thead tr th button.btn-link {
+  margin: 0px 5px 0px 5px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.async_table__style thead tr th button.sort-button {
+  float: right !important;
+}
+
+.async_table__style tbody tr td button.btn-link {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+}
+
+.async_table__style tbody tr td {
+  vertical-align: middle;
+}
+
+.async_table__style tbody tr td .body-checkbox {
+  margin: -6px 0px 0px 0px;
+}
+
+.async_table__style tbody tr td.action_col {
+  text-align: center;
+  position: relative;
+  min-width: 100px;
+}
+
+.async_table__style tbody tr td.action_col span button {
+  padding: 0px 5px 0px 5px;
+}

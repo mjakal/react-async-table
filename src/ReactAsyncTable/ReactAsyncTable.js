@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles.module.css';
 import Paginate from './components/Pagination/Pagination';
 import SearchBox from './components/SearchBox/SearchBox';
 import ReactAsyncTableHeader from './ReactAsyncTableHeader';
@@ -16,10 +17,12 @@ import {
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
-import { Loader, NoData, ExpandableRowComponent } from './ReactAsyncTableComponents';
+import {
+  Loader,
+  NoData,
+  ExpandableRowComponent
+} from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
-// Table styles
-import './scss/style.scss';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
@@ -88,7 +91,7 @@ const defaultProps = {
     sortIcon: '',
     expandIcon: '',
     editActionIcon: '',
-    deleteActionIcon: '',
+    deleteActionIcon: ''
   },
   loader: Loader,
   expandableRowComponent: ExpandableRowComponent,
@@ -101,7 +104,7 @@ const defaultProps = {
   onMultipleDelete: onMultipleDelete,
   onHeaderAction: onHeaderAction,
   onAction: onAction,
-  onColumnClick: onColumnClick,
+  onColumnClick: onColumnClick
 };
 
 class ReactAsyncTable extends Component {
@@ -131,7 +134,7 @@ class ReactAsyncTable extends Component {
     // Set the default sort order
     for (const col of columns) {
       if (col.sort && col.sortOrder) {
-        this.setState({ 
+        this.setState({
           sortField: col.dataField,
           sortOrder: col.sortOrder
         });
@@ -142,7 +145,10 @@ class ReactAsyncTable extends Component {
 
   componentDidUpdate(prevPrps) {
     // reset selected items on items array update
-    if (this.props.options.multipleSelect && prevPrps.items !== this.props.items) {
+    if (
+      this.props.options.multipleSelect &&
+      prevPrps.items !== this.props.items
+    ) {
       this.setState({
         selectedCount: 0,
         selectAllItems: false,
@@ -175,7 +181,13 @@ class ReactAsyncTable extends Component {
   }
 
   onMultipleDelete() {
-    const { keyField, items, currentPage, itemsPerPage, totalItems } = this.props;
+    const {
+      keyField,
+      items,
+      currentPage,
+      itemsPerPage,
+      totalItems
+    } = this.props;
     const { selectedItems } = this.state;
     const values = [];
 
@@ -244,7 +256,12 @@ class ReactAsyncTable extends Component {
   }
 
   render() {
-    const { selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
+    const {
+      selectAllItems,
+      selectedCount,
+      selectedItems,
+      expandRow
+    } = this.state;
     const {
       keyField,
       isLoading,
@@ -284,12 +301,7 @@ class ReactAsyncTable extends Component {
       paginationFirst,
       paginationLast
     } = translations;
-    const {
-      addButtonIcon,
-      deleteButtonIcon,
-      tooltipIcon,
-      sortIcon
-    } = icons;
+    const { addButtonIcon, deleteButtonIcon, tooltipIcon, sortIcon } = icons;
     const Loader = loader;
     // Set number of table columns
     const totalColumns =
@@ -297,11 +309,12 @@ class ReactAsyncTable extends Component {
       (options.multipleSelect ? 1 : 0) +
       (options.expandable ? 1 : 0) +
       (options.actionsColumn ? 1 : 0);
-    
+
     const HeaderActions = headerActions;
     const displayNoDataComponent = requestFailed || items.length === 0;
     const displayTableData = !requestFailed && items.length > 0;
-    const displayPagination = !isLoading && !requestFailed && options.pagination;
+    const displayPagination =
+      !isLoading && !requestFailed && options.pagination;
 
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
@@ -313,6 +326,7 @@ class ReactAsyncTable extends Component {
           <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
             {options.searchBox && (
               <SearchBox
+                styles={styles}
                 placeholder={searchPlaceholder}
                 query={query}
                 onChange={debounceSearch}
@@ -320,18 +334,20 @@ class ReactAsyncTable extends Component {
             )}
           </div>
           <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
-            <span className="async-table-header-actions float-right">
+            <span className={`${styles.async_table__header_actions} float-right`}>
               {options.insertButton && (
-                <button 
-                  type="button" 
-                  className="btn btn-primary" 
+                <button
+                  type="button"
+                  className="btn btn-primary"
                   onClick={onInsert}
                   disabled={requestFailed || isLoading}
                 >
                   {addButtonIcon && <i className={addButtonIcon} />} {addButton}
                 </button>
               )}
-              {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
+              {HeaderActions && (
+                <HeaderActions onHeaderAction={onHeaderAction} />
+              )}
               {options.multipleSelect && (
                 <button
                   type="button"
@@ -339,11 +355,18 @@ class ReactAsyncTable extends Component {
                   onClick={this.onMultipleDelete}
                   disabled={selectedCount === 0}
                 >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
+                  {deleteButtonIcon && <i className={deleteButtonIcon} />}{' '}
+                  {deleteButton}{' '}
+                  <span
+                    style={{ paddingTop: '8px' }}
+                    className="badge badge-pill badge-light"
+                  >
+                    {selectedCount}
+                  </span>
                 </button>
               )}
             </span>
-          </div>  
+          </div>
         </div>
         <div className="row">
           <div className="col-md-12">
@@ -353,7 +376,7 @@ class ReactAsyncTable extends Component {
               </div>
             ) : (
               <div className="table-responsive">
-                <table className={`table async-table-style ${tableClass}`}>
+                <table className={`table ${styles.async_table__style} ${tableClass}`}>
                   <ReactAsyncTableHeader
                     tableHeaderClass={tableHeaderClass}
                     selectAllItems={selectAllItems}
@@ -367,33 +390,37 @@ class ReactAsyncTable extends Component {
                     onSort={this.onSort}
                   />
                   {displayNoDataComponent && (
-                    <NoData 
-                      totalColumns={totalColumns} 
-                      noDataText={requestFailed ? requestFailedText : noDataText}
+                    <NoData
+                      totalColumns={totalColumns}
+                      noDataText={
+                        requestFailed ? requestFailedText : noDataText
+                      }
                     />
                   )}
-                  {displayTableData && items.map(item => (
-                    <ReactAsyncTableBody
-                      key={item[keyField]}
-                      keyField={keyField}
-                      item={item}
-                      selectedItems={selectedItems}
-                      actionsComponent={actionsComponent}
-                      expandRow={expandRow}
-                      columns={columns}
-                      totalColumns={totalColumns}
-                      options={options}
-                      translations={translations}
-                      icons={icons}
-                      expandableRowComponent={expandableRowComponent}
-                      onSelect={this.onSelect}
-                      onExpand={this.onExpand}
-                      onEdit={onEdit}
-                      onDelete={this.onDelete}
-                      onAction={onAction}
-                      onColumnClick={onColumnClick}
-                    />
-                  ))}
+                  {displayTableData &&
+                    items.map(item => (
+                      <ReactAsyncTableBody
+                        key={item[keyField]}
+                        styles={styles}
+                        keyField={keyField}
+                        item={item}
+                        selectedItems={selectedItems}
+                        actionsComponent={actionsComponent}
+                        expandRow={expandRow}
+                        columns={columns}
+                        totalColumns={totalColumns}
+                        options={options}
+                        translations={translations}
+                        icons={icons}
+                        expandableRowComponent={expandableRowComponent}
+                        onSelect={this.onSelect}
+                        onExpand={this.onExpand}
+                        onEdit={onEdit}
+                        onDelete={this.onDelete}
+                        onAction={onAction}
+                        onColumnClick={onColumnClick}
+                      />
+                    ))}
                 </table>
               </div>
             )}
