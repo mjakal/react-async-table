@@ -1,7 +1,9 @@
 /* I hate CSS & SCSS */
 
 .async-table-search-clear {
-  margin-left: -40px;
+  position: absolute;
+  top: 0;
+  right: 40px;
   z-index: 100;
 }
 

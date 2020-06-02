@@ -62,6 +62,9 @@ class SearchBox extends React.Component {
           placeholder={placeholder}
           onChange={this.onChange}
         />
+        <div className="input-group-append">
+          <span className="input-group-text"><i className="fa fa-search"></i></span>
+        </div>
         {searchTerm && (
           <button
             type="button"
