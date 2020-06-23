@@ -33,6 +33,8 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   tableClass: PropTypes.string,
+  insertButtonClass: PropTypes.string,
+  deleteButtonClass: PropTypes.string,
   tableHeaderClass: PropTypes.string,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
@@ -59,6 +61,8 @@ const defaultProps = {
   itemsPerPage: 10,
   delay: 300,
   tableClass: '',
+  insertButtonClass: 'btn btn-primary',
+  deleteButtonClass: 'btn btn-danger',
   tableHeaderClass: '',
   options: {
     searchBox: true,
@@ -256,6 +260,8 @@ class ReactAsyncTable extends Component {
       itemsPerPage,
       totalItems,
       tableClass,
+      insertButtonClass,
+      deleteButtonClass,
       tableHeaderClass,
       options,
       translations,
@@ -324,7 +330,7 @@ class ReactAsyncTable extends Component {
               {options.insertButton && (
                 <button 
                   type="button" 
-                  className="btn btn-primary" 
+                  className={insertButtonClass}
                   onClick={onInsert}
                   disabled={requestFailed || isLoading}
                 >
@@ -335,7 +341,7 @@ class ReactAsyncTable extends Component {
               {options.multipleSelect && (
                 <button
                   type="button"
-                  className="btn btn-danger"
+                  className={deleteButtonClass}
                   onClick={this.onMultipleDelete}
                   disabled={selectedCount === 0}
                 >
