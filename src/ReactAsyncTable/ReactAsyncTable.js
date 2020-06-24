@@ -65,7 +65,7 @@ const defaultProps = {
   delay: 300,
   tableHeaderIcon: '',
   tableHeader: 'Testing',
-  splitHeaderSection: true,
+  splitHeaderSection: false,
   tableClass: '',
   insertButtonClass: 'btn btn-primary',
   deleteButtonClass: 'btn btn-danger',
@@ -445,10 +445,12 @@ class ReactAsyncTable extends Component {
         {splitHeaderSection ? (
           <React.Fragment>
             <div className="card">
-              <div className="card-header">
-                {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
-                {tableHeader}
-              </div>
+              {tableHeader && (
+                <div className="card-header">
+                  {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
+                  {tableHeader}
+                </div>
+              )}
               <div className="card-body">
                 <HeaderSection />
               </div>
