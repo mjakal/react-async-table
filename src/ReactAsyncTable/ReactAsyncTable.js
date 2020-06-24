@@ -64,7 +64,7 @@ const defaultProps = {
   itemsPerPage: 10,
   delay: 300,
   tableHeaderIcon: '',
-  tableHeader: 'Testing',
+  tableHeader: '',
   splitHeaderSection: false,
   tableClass: '',
   insertButtonClass: 'btn btn-primary',
@@ -444,7 +444,7 @@ class ReactAsyncTable extends Component {
       <div className="animated fadeIn">
         {splitHeaderSection ? (
           <React.Fragment>
-            <div className="card">
+            <div className="card mb-1">
               {tableHeader && (
                 <div className="card-header">
                   {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
