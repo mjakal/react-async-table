@@ -323,8 +323,8 @@ class ReactAsyncTable extends Component {
     }, delay);
 
     const HeaderSection = () => {
-      return (
-        <div className="row form-group">
+      return ( 
+        <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
           <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
             {options.searchBox && (
               <SearchBox
