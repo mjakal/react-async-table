@@ -444,7 +444,7 @@ class ReactAsyncTable extends Component {
       <div className="animated fadeIn">
         {splitHeaderSection ? (
           <React.Fragment>
-            <div className="card">
+            <div className="card async-table-card">
               {tableHeader && (
                 <div className="card-header">
                   {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
@@ -455,7 +455,7 @@ class ReactAsyncTable extends Component {
                 <HeaderSection />
               </div>
             </div>
-            <div className="card">
+            <div className="card async-table-card">
               <div className="card-body">
                 <TableSection />
               </div>
