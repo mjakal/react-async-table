@@ -33,6 +33,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   splitHeaderSection: PropTypes.bool,
+  displayHeaderSection: PropTypes.bool,
   tableHeader: PropTypes.string,
   tableHeaderIcon: PropTypes.string,
   tableClass: PropTypes.string,
@@ -63,6 +64,7 @@ const defaultProps = {
   requestFailed: false,
   itemsPerPage: 10,
   delay: 300,
+  displayHeaderSection: true,
   tableHeaderIcon: '',
   tableHeader: '',
   splitHeaderSection: false,
@@ -267,6 +269,7 @@ class ReactAsyncTable extends Component {
       totalItems,
       tableHeaderIcon,
       tableHeader,
+      displayHeaderSection,
       splitHeaderSection,
       tableClass,
       insertButtonClass,
@@ -444,17 +447,19 @@ class ReactAsyncTable extends Component {
       <div className="animated fadeIn">
         {splitHeaderSection ? (
           <React.Fragment>
-            <div className="card async-table-card-filter">
-              {tableHeader && (
-                <div className="card-header">
-                  {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
-                  {tableHeader}
+            {displayHeaderSection && (
+              <div className="card async-table-card-filter">
+                {tableHeader && (
+                  <div className="card-header">
+                    {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
+                    {tableHeader}
+                  </div>
+                )}
+                <div className="card-body">
+                  <HeaderSection />
                 </div>
-              )}
-              <div className="card-body">
-                <HeaderSection />
               </div>
-            </div>
+            )}
             <div className="card async-table-card-content">
               <div className="card-body">
                 <TableSection />
@@ -463,7 +468,7 @@ class ReactAsyncTable extends Component {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <HeaderSection />
+            {displayHeaderSection && <HeaderSection />}
             <TableSection />
           </React.Fragment>
         )}
