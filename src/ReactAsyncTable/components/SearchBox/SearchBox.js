@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const propTypes = {
   placeholder: PropTypes.string,
   query: PropTypes.string.isRequired,
+  delay: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired
 };
 
@@ -30,8 +31,13 @@ class SearchBox extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.query !== this.props.query) {
       // Reset search box if query is an empty string
+      
       if (!this.props.query && this.state.searchTerm) {
-        this.setState({ searchTerm: '' });
+        const { delay } = this.props;
+        
+        setTimeout(() => {
+          this.setState({ searchTerm: '' });
+        }, delay + 20);
       }
     }
   }

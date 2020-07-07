@@ -333,6 +333,7 @@ class ReactAsyncTable extends Component {
               <SearchBox
                 placeholder={searchPlaceholder}
                 query={query}
+                delay={delay}
                 onChange={debounceSearch}
               />
             )}
