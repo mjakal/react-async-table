@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Paginate from './components/Pagination/Pagination';
-import SearchBox from './components/SearchBox/SearchBox';
-import ReactAsyncTableHeader from './ReactAsyncTableHeader';
-import ReactAsyncTableBody from './ReactAsyncTableBody';
+import HeaderSection from './HeaderSection';
+import BodySection from './BodySection';
 import {
   onChangePage,
   onSearch,
@@ -16,7 +14,7 @@ import {
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
-import { Loader, NoData, ExpandableRowComponent } from './ReactAsyncTableComponents';
+import { Loader, ExpandableRowComponent } from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
@@ -260,193 +258,12 @@ class ReactAsyncTable extends Component {
   render() {
     const { selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
     const {
-      keyField,
-      isLoading,
-      query,
-      activeTabID,
-      requestFailed,
-      columns,
-      items,
-      currentPage,
-      itemsPerPage,
-      totalItems,
       tableHeaderIcon,
       tableHeader,
       displayHeaderSection,
       splitHeaderSection,
-      tableClass,
-      insertButtonClass,
-      deleteButtonClass,
-      tableHeaderClass,
-      options,
-      translations,
-      icons,
-      delay,
-      loader,
-      headerActions,
-      actionsComponent,
-      expandableRowComponent,
-      onSearch,
-      onChangePage,
-      onInsert,
-      onEdit,
-      onHeaderAction,
-      onAction,
-      onColumnClick
     } = this.props;
-    const {
-      searchPlaceholder,
-      addButton,
-      deleteButton,
-      sortTitle,
-      actionsColumnTitle,
-      noDataText,
-      requestFailedText,
-      paginationFirst,
-      paginationLast
-    } = translations;
-    const {
-      addButtonIcon,
-      deleteButtonIcon,
-      tooltipIcon,
-      sortIcon
-    } = icons;
-    const Loader = loader;
-    // Set number of table columns
-    const totalColumns =
-      columns.length +
-      (options.multipleSelect ? 1 : 0) +
-      (options.expandable ? 1 : 0) +
-      (options.actionsColumn ? 1 : 0);
     
-    const HeaderActions = headerActions;
-    const displayNoDataComponent = requestFailed || items.length === 0;
-    const displayTableData = !requestFailed && items.length > 0;
-    const displayPagination = !isLoading && !requestFailed && options.pagination;
-
-    const debounceSearch = debounce(searchTerm => {
-      onSearch(searchTerm);
-    }, delay);
-
-    const HeaderSection = () => {
-      return ( 
-        <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
-          <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
-            {options.searchBox && (
-              <SearchBox
-                placeholder={searchPlaceholder}
-                query={query}
-                activeTabID={activeTabID}
-                onChange={debounceSearch}
-              />
-            )}
-          </div>
-          <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
-            <span className="async-table-header-actions float-right">
-              {options.insertButton && (
-                <button 
-                  type="button" 
-                  className={insertButtonClass}
-                  onClick={onInsert}
-                  disabled={requestFailed || isLoading}
-                >
-                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                </button>
-              )}
-              {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
-              {options.multipleSelect && (
-                <button
-                  type="button"
-                  className={deleteButtonClass}
-                  onClick={this.onMultipleDelete}
-                  disabled={selectedCount === 0}
-                >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
-                </button>
-              )}
-            </span>
-          </div>  
-        </div>
-      );
-    };
-
-    const TableSection = () => {
-      return(
-        <div>
-          <div className="row">
-            <div className="col-md-12">
-              {isLoading ? (
-                <div className="animated fadeIn">
-                  <Loader />
-                </div>
-              ) : (
-                <div className="table-responsive">
-                  <table className={`table async-table-style ${tableClass}`}>
-                    <ReactAsyncTableHeader
-                      tableHeaderClass={tableHeaderClass}
-                      selectAllItems={selectAllItems}
-                      columns={columns}
-                      options={options}
-                      tooltipIcon={tooltipIcon}
-                      sortTitle={sortTitle}
-                      sortIcon={sortIcon}
-                      actionsColumnTitle={actionsColumnTitle}
-                      onMultipleSelect={this.onMultipleSelect}
-                      onSort={this.onSort}
-                    />
-                    {displayNoDataComponent && (
-                      <NoData 
-                        totalColumns={totalColumns} 
-                        noDataText={requestFailed ? requestFailedText : noDataText}
-                      />
-                    )}
-                    {displayTableData && items.map(item => (
-                      <ReactAsyncTableBody
-                        key={item[keyField]}
-                        keyField={keyField}
-                        item={item}
-                        selectedItems={selectedItems}
-                        actionsComponent={actionsComponent}
-                        expandRow={expandRow}
-                        columns={columns}
-                        totalColumns={totalColumns}
-                        options={options}
-                        translations={translations}
-                        icons={icons}
-                        expandableRowComponent={expandableRowComponent}
-                        onSelect={this.onSelect}
-                        onExpand={this.onExpand}
-                        onEdit={onEdit}
-                        onDelete={this.onDelete}
-                        onAction={onAction}
-                        onColumnClick={onColumnClick}
-                      />
-                    ))}
-                  </table>
-                </div>
-              )}
-            </div>
-          </div>
-          {displayPagination && (
-            <div className="row form-group">
-              <div className="col-md-12">
-                <span className="float-right">
-                  <Paginate
-                    currentPage={currentPage}
-                    pageSize={itemsPerPage}
-                    items={totalItems}
-                    onChangePage={onChangePage}
-                    firstLink={paginationFirst}
-                    lastLink={paginationLast}
-                  />
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    };
-
     return (
       <div className="animated fadeIn">
         {splitHeaderSection ? (
@@ -460,20 +277,48 @@ class ReactAsyncTable extends Component {
                   </div>
                 )}
                 <div className="card-body">
-                  <HeaderSection />
+                  <HeaderSection
+                    selectedCount={selectedCount} 
+                    onMultipleDelete={this.onMultipleDelete} 
+                    {...this.props} 
+                  />
                 </div>
               </div>
             )}
             <div className="card async-table-card-content">
               <div className="card-body">
-                <TableSection />
+                <BodySection 
+                  selectedItems={selectedItems}
+                  expandRow={expandRow}
+                  selectAllItems={selectAllItems} 
+                  onSelect={this.onSelect}
+                  onMultipleSelect={this.onMultipleSelect}
+                  onDelete={this.onDelete}
+                  onExpand={this.onExpand}
+                  onSort={this.onSort}
+                  {...this.props} 
+                />
               </div>
             </div>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {displayHeaderSection && <HeaderSection />}
-            <TableSection />
+            <HeaderSection
+              selectedCount={selectedCount} 
+              onMultipleDelete={this.onMultipleDelete} 
+              {...this.props} 
+            />
+            <BodySection 
+              selectedItems={selectedItems}
+              expandRow={expandRow}
+              selectAllItems={selectAllItems} 
+              onSelect={this.onSelect}
+              onMultipleSelect={this.onMultipleSelect}
+              onDelete={this.onDelete}
+              onExpand={this.onExpand}
+              onSort={this.onSort}
+              {...this.props} 
+            />
           </React.Fragment>
         )}
       </div>

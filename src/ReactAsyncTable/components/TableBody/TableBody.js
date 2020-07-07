@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from './helpers/helpers';
+import { isEmpty } from '../../helpers/helpers';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
@@ -22,7 +22,7 @@ const propTypes = {
   onColumnClick: PropTypes.func.isRequired
 };
 
-const ReactAsyncTableBody = props => {
+const TableBody = props => {
   const {
     keyField,
     item,
@@ -169,5 +169,5 @@ const ReactAsyncTableBody = props => {
   );
 };
 
-ReactAsyncTableBody.propTypes = propTypes;
-export default ReactAsyncTableBody;
+TableBody.propTypes = propTypes;
+export default TableBody;

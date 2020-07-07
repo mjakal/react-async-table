@@ -58,7 +58,7 @@ class SearchBox extends React.Component {
         <input
           type="text"
           className="form-control"
-          autoFocus="true"
+          autoFocus={true}
           name="search"
           value={searchTerm}
           placeholder={placeholder}

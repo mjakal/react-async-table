@@ -152,6 +152,7 @@ class Example extends React.Component {
   }
 
   onSearch(search) {
+    console.log("query", search);
     this.setState({ search, page: 1, isLoading: true });
     this.fakeAsyncAction();
   }

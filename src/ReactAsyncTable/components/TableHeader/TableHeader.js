@@ -14,7 +14,7 @@ const propTypes = {
   onSort: PropTypes.func.isRequired
 };
 
-const ReactAsyncTableHeader = props => {
+const TableHeader = props => {
   const { 
     tableHeaderClass,
     selectAllItems, 
@@ -79,5 +79,5 @@ const ReactAsyncTableHeader = props => {
   );
 };
 
-ReactAsyncTableHeader.propTypes = propTypes;
-export default ReactAsyncTableHeader
+TableHeader.propTypes = propTypes;
+export default TableHeader;
