@@ -225,7 +225,7 @@ class Example extends React.Component {
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
-              delay={3000}
+              delay={300}
               options={{
                 searchBox: true,
                 insertButton: true,

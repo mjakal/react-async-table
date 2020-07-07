@@ -25,6 +25,7 @@ const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
   query: PropTypes.string.isRequired,
+  activeTabID: PropTypes.string,
   requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
@@ -63,6 +64,7 @@ const defaultProps = {
   isLoading: false,
   requestFailed: false,
   itemsPerPage: 10,
+  activeTabID: '',
   delay: 300,
   displayHeaderSection: true,
   tableHeaderIcon: '',
@@ -261,6 +263,7 @@ class ReactAsyncTable extends Component {
       keyField,
       isLoading,
       query,
+      activeTabID,
       requestFailed,
       columns,
       items,
@@ -333,7 +336,7 @@ class ReactAsyncTable extends Component {
               <SearchBox
                 placeholder={searchPlaceholder}
                 query={query}
-                delay={delay}
+                activeTabID={activeTabID}
                 onChange={debounceSearch}
               />
             )}
