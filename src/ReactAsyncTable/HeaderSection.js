@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SearchBox from './components/SearchBox/SearchBox';
-import { debounce } from './helpers/helpers';
 
 const propTypes = {
   selectedCount: PropTypes.number.isRequired,
@@ -9,7 +8,6 @@ const propTypes = {
   query: PropTypes.string.isRequired,
   activeTabID: PropTypes.string,
   requestFailed: PropTypes.bool,
-  delay: PropTypes.number,
   splitHeaderSection: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
   insertButtonClass: PropTypes.string,
@@ -18,7 +16,7 @@ const propTypes = {
   translations: PropTypes.objectOf(PropTypes.string),
   icons: PropTypes.objectOf(PropTypes.string),
   headerActions: PropTypes.func,
-  onSearch: PropTypes.func,
+  onChange: PropTypes.func,
   onInsert: PropTypes.func,
   onHeaderAction: PropTypes.func,
   onMultipleDelete: PropTypes.func
@@ -38,9 +36,8 @@ const HeaderSection = props => {
     options,
     translations,
     icons,
-    delay,
     headerActions,
-    onSearch,
+    onChange,
     onInsert,
     onHeaderAction,
     onMultipleDelete
@@ -57,10 +54,6 @@ const HeaderSection = props => {
 
   const HeaderActions = headerActions;
 
-  const debounceSearch = debounce(searchTerm => {
-    onSearch(searchTerm);
-  }, delay);
-
   return (
     <React.Fragment>
       {displayHeaderSection && (
@@ -71,7 +64,7 @@ const HeaderSection = props => {
                 placeholder={searchPlaceholder}
                 query={query}
                 activeTabID={activeTabID}
-                onChange={debounceSearch}
+                onChange={onChange}
               />
             )}
           </div>

@@ -262,7 +262,13 @@ class ReactAsyncTable extends Component {
       tableHeader,
       displayHeaderSection,
       splitHeaderSection,
+      delay,
+      onSearch
     } = this.props;
+
+    const debounceSearch = debounce(searchTerm => {
+      onSearch(searchTerm);
+    }, delay);
     
     return (
       <div className="animated fadeIn">
@@ -280,6 +286,7 @@ class ReactAsyncTable extends Component {
                   <HeaderSection
                     selectedCount={selectedCount} 
                     onMultipleDelete={this.onMultipleDelete} 
+                    onChange={debounceSearch}
                     {...this.props} 
                   />
                 </div>
@@ -306,6 +313,7 @@ class ReactAsyncTable extends Component {
             <HeaderSection
               selectedCount={selectedCount} 
               onMultipleDelete={this.onMultipleDelete} 
+              onChange={debounceSearch}
               {...this.props} 
             />
             <BodySection 
