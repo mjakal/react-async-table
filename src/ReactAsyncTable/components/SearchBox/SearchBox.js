@@ -21,16 +21,14 @@ class SearchBox extends React.Component {
     this.onClear = this.onClear.bind(this);
   }
 
-  /* Not in use right now
   componentDidUpdate(prevProps) {
     const { activeTabID } = this.props;
 
-    // Reset search box if query is an empty string
+    // Reset search box if activeTabID changes
     if (prevProps.activeTabID !== activeTabID) {
       this.setState({ searchTerm: '' });
     }
   }
-  */
 
   onChange(event) {
     const searchTerm = event.target.value;

@@ -216,6 +216,7 @@ class Example extends React.Component {
           <CardBody>
             <ReactAsyncTable
               keyField="id"
+              activeTabID=""
               isLoading={isLoading}
               query={search}
               splitHeaderSection={false}
