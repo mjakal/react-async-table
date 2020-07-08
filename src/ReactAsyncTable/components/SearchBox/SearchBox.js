@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   placeholder: PropTypes.string,
-  query: PropTypes.string.isRequired,
   activeTabID: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
 };
@@ -22,20 +21,16 @@ class SearchBox extends React.Component {
     this.onClear = this.onClear.bind(this);
   }
 
-  componentDidMount() {
-    const { query } = this.props;
-    
-    this.setState({ searchTerm: query });
-  }
-
+  /* Not in use right now
   componentDidUpdate(prevProps) {
     const { activeTabID } = this.props;
 
+    // Reset search box if query is an empty string
     if (prevProps.activeTabID !== activeTabID) {
-      // Reset search box if query is an empty string
       this.setState({ searchTerm: '' });
     }
   }
+  */
 
   onChange(event) {
     const searchTerm = event.target.value;

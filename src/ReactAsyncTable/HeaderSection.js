@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SearchBox from './components/SearchBox/SearchBox';
 
 const propTypes = {
-  searchTerm: PropTypes.string.isRequired,
   selectedCount: PropTypes.number.isRequired,
   isLoading: PropTypes.bool.isRequired,
   requestFailed: PropTypes.bool.isRequired,
@@ -13,9 +13,8 @@ const propTypes = {
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
+  activeTabID: PropTypes.string.isRequired,
   headerActions: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onClear: PropTypes.func.isRequired,
   debounceSearch: PropTypes.func.isRequired,
   onInsert: PropTypes.func.isRequired,
   onHeaderAction: PropTypes.func.isRequired,
@@ -24,9 +23,9 @@ const propTypes = {
 
 const HeaderSection = props => {
   const {
-    searchTerm,
     selectedCount,
     isLoading,
+    activeTabID,
     requestFailed,
     displayHeaderSection,
     splitHeaderSection,
@@ -36,8 +35,6 @@ const HeaderSection = props => {
     translations,
     icons,
     headerActions,
-    onChange,
-    onClear,
     debounceSearch,
     onInsert,
     onHeaderAction,
@@ -55,47 +52,17 @@ const HeaderSection = props => {
 
   const HeaderActions = headerActions;
 
-  const onInputChange = event => {
-    const searchTerm = event.target.value;
-
-    onChange(searchTerm);
-    debounceSearch(searchTerm);
-  }
-
-  const onInputClear = () => {
-    onClear();
-    debounceSearch('');
-  }
-
   return (
     <React.Fragment>
       {displayHeaderSection && (
         <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
           <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
             {options.searchBox && (
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  autoFocus={true}
-                  name="search"
-                  value={searchTerm}
-                  placeholder={searchPlaceholder}
-                  onChange={onInputChange}
-                />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    className="btn async-table-search-clear"
-                    onClick={onInputClear}
-                  >
-                    &times;
-                  </button>
-                )}
-                <div className="input-group-append async-table-search-button">
-                  <span className="input-group-text"><i className="fa fa-search"></i></span>
-                </div>
-              </div>
+              <SearchBox
+                placeholder={searchPlaceholder}
+                activeTabID={activeTabID}
+                onChange={debounceSearch}
+              />
             )}
           </div>
           <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">

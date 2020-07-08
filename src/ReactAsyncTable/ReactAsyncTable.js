@@ -121,7 +121,6 @@ class ReactAsyncTable extends Component {
     super(props);
 
     this.state = {
-      searchTerm: '',
       sortField: '',
       sortOrder: '',
       selectedCount: 0,
@@ -130,8 +129,6 @@ class ReactAsyncTable extends Component {
       expandRow: {}
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onClear = this.onClear.bind(this);
     this.onExpand = this.onExpand.bind(this);
     this.onMultipleSelect = this.onMultipleSelect.bind(this);
     this.onSort = this.onSort.bind(this);
@@ -156,13 +153,6 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    /*
-    // Reset search box on activeTabID change
-    if (prevProps.query !== this.props.query) {
-      this.setState({ searchTerm: this.props.query });
-    }
-    */
-    
     // reset selected items on items array update
     if (this.props.options.multipleSelect && prevProps.items !== this.props.items) {
       this.setState({
@@ -172,14 +162,6 @@ class ReactAsyncTable extends Component {
         expandRow: {}
       });
     }
-  }
-
-  onChange(searchTerm) {
-    this.setState({ searchTerm });
-  }
-
-  onClear() {
-    this.setState({ searchTerm: '' });
   }
 
   onSort(columnKey) {
@@ -274,7 +256,7 @@ class ReactAsyncTable extends Component {
   }
 
   render() {
-    const { searchTerm, selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
+    const { selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
     const {
       tableHeaderIcon,
       tableHeader,
@@ -303,10 +285,7 @@ class ReactAsyncTable extends Component {
                 <div className="card-body">
                   <HeaderSection
                     {...this.props} 
-                    searchTerm={searchTerm}
                     selectedCount={selectedCount}
-                    onChange={this.onChange}
-                    onClear={this.onClear}
                     debounceSearch={debounceSearch}
                     onMultipleDelete={this.onMultipleDelete} 
                   />
@@ -333,10 +312,7 @@ class ReactAsyncTable extends Component {
           <React.Fragment>
             <HeaderSection
               {...this.props} 
-              searchTerm={searchTerm}
               selectedCount={selectedCount}
-              onChange={this.onChange}
-              onClear={this.onClear}
               debounceSearch={debounceSearch}
               onMultipleDelete={this.onMultipleDelete} 
             />
