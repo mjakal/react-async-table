@@ -218,6 +218,7 @@ class Example extends React.Component {
               keyField="id"
               isLoading={isLoading}
               query={search}
+              splitHeaderSection={false}
               requestFailed={false}
               columns={columns}
               items={items}

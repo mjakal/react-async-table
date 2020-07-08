@@ -300,13 +300,13 @@ class ReactAsyncTable extends Component {
                 )}
                 <div className="card-body">
                   <HeaderSection
+                    {...this.props} 
                     searchTerm={searchTerm}
                     selectedCount={selectedCount}
                     onChange={this.onChange}
                     onClear={this.onClear}
                     debounceSearch={debounceSearch}
                     onMultipleDelete={this.onMultipleDelete} 
-                    {...this.props} 
                   />
                 </div>
               </div>
@@ -314,6 +314,7 @@ class ReactAsyncTable extends Component {
             <div className="card async-table-card-content">
               <div className="card-body">
                 <BodySection 
+                  {...this.props} 
                   selectedItems={selectedItems}
                   expandRow={expandRow}
                   selectAllItems={selectAllItems} 
@@ -322,7 +323,6 @@ class ReactAsyncTable extends Component {
                   onDelete={this.onDelete}
                   onExpand={this.onExpand}
                   onSort={this.onSort}
-                  {...this.props} 
                 />
               </div>
             </div>
@@ -330,15 +330,16 @@ class ReactAsyncTable extends Component {
         ) : (
           <React.Fragment>
             <HeaderSection
+              {...this.props} 
               searchTerm={searchTerm}
               selectedCount={selectedCount}
               onChange={this.onChange}
               onClear={this.onClear}
               debounceSearch={debounceSearch}
               onMultipleDelete={this.onMultipleDelete} 
-              {...this.props} 
             />
             <BodySection 
+              {...this.props} 
               selectedItems={selectedItems}
               expandRow={expandRow}
               selectAllItems={selectAllItems} 
@@ -347,7 +348,6 @@ class ReactAsyncTable extends Component {
               onDelete={this.onDelete}
               onExpand={this.onExpand}
               onSort={this.onSort}
-              {...this.props} 
             />
           </React.Fragment>
         )}
