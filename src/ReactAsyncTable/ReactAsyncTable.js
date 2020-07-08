@@ -156,10 +156,12 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    /*
     // Reset search box on activeTabID change
-    if (prevProps.activeTabID !== this.props.activeTabID) {
-      this.setState({ searchTerm: '' });
+    if (prevProps.query !== this.props.query) {
+      this.setState({ searchTerm: this.props.query });
     }
+    */
     
     // reset selected items on items array update
     if (this.props.options.multipleSelect && prevProps.items !== this.props.items) {
