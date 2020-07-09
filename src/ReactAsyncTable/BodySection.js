@@ -16,6 +16,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   tableClass: PropTypes.string.isRequired,
   tableHeaderClass: PropTypes.string.isRequired,
+  bootstrapCheckbox: PropTypes.bool.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -51,6 +52,7 @@ const BodySection = props => {
     expandRow,
     tableClass,
     tableHeaderClass,
+    bootstrapCheckbox,
     options,
     translations,
     icons,
@@ -105,6 +107,7 @@ const BodySection = props => {
                 <TableHeader
                   tableHeaderClass={tableHeaderClass}
                   selectAllItems={selectAllItems}
+                  bootstrapCheckbox={bootstrapCheckbox}
                   columns={columns}
                   options={options}
                   tooltipIcon={tooltipIcon}
@@ -126,6 +129,7 @@ const BodySection = props => {
                     keyField={keyField}
                     item={item}
                     selectedItems={selectedItems}
+                    bootstrapCheckbox={bootstrapCheckbox}
                     actionsComponent={actionsComponent}
                     expandRow={expandRow}
                     columns={columns}

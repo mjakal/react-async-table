@@ -1,9 +1,11 @@
 import React from 'react';
+import Checkbox from '../Checkbox/Checkbox';
 import PropTypes from 'prop-types';
 
 const propTypes = {
   tableHeaderClass: PropTypes.string,
   selectAllItems: PropTypes.bool.isRequired,
+  bootstrapCheckbox: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   tooltipIcon: PropTypes.string,
@@ -18,6 +20,7 @@ const TableHeader = props => {
   const { 
     tableHeaderClass,
     selectAllItems, 
+    bootstrapCheckbox,
     columns, 
     options, 
     tooltipIcon,
@@ -32,16 +35,25 @@ const TableHeader = props => {
     <thead className={tableHeaderClass}>
       <tr>
         {options.multipleSelect && (
-          <th>
-            <div className="form-check">
-              <input
-                className="form-check-input position-static"
-                type="checkbox"
-                name="selectAllItems"
+          <th className="header-checkbox">
+            {bootstrapCheckbox ? (
+              <Checkbox
+                id='async_table_select_all_items'
+                name='selectAllItems'
                 onChange={onMultipleSelect}
                 checked={selectAllItems}
               />
-            </div>
+            ) : (
+              <div className="form-check">
+                <input
+                  className="form-check-input position-static"
+                  type="checkbox"
+                  name="selectAllItems"
+                  onChange={onMultipleSelect}
+                  checked={selectAllItems}
+                />
+              </div>
+            )}
           </th>
         )}
         {options.expandable && (<th></th>)}

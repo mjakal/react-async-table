@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Checkbox from '../Checkbox/Checkbox';
 import { isEmpty } from '../../helpers/helpers';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   selectedItems: PropTypes.object.isRequired,
+  bootstrapCheckbox: PropTypes.bool.isRequired,
   expandRow: PropTypes.object.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   totalColumns: PropTypes.number.isRequired,
@@ -27,6 +29,7 @@ const TableBody = props => {
     keyField,
     item,
     selectedItems,
+    bootstrapCheckbox,
     expandRow,
     columns,
     translations,
@@ -37,6 +40,7 @@ const TableBody = props => {
     options
   } = props;
   const itemID = item[keyField];
+  const checkboxID = `${keyField}_${itemID}`;
   const { editAction, deleteAction } = translations;
   const { expandIcon, editActionIcon, deleteActionIcon } = icons;
   const isExpandable = options.expandable;
@@ -126,16 +130,25 @@ const TableBody = props => {
     <tbody>
       <tr>
         {options.multipleSelect && (
-          <td>
-            <div className="form-check">
-              <input
-                className="form-check-input position-static"
-                type="checkbox"
-                name={itemID}
+          <td className="body-checkbox">
+            {bootstrapCheckbox ? (
+              <Checkbox
+                id={checkboxID}
+                name={`${itemID}`}
                 onChange={props.onSelect}
                 checked={selectedItems[itemID] || false}
               />
-            </div>
+            ) : (
+              <div className="form-check">
+                <input
+                  className="form-check-input position-static"
+                  type="checkbox"
+                  name={`${itemID}`}
+                  onChange={props.onSelect}
+                  checked={selectedItems[itemID] || false}
+                />
+              </div>
+            )}
           </td>
         )}
         {isExpandable && (
