@@ -220,6 +220,7 @@ class Example extends React.Component {
               isLoading={isLoading}
               query={search}
               splitHeaderSection={false}
+              displayGridView={true}
               bootstrapCheckbox={false}
               requestFailed={false}
               columns={columns}

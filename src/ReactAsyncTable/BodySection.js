@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Paginate from './components/Pagination/Pagination';
 import TableHeader from './components/TableHeader/TableHeader';
 import TableBody from './components/TableBody/TableBody';
+import GridView from './components/GridView/GridView';
 import { NoData } from './ReactAsyncTableComponents';
 
 const propTypes = {
@@ -14,6 +15,7 @@ const propTypes = {
   currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
   totalItems: PropTypes.number.isRequired,
+  gridView: PropTypes.bool.isRequired,
   tableClass: PropTypes.string.isRequired,
   tableHeaderClass: PropTypes.string.isRequired,
   bootstrapCheckbox: PropTypes.bool.isRequired,
@@ -48,6 +50,7 @@ const BodySection = props => {
     currentPage,
     itemsPerPage,
     totalItems,
+    gridView,
     selectedItems,
     expandRow,
     tableClass,
@@ -94,13 +97,30 @@ const BodySection = props => {
   const Loader = loader;
 
   return(
-    <div>
-      <div className="row">
-        <div className="col-md-12">
-          {isLoading ? (
-            <div className="animated fadeIn">
-              <Loader />
-            </div>
+    <React.Fragment>
+      {isLoading ? (
+        <div className="animated fadeIn">
+          <Loader />
+        </div>
+      ) : (
+        <React.Fragment>
+          {displayNoDataComponent && (
+            <p className="text-center font-weight-normal">{requestFailed ? requestFailedText : noDataText}</p>
+          )}
+          {(gridView && displayTableData) ? (
+            <GridView 
+              keyField={keyField}
+              items={items}
+              actionsComponent={actionsComponent}
+              columns={columns}
+              options={options}
+              translations={translations}
+              icons={icons}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onAction={onAction}
+              onColumnClick={onColumnClick}
+            />
           ) : (
             <div className="table-responsive">
               <table className={`table async-table-style ${tableClass}`}>
@@ -149,25 +169,21 @@ const BodySection = props => {
               </table>
             </div>
           )}
-        </div>
-      </div>
+        </React.Fragment>
+      )}
       {displayPagination && (
-        <div className="row form-group">
-          <div className="col-md-12">
-            <span className="float-right">
-              <Paginate
-                currentPage={currentPage}
-                pageSize={itemsPerPage}
-                items={totalItems}
-                onChangePage={onChangePage}
-                firstLink={paginationFirst}
-                lastLink={paginationLast}
-              />
-            </span>
-          </div>
+        <div className="form-group float-right">
+          <Paginate
+            currentPage={currentPage}
+            pageSize={itemsPerPage}
+            items={totalItems}
+            onChangePage={onChangePage}
+            firstLink={paginationFirst}
+            lastLink={paginationLast}
+          />
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

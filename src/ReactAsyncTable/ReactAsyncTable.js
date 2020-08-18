@@ -32,6 +32,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   splitHeaderSection: PropTypes.bool,
+  displayGridView: PropTypes.bool,
   bootstrapCheckbox: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
   tableHeader: PropTypes.string,
@@ -69,6 +70,7 @@ const defaultProps = {
   tableHeaderIcon: '',
   tableHeader: '',
   splitHeaderSection: false,
+  displayGridView: false,
   bootstrapCheckbox: false,
   tableClass: '',
   insertButtonClass: 'btn btn-primary',
@@ -123,6 +125,7 @@ class ReactAsyncTable extends Component {
     super(props);
 
     this.state = {
+      gridView: false,
       sortField: '',
       sortOrder: '',
       selectedCount: 0,
@@ -131,6 +134,7 @@ class ReactAsyncTable extends Component {
       expandRow: {}
     };
 
+    this.toggleGridView = this.toggleGridView.bind(this);
     this.onExpand = this.onExpand.bind(this);
     this.onMultipleSelect = this.onMultipleSelect.bind(this);
     this.onSort = this.onSort.bind(this);
@@ -164,6 +168,16 @@ class ReactAsyncTable extends Component {
         expandRow: {}
       });
     }
+  }
+
+  toggleGridView(gridViewState) {
+    const { gridView } = this.state;
+
+    if (gridView === gridViewState) return;
+
+    console.log("grid enabled:", gridViewState);
+
+    this.setState({ gridView: gridViewState });
   }
 
   onSort(columnKey) {
@@ -258,7 +272,7 @@ class ReactAsyncTable extends Component {
   }
 
   render() {
-    const { selectAllItems, selectedCount, selectedItems, expandRow } = this.state;
+    const { selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
     const {
       tableHeaderIcon,
       tableHeader,
@@ -288,6 +302,8 @@ class ReactAsyncTable extends Component {
                   <HeaderSection
                     {...this.props} 
                     selectedCount={selectedCount}
+                    gridView={gridView}
+                    toggleGridView={this.toggleGridView}
                     debounceSearch={debounceSearch}
                     onMultipleDelete={this.onMultipleDelete} 
                   />
@@ -298,6 +314,7 @@ class ReactAsyncTable extends Component {
               <div className="card-body">
                 <BodySection 
                   {...this.props} 
+                  gridView={gridView}
                   selectedItems={selectedItems}
                   expandRow={expandRow}
                   selectAllItems={selectAllItems} 
@@ -315,11 +332,14 @@ class ReactAsyncTable extends Component {
             <HeaderSection
               {...this.props} 
               selectedCount={selectedCount}
+              gridView={gridView}
+              toggleGridView={this.toggleGridView}
               debounceSearch={debounceSearch}
               onMultipleDelete={this.onMultipleDelete} 
             />
             <BodySection 
               {...this.props} 
+              gridView={gridView}
               selectedItems={selectedItems}
               expandRow={expandRow}
               selectAllItems={selectAllItems} 
