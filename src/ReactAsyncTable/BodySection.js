@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paginate from './components/Pagination/Pagination';
-import TableHeader from './components/TableHeader/TableHeader';
 import TableBody from './components/TableBody/TableBody';
 import GridView from './components/GridView/GridView';
-import { NoData } from './ReactAsyncTableComponents';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
@@ -39,64 +37,28 @@ const propTypes = {
   onExpand: PropTypes.func.isRequired
 };
 
-
 const BodySection = props => {
   const {
-    keyField,
     isLoading,
     requestFailed,
-    columns,
     items,
     currentPage,
     itemsPerPage,
     totalItems,
     gridView,
-    selectedItems,
-    expandRow,
-    tableClass,
-    tableHeaderClass,
-    bootstrapCheckbox,
     options,
     translations,
-    icons,
     loader,
-    actionsComponent,
-    expandableRowComponent,
     onChangePage,
-    onEdit,
-    onDelete,
-    onAction,
-    onColumnClick,
-    selectAllItems,
-    onSelect,
-    onMultipleSelect,
-    onExpand,
-    onSort
   } = props;
-  const {
-    sortTitle,
-    actionsColumnTitle,
-    noDataText,
-    requestFailedText,
-    paginationFirst,
-    paginationLast
-  } = translations;
-  const {
-    tooltipIcon,
-    sortIcon
-  } = icons;
-  // Set number of table columns
-  const totalColumns = columns.length +
-    (options.multipleSelect ? 1 : 0) +
-    (options.expandable ? 1 : 0) +
-    (options.actionsColumn ? 1 : 0);
+  const { paginationFirst, paginationLast } = translations;
 
   const displayPagination = !isLoading && !requestFailed && options.pagination;
-  const displayTableData = !requestFailed && items.length > 0;
+  const displayData = !requestFailed && items.length > 0;
   const displayNoDataComponent = requestFailed || items.length === 0;
   const Loader = loader;
 
-  return(
+  return (
     <React.Fragment>
       {isLoading ? (
         <div className="animated fadeIn">
@@ -104,70 +66,17 @@ const BodySection = props => {
         </div>
       ) : (
         <React.Fragment>
-          {displayNoDataComponent && (
-            <p className="text-center font-weight-normal">{requestFailed ? requestFailedText : noDataText}</p>
-          )}
-          {(gridView && displayTableData) ? (
+          {(displayData && gridView) ? (
             <GridView 
-              keyField={keyField}
-              items={items}
-              actionsComponent={actionsComponent}
-              columns={columns}
-              options={options}
-              translations={translations}
-              icons={icons}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onAction={onAction}
-              onColumnClick={onColumnClick}
+              {...props}
+              displayNoDataComponent={displayNoDataComponent}
             />
           ) : (
-            <div className="table-responsive">
-              <table className={`table async-table-style ${tableClass}`}>
-                <TableHeader
-                  tableHeaderClass={tableHeaderClass}
-                  selectAllItems={selectAllItems}
-                  bootstrapCheckbox={bootstrapCheckbox}
-                  columns={columns}
-                  options={options}
-                  tooltipIcon={tooltipIcon}
-                  sortTitle={sortTitle}
-                  sortIcon={sortIcon}
-                  actionsColumnTitle={actionsColumnTitle}
-                  onMultipleSelect={onMultipleSelect}
-                  onSort={onSort}
-                />
-                {displayNoDataComponent && (
-                  <NoData 
-                    totalColumns={totalColumns} 
-                    noDataText={requestFailed ? requestFailedText : noDataText}
-                  />
-                )}
-                {displayTableData && items.map(item => (
-                  <TableBody
-                    key={item[keyField]}
-                    keyField={keyField}
-                    item={item}
-                    selectedItems={selectedItems}
-                    bootstrapCheckbox={bootstrapCheckbox}
-                    actionsComponent={actionsComponent}
-                    expandRow={expandRow}
-                    columns={columns}
-                    totalColumns={totalColumns}
-                    options={options}
-                    translations={translations}
-                    icons={icons}
-                    expandableRowComponent={expandableRowComponent}
-                    onSelect={onSelect}
-                    onExpand={onExpand}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    onAction={onAction}
-                    onColumnClick={onColumnClick}
-                  />
-                ))}
-              </table>
-            </div>
+            <TableBody 
+              {...props}
+              displayData={displayData}
+              displayNoDataComponent={displayNoDataComponent} 
+            />
           )}
         </React.Fragment>
       )}

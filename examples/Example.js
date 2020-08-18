@@ -113,7 +113,7 @@ class Example extends React.Component {
       search: '',
       items: [],
       page: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 12,
       totalItems: 0
     };
 

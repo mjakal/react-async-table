@@ -1,186 +1,86 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Checkbox from '../Checkbox/Checkbox';
-import { isEmpty } from '../../helpers/helpers';
+import TableHeader from '../TableHeader/TableHeader';
+import TableItem from './TableItem';
+import { NoData } from '../../ReactAsyncTableComponents';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
-  item: PropTypes.object.isRequired,
-  selectedItems: PropTypes.object.isRequired,
-  bootstrapCheckbox: PropTypes.bool.isRequired,
-  expandRow: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  requestFailed: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  totalColumns: PropTypes.number.isRequired,
+  items: PropTypes.array.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  gridView: PropTypes.bool.isRequired,
+  tableClass: PropTypes.string.isRequired,
+  tableHeaderClass: PropTypes.string.isRequired,
+  bootstrapCheckbox: PropTypes.bool.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
-  actionsComponent: PropTypes.func,
+  loader: PropTypes.func.isRequired,
+  actionsComponent: PropTypes.func.isRequired,
   expandableRowComponent: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onExpand: PropTypes.func.isRequired,
+  displayData: PropTypes.bool.isRequired,
+  displayNoDataComponent: PropTypes.bool.isRequired,
+  onChangePage: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onAction: PropTypes.func,
-  onColumnClick: PropTypes.func.isRequired
+  onAction: PropTypes.func.isRequired,
+  onColumnClick: PropTypes.func.isRequired,
+  selectedItems: PropTypes.object.isRequired,
+  expandRow: PropTypes.object.isRequired,
+  selectAllItems: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onMultipleSelect: PropTypes.func.isRequired,
+  onExpand: PropTypes.func.isRequired
 };
 
 const TableBody = props => {
   const {
     keyField,
-    item,
-    selectedItems,
-    bootstrapCheckbox,
-    expandRow,
+    requestFailed,
     columns,
+    items,
+    tableClass,
+    options,
     translations,
-    icons,
-    actionsComponent,
-    expandableRowComponent,
-    totalColumns,
-    options
+    displayData,
+    displayNoDataComponent
   } = props;
-  const itemID = item[keyField];
-  const checkboxID = `${keyField}_${itemID}`;
-  const { editAction, deleteAction } = translations;
-  const { expandIcon, editActionIcon, deleteActionIcon } = icons;
-  const isExpandable = options.expandable;
-  const ExpandableComponent = expandableRowComponent;
+  const { noDataText,requestFailedText } = translations;
 
-  const onExpand = () => props.onExpand(itemID);
-  const onEdit = () => {
-    props.onEdit(itemID, item);
-  };
-  const onDelete = () => {
-    props.onDelete(itemID);
-  };
-  const onAction = (e, type) => {
-    switch (type) {
-      case 'EDIT_ITEM':
-        props.onEdit(itemID, item);
-        return;
-      case 'DELETE_ITEM': 
-        props.onDelete(itemID);
-        return;
-      default:
-        break;
-    }
-
-    props.onAction(type, item);
-  };
-
-  const ColumnComponent = ({ column }) => {
-    // Early exit if row has no data
-    if (isEmpty(item)) return (<td />);
-
-    const Component = column.formatedField;
-    const columnKey = column.dataField || '';
-
-    return (
-      <td>
-        {Component ? (
-          <Component
-            columnKey={columnKey}
-            row={item}
-            onColumnClick={props.onColumnClick}
-          />
-        ) : (
-          <span>{item[columnKey]}</span>
-        )}
-      </td>
-    );
-  };
-
-  ColumnComponent.propTypes = { column: PropTypes.object.isRequired };
-
-  const ActionsComponent = () => {
-    const Component = actionsComponent;
-
-    return (
-      <td className="action-col">
-        {Component ? (
-          <Component row={item} onAction={onAction} />
-        ) : (
-          <span>
-            <button
-              type="button"
-              className="btn btn-link"
-              onClick={onEdit}
-              data-html="true"
-              data-toggle="tooltip"
-              title={editAction}
-            >
-              {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
-            </button>
-            <button
-              type="button"
-              className="btn btn-link"
-              data-toggle="tooltip"
-              title={deleteAction}
-              onClick={onDelete}
-            >
-              {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
-            </button>
-          </span>
-        )}
-      </td>
-    );
-  };
+  // Set number of table columns
+  const totalColumns = columns.length +
+    (options.multipleSelect ? 1 : 0) +
+    (options.expandable ? 1 : 0) +
+    (options.actionsColumn ? 1 : 0);
 
   return (
-    <tbody>
-      <tr>
-        {options.multipleSelect && (
-          <td className="body-checkbox">
-            {bootstrapCheckbox ? (
-              <Checkbox
-                id={checkboxID}
-                name={`${itemID}`}
-                onChange={props.onSelect}
-                checked={selectedItems[itemID] || false}
-              />
-            ) : (
-              <div className="form-check">
-                <input
-                  className="form-check-input position-static"
-                  type="checkbox"
-                  name={`${itemID}`}
-                  onChange={props.onSelect}
-                  checked={selectedItems[itemID] || false}
-                />
-              </div>
-            )}
-          </td>
+    <div className="table-responsive">
+      <table className={`table async-table-style ${tableClass}`}>
+        <TableHeader {...props} />
+        {displayNoDataComponent && (
+          <NoData 
+            totalColumns={totalColumns} 
+            noDataText={requestFailed ? requestFailedText : noDataText}
+          />
         )}
-        {isExpandable && (
-          <td>
-            <button 
-              type="button"
-              className="btn btn-link"
-              data-html="true"
-              data-toggle="tooltip"
-              title="Expand"
-              onClick={onExpand}>
-              {expandIcon ? <i className={expandIcon} /> : <span>&#8661;</span>}
-            </button>
-          </td>
-        )}
-        {columns.map((column, index) => (
-          <ColumnComponent key={index} column={column} />
+        {displayData && items.map(item => (
+          <TableItem
+            key={item[keyField]}
+            {...props}
+            item={item}
+            totalColumns={totalColumns}
+          />
         ))}
-        {options.actionsColumn && (
-          <ActionsComponent />
-        )}
-      </tr>
-      {isExpandable && (
-        <tr className={`collapse ${expandRow[itemID] ? 'show' : ''}`}>
-          <td colSpan={totalColumns}>
-            <ExpandableComponent row={item} />
-          </td>
-        </tr>
-      )}
-    </tbody>
+      </table>
+    </div>
   );
-};
+}
 
 TableBody.propTypes = propTypes;
 export default TableBody;

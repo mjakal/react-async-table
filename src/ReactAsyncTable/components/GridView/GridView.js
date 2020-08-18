@@ -9,6 +9,7 @@ const propTypes = {
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
+  displayNoDataComponent: PropTypes.bool.isRequired,
   actionsComponent: PropTypes.func,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
@@ -23,9 +24,17 @@ const GridView = props => {
     columns,
     translations,
     icons,
+    displayNoDataComponent,
     actionsComponent,
     options
   } = props;
+  const {
+    noDataText,
+    requestFailedText,
+    paginationFirst,
+    paginationLast
+  } = translations;
+  
   // const itemID = item[keyField];
   const itemID = 0;
   const { editAction, deleteAction } = translations;
@@ -77,22 +86,27 @@ const GridView = props => {
   };
 
   return (
-    <div className="row">
-      {items.map(item => (
-        <div 
-          key={item[keyField]}
-          className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12"
-        >
-          <div className="card">
-            <div className="card-body">
-              {columns.map((column, index) => (
-                <ColumnComponent key={index} item={item} column={column} />
-              ))}
+    <React.Fragment>
+      {displayNoDataComponent && (
+        <p className="text-center font-weight-normal">{requestFailed ? requestFailedText : noDataText}</p>
+      )}
+      <div className="row">
+        {items.map(item => (
+          <div 
+            key={item[keyField]}
+            className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12"
+          >
+            <div className="card">
+              <div className="card-body">
+                {columns.map((column, index) => (
+                  <ColumnComponent key={index} item={item} column={column} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </React.Fragment>
   );
 };
 

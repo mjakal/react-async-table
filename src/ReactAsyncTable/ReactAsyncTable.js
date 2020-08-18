@@ -175,8 +175,6 @@ class ReactAsyncTable extends Component {
 
     if (gridView === gridViewState) return;
 
-    console.log("grid enabled:", gridViewState);
-
     this.setState({ gridView: gridViewState });
   }
 
