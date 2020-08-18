@@ -66,7 +66,7 @@ const BodySection = props => {
         </div>
       ) : (
         <React.Fragment>
-          {(displayData && gridView) ? (
+          {gridView ? (
             <GridView 
               {...props}
               displayNoDataComponent={displayNoDataComponent}
