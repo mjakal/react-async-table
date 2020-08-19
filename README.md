@@ -16,6 +16,7 @@ If you want to bring balance to the force and want a simple but flexible solutio
 - Customizable loading screen
 - Customizable expandable rows
 - Customizable columns
+- Customizable Grid View
 - CRUD Buttons with customizable icons
 - Translatable
 - Pagination
@@ -120,6 +121,53 @@ const ExampleHeaderActions = ({ onHeaderAction }) => (
   </span>
 );
 
+const ExampleGridItemComponent = ({ row, onAction }) => {
+  const columnIcon = row['completed'] ? 'fa fa-check' : 'fa fa-times';
+  const columnText = row['completed'] ? 'Completed' : 'Pending';
+
+  return (
+    <div className="card mb-2">
+      <div className="card-header">Task</div>
+      <div className="card-body" style={{ height: '80px' }}>
+        <p>{row["title"]}</p>
+      </div>
+      <div className="card-footer">
+        <span style={{ lineHeight: '2rem'}}><i className={columnIcon} /> {columnText}</span>
+        <span className="float-right">
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={e => onAction(e, 'EDIT_ITEM')}
+            data-html="true"
+            data-toggle="tooltip"
+            title="Edit Item"
+          >
+            <i className="fa fa-pencil" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Custom Action"
+            onClick={e => onAction(e, 'CUSTOM_ACTION')}
+          >
+            <i className="fa fa-plus" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Delete Item"
+            onClick={e => onAction(e, 'DELETE_ITEM')}
+          >
+            <i className="fa fa-minus" />
+          </button>
+        </span>
+      </div>
+    </div>
+  )
+};
+
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
@@ -205,7 +253,7 @@ class Example extends React.Component {
       search: '',
       items: [],
       page: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 12,
       totalItems: 0
     };
 
@@ -244,6 +292,7 @@ class Example extends React.Component {
   }
 
   onSearch(search) {
+    console.log("query", search);
     this.setState({ search, page: 1, isLoading: true });
     this.fakeAsyncAction();
   }
@@ -258,9 +307,10 @@ class Example extends React.Component {
     console.log('onInsert handler');
   }
 
-  onEdit(rowID) {
+  onEdit(rowID, row) {
     console.log('onEdit handler');
     console.log('id:', rowID);
+    console.log('row:', row);
   }
 
   onDelete(rowID, page) {
@@ -306,11 +356,17 @@ class Example extends React.Component {
           <CardBody>
             <ReactAsyncTable
               keyField="id"
+              activeTabID=""
               isLoading={isLoading}
               query={search}
+              splitHeaderSection={false}
+              displayGridView={true}
+              bootstrapCheckbox={false}
               requestFailed={false}
               columns={columns}
               items={items}
+              tableClass="table-outline"
+              tableHeaderClass="htead-light"
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
@@ -347,6 +403,7 @@ class Example extends React.Component {
               }}
               loader={ExampleLoader}
               headerActions={ExampleHeaderActions}
+              gridItemComponent={ExampleGridItemComponent}
               actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}
