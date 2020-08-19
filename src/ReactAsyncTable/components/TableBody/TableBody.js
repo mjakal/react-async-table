@@ -6,37 +6,14 @@ import { NoData } from '../../ReactAsyncTableComponents';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   requestFailed: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  itemsPerPage: PropTypes.number.isRequired,
-  totalItems: PropTypes.number.isRequired,
-  gridView: PropTypes.bool.isRequired,
   tableClass: PropTypes.string.isRequired,
-  tableHeaderClass: PropTypes.string.isRequired,
-  bootstrapCheckbox: PropTypes.bool.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
-  icons: PropTypes.objectOf(PropTypes.string).isRequired,
-  loader: PropTypes.func.isRequired,
-  actionsComponent: PropTypes.func.isRequired,
-  expandableRowComponent: PropTypes.func.isRequired,
   displayData: PropTypes.bool.isRequired,
-  displayNoDataComponent: PropTypes.bool.isRequired,
-  onChangePage: PropTypes.func.isRequired,
-  onSort: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onAction: PropTypes.func.isRequired,
-  onColumnClick: PropTypes.func.isRequired,
-  selectedItems: PropTypes.object.isRequired,
-  expandRow: PropTypes.object.isRequired,
-  selectAllItems: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onMultipleSelect: PropTypes.func.isRequired,
-  onExpand: PropTypes.func.isRequired
+  displayNoDataComponent: PropTypes.bool.isRequired
 };
 
 const TableBody = props => {
