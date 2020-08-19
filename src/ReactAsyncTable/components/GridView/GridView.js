@@ -11,6 +11,7 @@ const propTypes = {
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
   displayNoDataComponent: PropTypes.bool.isRequired,
+  gridItemComponent: PropTypes.func.isRequired,
   actionsComponent: PropTypes.func,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
@@ -22,91 +23,47 @@ const GridView = props => {
   const {
     keyField,
     items,
-    columns,
     requestFailed,
     translations,
-    icons,
     displayNoDataComponent,
-    actionsComponent,
-    options
+    gridItemComponent,
   } = props;
-  const {
-    noDataText,
-    requestFailedText,
-    paginationFirst,
-    paginationLast
-  } = translations;
+  const { noDataText, requestFailedText } = translations;
+
+  const GridItemComponent = gridItemComponent;
   
-  // const itemID = item[keyField];
-  const itemID = 0;
-  const { editAction, deleteAction } = translations;
-  const { editActionIcon, deleteActionIcon } = icons;
-
-  const onEdit = () => {
-    // props.onEdit(itemID, item);
-  };
-
-  const onDelete = () => {
-    // props.onDelete(itemID);
-  };
-
-  const onAction = (e, type) => {
-    switch (type) {
-      case 'EDIT_ITEM':
-        props.onEdit(itemID, item);
-        return;
-      case 'DELETE_ITEM': 
-        props.onDelete(itemID);
-        return;
-      default:
-        break;
-    }
-
-    props.onAction(type, item);
-  };
-
-  const ColumnComponent = ({ item, column }) => {
-    // Early exit if row has no data
-    if (isEmpty(item)) return (<td />);
-
-    const Component = column.formatedField;
-    const columnKey = column.dataField || '';
-
-    return (
-      <div>
-        {Component ? (
-          <Component
-            columnKey={columnKey}
-            row={item}
-            onColumnClick={props.onColumnClick}
-          />
-        ) : (
-          <span>{item[columnKey]}</span>
-        )}
-      </div>
-    );
-  };
-
   return (
     <React.Fragment>
       {displayNoDataComponent && (
         <p className="text-center font-weight-normal">{requestFailed ? requestFailedText : noDataText}</p>
       )}
       <div className="row">
-        {items.map(item => (
-          <div 
-            key={item[keyField]}
-            className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12"
-          >
-            <div className="card">
-              <div className="card-body">
-                {columns.map((column, index) => (
-                  <ColumnComponent key={index} item={item} column={column} />
-                ))}
-              </div>
+        {items.map(item => {
+          const itemID = item[keyField];
+
+          const onAction = (e, type) => {
+            switch (type) {
+              case 'EDIT_ITEM':
+                props.onEdit(itemID, item);
+                return;
+              case 'DELETE_ITEM': 
+                props.onDelete(itemID);
+                return;
+              default:
+                break;
+            }
+        
+            props.onAction(type, item);
+          };
+
+          return (
+            <div 
+              key={item[keyField]}
+              className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12"
+            >
+              <GridItemComponent row={item} onAction={onAction} />
             </div>
-          </div>
-        ))}
+          )})}
       </div>
     </React.Fragment>
   );

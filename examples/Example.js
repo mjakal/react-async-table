@@ -28,6 +28,53 @@ const ExampleHeaderActions = ({ onHeaderAction }) => (
   </span>
 );
 
+const ExampleGridItemComponent = ({ row, onAction }) => {
+  const columnIcon = row['completed'] ? 'fa fa-check' : 'fa fa-times';
+  const columnText = row['completed'] ? 'Completed' : 'Pending';
+  
+  return (
+    <div className="card mb-2">
+      <div className="card-header">Task</div>
+      <div className="card-body" style={{ height: '80px' }}>
+        <p>{row["title"]}</p>
+      </div>
+      <div className="card-footer">
+        <span style={{ lineHeight: '2rem'}}><i className={columnIcon} /> {columnText}</span>
+        <span className="float-right">
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={e => onAction(e, 'EDIT_ITEM')}
+            data-html="true"
+            data-toggle="tooltip"
+            title="Edit Item"
+          >
+            <i className="fa fa-pencil" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Custom Action"
+            onClick={e => onAction(e, 'CUSTOM_ACTION')}
+          >
+            <i className="fa fa-plus" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Delete Item"
+            onClick={e => onAction(e, 'DELETE_ITEM')}
+          >
+            <i className="fa fa-minus" />
+          </button>
+        </span>
+      </div>
+    </div>
+  )
+};
+
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
@@ -263,6 +310,7 @@ class Example extends React.Component {
               }}
               loader={ExampleLoader}
               headerActions={ExampleHeaderActions}
+              gridItemComponent={ExampleGridItemComponent}
               actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}

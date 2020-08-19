@@ -5,6 +5,18 @@ export const Loader = () => (
   <p>Loading data, please wait...</p>
 );
 
+export const GridItemComponent = ({ row }) => (
+  <div className="card">
+    <div className="card-body">
+      <p>Missing GridItem Component</p>
+    </div>
+  </div>
+);
+
+GridItemComponent.propTypes = {
+  row: PropTypes.object.isRequired
+};
+
 const NoData = ({ totalColumns, noDataText }) => (
   <tbody>
     <tr>

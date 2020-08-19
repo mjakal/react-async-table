@@ -14,7 +14,7 @@ import {
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
-import { Loader, ExpandableRowComponent } from './ReactAsyncTableComponents';
+import { Loader, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
@@ -47,6 +47,7 @@ const propTypes = {
   loader: PropTypes.func,
   actionsComponent: PropTypes.func,
   headerActions: PropTypes.func,
+  gridItemComponent: PropTypes.func,
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
@@ -107,6 +108,7 @@ const defaultProps = {
     deleteActionIcon: '',
   },
   loader: Loader,
+  gridItemComponent: GridItemComponent,
   expandableRowComponent: ExpandableRowComponent,
   onChangePage: onChangePage,
   onSearch: onSearch,
