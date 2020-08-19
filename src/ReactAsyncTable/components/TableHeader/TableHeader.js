@@ -80,7 +80,7 @@ const TableHeader = props => {
                 className="sort-icon"
                 data-html="true"
                 data-toggle="tooltip"
-                title={column.tooltip}
+                title={sortTitle}
               >
                 {sortIcon ? <i className={sortIcon} /> : <i>&#8661;</i>}
               </span>
