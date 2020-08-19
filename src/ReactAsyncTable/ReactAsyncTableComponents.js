@@ -5,7 +5,7 @@ export const Loader = () => (
   <p>Loading data, please wait...</p>
 );
 
-export const GridItemComponent = ({ row }) => (
+export const GridItemComponent = () => (
   <div className="card">
     <div className="card-body">
       <p>Missing GridItem Component</p>
@@ -14,7 +14,8 @@ export const GridItemComponent = ({ row }) => (
 );
 
 GridItemComponent.propTypes = {
-  row: PropTypes.object.isRequired
+  row: PropTypes.object.isRequired,
+  onAction: PropTypes.object.isRequired
 };
 
 const NoData = ({ totalColumns, noDataText }) => (

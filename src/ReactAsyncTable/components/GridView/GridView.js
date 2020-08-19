@@ -1,22 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../helpers/helpers';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   requestFailed: PropTypes.bool.isRequired,
-  options: PropTypes.objectOf(PropTypes.bool).isRequired,
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
-  icons: PropTypes.objectOf(PropTypes.string).isRequired,
   displayNoDataComponent: PropTypes.bool.isRequired,
   gridItemComponent: PropTypes.func.isRequired,
-  actionsComponent: PropTypes.func,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onAction: PropTypes.func,
-  onColumnClick: PropTypes.func.isRequired
+  onAction: PropTypes.func.isRequired
 };
 
 const GridView = props => {
