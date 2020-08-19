@@ -58,7 +58,11 @@ const TableHeader = props => {
         )}
         {options.expandable && (<th></th>)}
         {columns.map((column, index) => (
-          <th key={index}>
+          <th 
+            key={index}
+            onClick={event => { column.sort ? onSort(column.dataField) : event.preventDefault();}}
+            style={{ cursor: `${column.sort ? 'pointer' : 'default'}`}}
+          >
             {column.text}
             {column.tooltip && (
               <button 
@@ -72,16 +76,14 @@ const TableHeader = props => {
               </button>
             )}
             {column.sort && (
-              <button
-                type="button"
-                className="btn btn-link sort-button"
+              <span 
+                className="sort-icon"
                 data-html="true"
                 data-toggle="tooltip"
-                title={sortTitle}
-                onClick={() => onSort(column.dataField)}
+                title={column.tooltip}
               >
                 {sortIcon ? <i className={sortIcon} /> : <i>&#8661;</i>}
-              </button>
+              </span>
             )}
           </th>
         ))}

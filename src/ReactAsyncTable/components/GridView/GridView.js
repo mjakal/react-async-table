@@ -39,15 +39,14 @@ const GridView = props => {
             switch (type) {
               case 'EDIT_ITEM':
                 props.onEdit(itemID, item);
-                return;
+                break;
               case 'DELETE_ITEM': 
                 props.onDelete(itemID);
-                return;
+                break;
               default:
+                props.onAction(type, item);
                 break;
             }
-        
-            props.onAction(type, item);
           };
 
           return (
