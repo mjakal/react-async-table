@@ -14,6 +14,7 @@ import {
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
+import ConditionalWrapper from './components/ConditionalWrapper/ConditionalWrapper';
 import { Loader, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
@@ -35,8 +36,6 @@ const propTypes = {
   layoutType: PropTypes.string,
   bootstrapCheckbox: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
-  tableHeader: PropTypes.string,
-  tableHeaderIcon: PropTypes.string,
   tableClass: PropTypes.string,
   insertButtonClass: PropTypes.string,
   deleteButtonClass: PropTypes.string,
@@ -68,8 +67,6 @@ const defaultProps = {
   activeTabID: '',
   delay: 300,
   displayHeaderSection: true,
-  tableHeaderIcon: '',
-  tableHeader: '',
   splitHeaderSection: false,
   layoutType: 'LIST_VIEW',
   bootstrapCheckbox: false,
@@ -77,40 +74,9 @@ const defaultProps = {
   insertButtonClass: 'btn btn-primary',
   deleteButtonClass: 'btn btn-danger',
   tableHeaderClass: '',
-  options: {
-    searchBox: true,
-    insertButton: false,
-    multipleSelect: false,
-    expandable: false,
-    actionsColumn: false,
-    pagination: true
-  },
-  translations: {
-    searchPlaceholder: 'Search...',
-    addButton: 'Add',
-    deleteButton: 'Delete',
-    listViewTitle: "List View",
-    gridViewTitle: "Grid View",
-    sortTitle: 'Sort',
-    actionsColumnTitle: 'Actions',
-    editAction: 'Edit',
-    deleteAction: 'Delete',
-    noDataText: 'No data found',
-    requestFailedText: 'API request failed',
-    paginationFirst: 'First',
-    paginationLast: 'Last'
-  },
-  icons: {
-    addButtonIcon: 'fa fa-plus',
-    deleteButtonIcon: 'fa fa-trash',
-    listViewIcon: "fa fa-list",
-    gridViewIcon: "fa fa-th",
-    tooltipIcon: 'fa fa-question',
-    sortIcon: 'fa fa-sort',
-    expandIcon: 'fa fa-expand',
-    editActionIcon: 'fa fa-pencil',
-    deleteActionIcon: 'fa fa-trash',
-  },
+  options: {},
+  translations: {},
+  icons: {},
   loader: Loader,
   gridItemComponent: GridItemComponent,
   expandableRowComponent: ExpandableRowComponent,
@@ -124,6 +90,43 @@ const defaultProps = {
   onHeaderAction: onHeaderAction,
   onAction: onAction,
   onColumnClick: onColumnClick,
+};
+
+const defaultOptions = {
+  searchBox: true,
+  insertButton: false,
+  multipleSelect: false,
+  expandable: false,
+  actionsColumn: false,
+  pagination: true
+};
+
+const defaultTranslations = {
+  searchPlaceholder: 'Search...',
+  addButton: 'Add',
+  deleteButton: 'Delete',
+  listViewTitle: "List View",
+  gridViewTitle: "Grid View",
+  sortTitle: 'Sort',
+  actionsColumnTitle: 'Actions',
+  editAction: 'Edit',
+  deleteAction: 'Delete',
+  noDataText: 'No data found',
+  requestFailedText: 'API request failed',
+  paginationFirst: 'First',
+  paginationLast: 'Last'
+};
+
+const defaultIcons = {
+  addButtonIcon: 'fa fa-plus',
+  deleteButtonIcon: 'fa fa-trash',
+  listViewIcon: "fa fa-list",
+  gridViewIcon: "fa fa-th",
+  tooltipIcon: 'fa fa-question',
+  sortIcon: 'fa fa-sort',
+  expandIcon: 'fa fa-expand',
+  editActionIcon: 'fa fa-pencil',
+  deleteActionIcon: 'fa fa-trash',
 };
 
 class ReactAsyncTable extends Component {
@@ -168,8 +171,10 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { items, options } = this.props;
+
     // reset selected items on items array update
-    if (this.props.options.multipleSelect && prevProps.items !== this.props.items) {
+    if (options.multipleSelect && prevProps.items !== items) {
       this.setState({
         selectedCount: 0,
         selectAllItems: false,
@@ -281,83 +286,80 @@ class ReactAsyncTable extends Component {
   render() {
     const { selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
     const {
-      tableHeaderIcon,
-      tableHeader,
       displayHeaderSection,
       splitHeaderSection,
       delay,
       onSearch
     } = this.props;
+    
+    // Set default values to options/translations/icons props
+    const options = {
+      ...defaultOptions,
+      ...this.props.options
+    };
+    const translations={
+      ...defaultTranslations,
+      ...this.props.translations
+    };
+    const icons={
+      ...defaultIcons,
+      ...this.props.icons
+    };
 
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
     }, delay);
-    
+
     return (
       <div className="animated fadeIn">
-        {splitHeaderSection ? (
-          <React.Fragment>
-            {displayHeaderSection && (
-              <div className="card async-table-card-filter">
-                {tableHeader && (
-                  <div className="card-header">
-                    {tableHeaderIcon && (<i className={tableHeaderIcon} />)}
-                    {tableHeader}
-                  </div>
-                )}
-                <div className="card-body">
-                  <HeaderSection
-                    {...this.props} 
-                    selectedCount={selectedCount}
-                    gridView={gridView}
-                    toggleGridView={this.toggleGridView}
-                    debounceSearch={debounceSearch}
-                    onMultipleDelete={this.onMultipleDelete} 
-                  />
-                </div>
-              </div>
-            )}
-            <div className="card async-table-card-content">
+        <ConditionalWrapper 
+          condition={splitHeaderSection && displayHeaderSection}
+          wrap={children => (
+            <div className="card async-table-card-filter">
               <div className="card-body">
-                <BodySection 
-                  {...this.props} 
-                  gridView={gridView}
-                  selectedItems={selectedItems}
-                  expandRow={expandRow}
-                  selectAllItems={selectAllItems} 
-                  onSelect={this.onSelect}
-                  onMultipleSelect={this.onMultipleSelect}
-                  onDelete={this.onDelete}
-                  onExpand={this.onExpand}
-                  onSort={this.onSort}
-                />
+                {children}
               </div>
             </div>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <HeaderSection
-              {...this.props} 
-              selectedCount={selectedCount}
-              gridView={gridView}
-              toggleGridView={this.toggleGridView}
-              debounceSearch={debounceSearch}
-              onMultipleDelete={this.onMultipleDelete} 
-            />
-            <BodySection 
-              {...this.props} 
-              gridView={gridView}
-              selectedItems={selectedItems}
-              expandRow={expandRow}
-              selectAllItems={selectAllItems} 
-              onSelect={this.onSelect}
-              onMultipleSelect={this.onMultipleSelect}
-              onDelete={this.onDelete}
-              onExpand={this.onExpand}
-              onSort={this.onSort}
-            />
-          </React.Fragment>
-        )}
+          )}
+        >
+          <HeaderSection
+            {...this.props} 
+            selectedCount={selectedCount}
+            gridView={gridView}
+            toggleGridView={this.toggleGridView}
+            debounceSearch={debounceSearch}
+            options={options}
+            translations={translations}
+            icons={icons}
+            onMultipleDelete={this.onMultipleDelete} 
+          />
+        </ConditionalWrapper>
+        <ConditionalWrapper 
+          condition={splitHeaderSection}
+          wrap={children => (
+            <div className="card async-table-card-content">
+              <div className="card-body">
+                {children}
+              </div>
+            </div>
+          )}
+        >
+          <BodySection 
+            {...this.props} 
+            gridView={gridView}
+            selectedItems={selectedItems}
+            options={options}
+            translations={translations}
+            icons={icons}
+            expandRow={expandRow}
+            selectAllItems={selectAllItems} 
+            onSelect={this.onSelect}
+            onMultipleSelect={this.onMultipleSelect}
+            onDelete={this.onDelete}
+            onExpand={this.onExpand}
+            onSort={this.onSort}
+          />
+        </ConditionalWrapper>
       </div>
     );
   }

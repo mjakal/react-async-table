@@ -272,6 +272,7 @@ class Example extends React.Component {
               activeTabID=""
               isLoading={isLoading}
               query={search}
+              displayHeaderSection={true}
               splitHeaderSection={false}
               layoutType="FLEX_VIEW" // available layout types: LIST_VIEW, GRID_VIEW, FLEX_VIEW
               bootstrapCheckbox={false}
@@ -279,7 +280,7 @@ class Example extends React.Component {
               columns={columns}
               items={items}
               tableClass="table-outline"
-              tableHeaderClass="htead-light"
+              tableHeaderClass="thead-light"
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
