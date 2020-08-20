@@ -107,16 +107,22 @@ const ExampleHeaderActions = ({ onHeaderAction }) => (
     <button
       type="button"
       className="btn btn-secondary"
+      data-html="true"
+      data-toggle="tooltip"
+      title="Action 1"
       onClick={e => onHeaderAction('HEADER_ACTION_1')}
     >
-      Action 1
+      <i className="fa fa-pencil" />
     </button>
     <button
       type="button"
       className="btn btn-secondary"
+      data-html="true"
+      data-toggle="tooltip"
+      title="Action 2"
       onClick={e => onHeaderAction('HEADER_ACTION_2')}
     >
-      Action 2
+      <i className="fa fa-wrench" />
     </button>
   </span>
 );
@@ -383,6 +389,8 @@ class Example extends React.Component {
                 searchPlaceholder: 'Search...',
                 addButton: 'Add',
                 deleteButton: 'Delete',
+                listViewTitle: "List View",
+                gridViewTitle: "Grid View",
                 sortTitle: 'Sort',
                 actionsColumnTitle: 'Actions',
                 editAction: 'Edit',
@@ -395,6 +403,8 @@ class Example extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                listViewIcon: "fa fa-list",
+                gridViewIcon: "fa fa-th",
                 tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
                 expandIcon: 'fa fa-expand',

@@ -55,3 +55,9 @@
 .async-table-header-section {
   margin-bottom: 0px;
 }
+
+@media only screen and (max-width: 768px) {
+  .async-table-header-actions {
+    margin-top: 1rem;
+  }
+}
