@@ -106,18 +106,18 @@ const TableItem = props => {
               onClick={onEdit}
               data-html="true"
               data-toggle="tooltip"
-              title={editAction ? editAction : 'Edit'}
+              title={editAction}
             >
-              {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
+              <i className={editActionIcon} />
             </button>
             <button
               type="button"
               className="btn btn-link"
               data-toggle="tooltip"
-              title={deleteAction ? deleteAction : 'Delete'}
+              title={deleteAction}
               onClick={onDelete}
             >
-              {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
+              <i className={deleteActionIcon} />
             </button>
           </span>
         )}
@@ -159,7 +159,7 @@ const TableItem = props => {
               data-toggle="tooltip"
               title="Expand"
               onClick={onExpand}>
-              {expandIcon ? <i className={expandIcon} /> : <span>&#8661;</span>}
+              <i className={expandIcon} />
             </button>
           </td>
         )}

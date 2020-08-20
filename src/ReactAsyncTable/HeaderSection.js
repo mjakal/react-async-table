@@ -82,22 +82,22 @@ const HeaderSection = props => {
                     className="btn btn-light"
                     data-html="true"
                     data-toggle="tooltip"
-                    title={listViewTitle ? listViewTitle : 'List View'}
+                    title={listViewTitle}
                     onClick={() => toggleGridView(false)}
                     disabled={requestFailed || isLoading}
                   >
-                    <i className={listViewIcon ? listViewIcon : 'fa fa-list'} />
+                    <i className={listViewIcon} />
                   </button>
                   <button 
                     type="button" 
                     className="btn btn-light"
                     data-html="true"
                     data-toggle="tooltip"
-                    title={gridViewTitle ? gridViewTitle : 'Grid View'}
+                    title={gridViewTitle}
                     onClick={() => toggleGridView(true)}
                     disabled={requestFailed || isLoading}
                   >
-                    <i className={gridViewIcon ? gridViewIcon : 'fa fa-th'} />
+                    <i className={gridViewIcon} />
                   </button>
                 </React.Fragment>
               )}
@@ -107,11 +107,11 @@ const HeaderSection = props => {
                   className={insertButtonClass}
                   data-html="true"
                   data-toggle="tooltip"
-                  title={addButton ? addButton : 'Add'}
+                  title={addButton}
                   onClick={onInsert}
                   disabled={requestFailed || isLoading}
                 >
-                  <i className={addButtonIcon ? addButtonIcon : 'fa fa-plus'} />
+                  <i className={addButtonIcon} />
                 </button>
               )}
               {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
@@ -121,11 +121,11 @@ const HeaderSection = props => {
                   className={deleteButtonClass}
                   data-html="true"
                   data-toggle="tooltip"
-                  title={`${deleteButton ? deleteButton : 'Delete'} (${selectedCount})`}
+                  title={`${deleteButton} (${selectedCount})`}
                   onClick={onMultipleDelete}
                   disabled={selectedCount === 0}
                 >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />}
+                  <i className={deleteButtonIcon} />
                 </button>
               )}
             </span>
