@@ -89,6 +89,8 @@ const defaultProps = {
     searchPlaceholder: 'Search...',
     addButton: 'Add',
     deleteButton: 'Delete',
+    listViewTitle: "List View",
+    gridViewTitle: "Grid View",
     sortTitle: 'Sort',
     actionsColumnTitle: 'Actions',
     editAction: 'Edit',

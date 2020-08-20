@@ -64,7 +64,7 @@ const HeaderSection = props => {
     <React.Fragment>
       {displayHeaderSection && (
         <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
-          <div className="col-md-6">
+          <div className="col-xl-4 col-lg-6 col-md-6">
             {options.searchBox && (
               <SearchBox
                 placeholder={searchPlaceholder}
@@ -73,7 +73,7 @@ const HeaderSection = props => {
               />
             )}
           </div>
-          <div className="col-md-6">
+          <div className="col-xl-8 col-lg-6 col-md-6">
             <span className="float-right async-table-header-actions">
               {layoutType === 'FLEX_VIEW' && (
                 <React.Fragment>
