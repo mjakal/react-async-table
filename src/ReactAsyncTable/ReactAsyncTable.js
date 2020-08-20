@@ -32,7 +32,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   splitHeaderSection: PropTypes.bool,
-  displayGridView: PropTypes.bool,
+  layoutType: PropTypes.string,
   bootstrapCheckbox: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
   tableHeader: PropTypes.string,
@@ -71,7 +71,7 @@ const defaultProps = {
   tableHeaderIcon: '',
   tableHeader: '',
   splitHeaderSection: false,
-  displayGridView: false,
+  layoutType: 'LIST_VIEW',
   bootstrapCheckbox: false,
   tableClass: '',
   insertButtonClass: 'btn btn-primary',
@@ -99,13 +99,15 @@ const defaultProps = {
     paginationLast: 'Last'
   },
   icons: {
-    addButtonIcon: '',
-    deleteButtonIcon: '',
-    tooltipIcon: '',
-    sortIcon: '',
-    expandIcon: '',
-    editActionIcon: '',
-    deleteActionIcon: '',
+    addButtonIcon: 'fa fa-plus',
+    deleteButtonIcon: 'fa fa-trash',
+    listViewIcon: "fa fa-list",
+    gridViewIcon: "fa fa-th",
+    tooltipIcon: 'fa fa-question',
+    sortIcon: 'fa fa-sort',
+    expandIcon: 'fa fa-expand',
+    editActionIcon: 'fa fa-pencil',
+    deleteActionIcon: 'fa fa-trash',
   },
   loader: Loader,
   gridItemComponent: GridItemComponent,
@@ -146,7 +148,10 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidMount() {
-    const { columns } = this.props;
+    const { columns, layoutType } = this.props;
+
+    // Set layout type
+    if (layoutType === 'GRID_VIEW') this.setState({ gridView: true });
 
     // Set the default sort order
     for (const col of columns) {

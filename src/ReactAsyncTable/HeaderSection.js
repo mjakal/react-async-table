@@ -8,7 +8,7 @@ const propTypes = {
   requestFailed: PropTypes.bool.isRequired,
   splitHeaderSection: PropTypes.bool.isRequired,
   displayHeaderSection: PropTypes.bool.isRequired,
-  displayGridView: PropTypes.bool.isRequired,
+  layoutType: PropTypes.string.isRequired,
   insertButtonClass: PropTypes.string.isRequired,
   deleteButtonClass: PropTypes.string.isRequired,
   options: PropTypes.objectOf(PropTypes.bool).isRequired,
@@ -30,7 +30,7 @@ const HeaderSection = props => {
     activeTabID,
     requestFailed,
     displayHeaderSection,
-    displayGridView,
+    layoutType,
     splitHeaderSection,
     insertButtonClass,
     deleteButtonClass,
@@ -47,11 +47,15 @@ const HeaderSection = props => {
   const {
     searchPlaceholder,
     addButton,
-    deleteButton
+    deleteButton,
+    listViewTitle,
+    gridViewTitle
   } = translations;
   const {
     addButtonIcon,
-    deleteButtonIcon
+    deleteButtonIcon,
+    listViewIcon,
+    gridViewIcon
   } = icons;
 
   const HeaderActions = headerActions;
@@ -60,7 +64,7 @@ const HeaderSection = props => {
     <React.Fragment>
       {displayHeaderSection && (
         <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
-          <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
+          <div className="col-md-6">
             {options.searchBox && (
               <SearchBox
                 placeholder={searchPlaceholder}
@@ -69,25 +73,31 @@ const HeaderSection = props => {
               />
             )}
           </div>
-          <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
-            <span className="async-table-header-actions float-right">
-              {displayGridView && (
+          <div className="col-md-6">
+            <span className="float-right async-table-header-actions">
+              {layoutType === 'FLEX_VIEW' && (
                 <React.Fragment>
                   <button 
                     type="button" 
                     className="btn btn-light"
+                    data-html="true"
+                    data-toggle="tooltip"
+                    title={listViewTitle ? listViewTitle : 'List View'}
                     onClick={() => toggleGridView(false)}
                     disabled={requestFailed || isLoading}
                   >
-                    <i className="fa fa-list" />
+                    <i className={listViewIcon ? listViewIcon : 'fa fa-list'} />
                   </button>
                   <button 
                     type="button" 
                     className="btn btn-light"
+                    data-html="true"
+                    data-toggle="tooltip"
+                    title={gridViewTitle ? gridViewTitle : 'Grid View'}
                     onClick={() => toggleGridView(true)}
                     disabled={requestFailed || isLoading}
                   >
-                    <i className="fa fa-th" />
+                    <i className={gridViewIcon ? gridViewIcon : 'fa fa-th'} />
                   </button>
                 </React.Fragment>
               )}
@@ -95,10 +105,13 @@ const HeaderSection = props => {
                 <button 
                   type="button" 
                   className={insertButtonClass}
+                  data-html="true"
+                  data-toggle="tooltip"
+                  title={addButton ? addButton : 'Add'}
                   onClick={onInsert}
                   disabled={requestFailed || isLoading}
                 >
-                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
+                  <i className={addButtonIcon ? addButtonIcon : 'fa fa-plus'} />
                 </button>
               )}
               {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
@@ -106,10 +119,13 @@ const HeaderSection = props => {
                 <button
                   type="button"
                   className={deleteButtonClass}
+                  data-html="true"
+                  data-toggle="tooltip"
+                  title={`${deleteButton ? deleteButton : 'Delete'} (${selectedCount})`}
                   onClick={onMultipleDelete}
                   disabled={selectedCount === 0}
                 >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />} {deleteButton} <span style={{paddingTop: '8px'}} className="badge badge-pill badge-light">{selectedCount}</span>
+                  {deleteButtonIcon && <i className={deleteButtonIcon} />}
                 </button>
               )}
             </span>
