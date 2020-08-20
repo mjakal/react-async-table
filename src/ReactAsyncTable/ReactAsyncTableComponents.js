@@ -1,11 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const Loader = () => (
+const Loader = () => (
   <p>Loading data, please wait...</p>
 );
 
-export const GridItemComponent = () => (
+const CardWrapper = ({ cardClass, children }) => (
+  <div className={`card ${cardClass}` }>
+    <div className="card-body">
+      {children}
+    </div>
+  </div>
+);
+
+CardWrapper.propTypes = { 
+  cardClass: PropTypes.string.isRequired,
+  children: PropTypes.any.isRequired
+};
+
+const GridItemComponent = () => (
   <div className="card">
     <div className="card-body">
       <p>Missing GridItem Component</p>
@@ -42,4 +55,4 @@ const ExpandableRowComponent = () => (
 
 ExpandableRowComponent.propTypes = { row: PropTypes.object };
 
-export { NoData, ExpandableRowComponent };
+export { Loader, CardWrapper, GridItemComponent, NoData, ExpandableRowComponent };

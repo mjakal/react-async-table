@@ -15,7 +15,7 @@ import {
   onColumnClick
 } from './helpers/defaultEvents';
 import ConditionalWrapper from './components/ConditionalWrapper/ConditionalWrapper';
-import { Loader, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
+import { Loader, CardWrapper, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
@@ -315,11 +315,9 @@ class ReactAsyncTable extends Component {
         <ConditionalWrapper 
           condition={splitHeaderSection && displayHeaderSection}
           wrap={children => (
-            <div className="card async-table-card-filter">
-              <div className="card-body">
-                {children}
-              </div>
-            </div>
+            <CardWrapper cardClass="async-table-card-filter">
+              {children}
+            </CardWrapper>
           )}
         >
           <HeaderSection
@@ -337,11 +335,9 @@ class ReactAsyncTable extends Component {
         <ConditionalWrapper 
           condition={splitHeaderSection}
           wrap={children => (
-            <div className="card async-table-card-content">
-              <div className="card-body">
-                {children}
-              </div>
-            </div>
+            <CardWrapper cardClass="async-table-card-content">
+              {children}
+            </CardWrapper>
           )}
         >
           <BodySection 
