@@ -69,8 +69,8 @@ const BodySection = props => {
             pageSize={itemsPerPage}
             items={totalItems}
             onChangePage={onChangePage}
-            firstLink={paginationFirst}
-            lastLink={paginationLast}
+            firstLink={paginationFirst ? paginationFirst : 'First'}
+            lastLink={paginationLast ? paginationLast : 'Last'}
           />
         </div>
       )}

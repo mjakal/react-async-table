@@ -106,7 +106,7 @@ const TableItem = props => {
               onClick={onEdit}
               data-html="true"
               data-toggle="tooltip"
-              title={editAction}
+              title={editAction ? editAction : 'Edit'}
             >
               {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
             </button>
@@ -114,7 +114,7 @@ const TableItem = props => {
               type="button"
               className="btn btn-link"
               data-toggle="tooltip"
-              title={deleteAction}
+              title={deleteAction ? deleteAction : 'Delete'}
               onClick={onDelete}
             >
               {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
