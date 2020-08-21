@@ -6,7 +6,7 @@ const propTypes = {
   selectedCount: PropTypes.number.isRequired,
   isLoading: PropTypes.bool.isRequired,
   requestFailed: PropTypes.bool.isRequired,
-  splitHeaderSection: PropTypes.bool.isRequired,
+  splitView: PropTypes.bool.isRequired,
   displayHeaderSection: PropTypes.bool.isRequired,
   layoutType: PropTypes.string.isRequired,
   insertButtonClass: PropTypes.string.isRequired,
@@ -31,7 +31,7 @@ const HeaderSection = props => {
     requestFailed,
     displayHeaderSection,
     layoutType,
-    splitHeaderSection,
+    splitView,
     insertButtonClass,
     deleteButtonClass,
     options,
@@ -63,7 +63,7 @@ const HeaderSection = props => {
   return (
     <React.Fragment>
       {displayHeaderSection && (
-        <div className={`row form-group ${splitHeaderSection && 'async-table-header-section'}`}>
+        <div className={`row form-group ${splitView && 'async-table-header-section'}`}>
           <div className="col-xl-4 col-lg-6 col-md-6">
             {options.searchBox && (
               <SearchBox

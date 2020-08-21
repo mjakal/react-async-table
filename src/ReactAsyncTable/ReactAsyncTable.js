@@ -32,7 +32,7 @@ const propTypes = {
   itemsPerPage: PropTypes.number,
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
-  splitHeaderSection: PropTypes.bool,
+  splitView: PropTypes.bool,
   layoutType: PropTypes.string,
   bootstrapCheckbox: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
@@ -67,7 +67,7 @@ const defaultProps = {
   activeTabID: '',
   delay: 300,
   displayHeaderSection: true,
-  splitHeaderSection: false,
+  splitView: false,
   layoutType: 'LIST_VIEW',
   bootstrapCheckbox: false,
   tableClass: '',
@@ -287,7 +287,7 @@ class ReactAsyncTable extends Component {
     const { selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
     const {
       displayHeaderSection,
-      splitHeaderSection,
+      splitView,
       delay,
       onSearch
     } = this.props;
@@ -313,7 +313,7 @@ class ReactAsyncTable extends Component {
     return (
       <div className="animated fadeIn">
         <ConditionalWrapper 
-          condition={splitHeaderSection && displayHeaderSection}
+          condition={splitView && displayHeaderSection}
           wrap={children => (
             <CardWrapper cardClass="async-table-card-filter">
               {children}
@@ -333,7 +333,7 @@ class ReactAsyncTable extends Component {
           />
         </ConditionalWrapper>
         <ConditionalWrapper 
-          condition={splitHeaderSection}
+          condition={splitView}
           wrap={children => (
             <CardWrapper cardClass="async-table-card-content">
               {children}

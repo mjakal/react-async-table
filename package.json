@@ -1,6 +1,6 @@
 {
   "name": "react-async-table",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "description": "React Bootstrap Async Table",
   "main": "./dist/index.js",
   "author": {

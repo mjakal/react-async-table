@@ -365,14 +365,15 @@ class Example extends React.Component {
               activeTabID=""
               isLoading={isLoading}
               query={search}
-              splitHeaderSection={false}
+              displayHeaderSection={true}
+              splitView={false}
               layoutType="FLEX_VIEW" // available layout types: LIST_VIEW, GRID_VIEW, FLEX_VIEW
               bootstrapCheckbox={false}
               requestFailed={false}
               columns={columns}
               items={items}
               tableClass="table-outline"
-              tableHeaderClass="htead-light"
+              tableHeaderClass="thead-light"
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}

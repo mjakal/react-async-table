@@ -273,7 +273,7 @@ class Example extends React.Component {
               isLoading={isLoading}
               query={search}
               displayHeaderSection={true}
-              splitHeaderSection={false}
+              splitView={false}
               layoutType="FLEX_VIEW" // available layout types: LIST_VIEW, GRID_VIEW, FLEX_VIEW
               bootstrapCheckbox={false}
               requestFailed={false}
