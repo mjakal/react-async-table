@@ -16,7 +16,7 @@ import {
 } from './helpers/defaultEvents';
 import ConditionalWrapper from './components/ConditionalWrapper/ConditionalWrapper';
 import { Loader, CardWrapper, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
-import { debounce, setCurrentPage } from './helpers/helpers';
+import { debounce, setCurrentPage, setSortableFields } from './helpers/helpers';
 // Table styles
 import './scss/style.scss';
 
@@ -33,6 +33,7 @@ const propTypes = {
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
   splitView: PropTypes.bool,
+  flexView: PropTypes.bool,
   layoutType: PropTypes.string,
   bootstrapCheckbox: PropTypes.bool,
   displayHeaderSection: PropTypes.bool,
@@ -68,7 +69,8 @@ const defaultProps = {
   delay: 300,
   displayHeaderSection: true,
   splitView: false,
-  layoutType: 'LIST_VIEW',
+  flexView: false,
+  layoutType: 'SIMPLE_VIEW',
   bootstrapCheckbox: false,
   tableClass: '',
   insertButtonClass: 'btn btn-primary',
@@ -124,6 +126,8 @@ const defaultIcons = {
   gridViewIcon: "fa fa-th",
   tooltipIcon: 'fa fa-question',
   sortIcon: 'fa fa-sort',
+  sortIconASC: 'fa fa-sort-asc',
+  sortIconDESC: 'fa fa-sort-desc',
   expandIcon: 'fa fa-expand',
   editActionIcon: 'fa fa-pencil',
   deleteActionIcon: 'fa fa-trash',
@@ -135,8 +139,7 @@ class ReactAsyncTable extends Component {
 
     this.state = {
       gridView: false,
-      sortField: '',
-      sortOrder: '',
+      sortableFields: {},
       selectedCount: 0,
       selectAllItems: false,
       selectedItems: {},
@@ -153,25 +156,16 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidMount() {
-    const { columns, layoutType } = this.props;
+    const { columns, flexView } = this.props;
 
-    // Set layout type
-    if (layoutType === 'GRID_VIEW') this.setState({ gridView: true });
+    // Set the default sort order for all fields
+    const sortableFields = setSortableFields(columns);
 
-    // Set the default sort order
-    for (const col of columns) {
-      if (col.sort && col.sortOrder) {
-        this.setState({ 
-          sortField: col.dataField,
-          sortOrder: col.sortOrder
-        });
-        break;
-      }
-    }
+    this.setState({ gridView: flexView, sortableFields });
   }
 
   componentDidUpdate(prevProps) {
-    const { items, options } = this.props;
+    const { activeTabID, columns, items, options } = this.props;
 
     // reset selected items on items array update
     if (options.multipleSelect && prevProps.items !== items) {
@@ -181,6 +175,13 @@ class ReactAsyncTable extends Component {
         selectedItems: {},
         expandRow: {}
       });
+    }
+
+    // Reset sort order if activeTabID changes
+    if (prevProps.activeTabID !== activeTabID) {
+      const sortableFields = setSortableFields(columns);
+
+      this.setState({ sortableFields });
     }
   }
 
@@ -193,17 +194,26 @@ class ReactAsyncTable extends Component {
   }
 
   onSort(columnKey) {
-    const { sortField, sortOrder } = this.state;
-    let nextOrder = '';
+    const { sortableFields } = this.state;
+    const currentSortOrder = sortableFields[columnKey];
+    let nextSortOrder = '';
 
-    if (sortField === columnKey) {
-      nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    } else {
-      nextOrder = 'asc';
+    switch (currentSortOrder) {
+      case 'asc':
+        nextSortOrder = 'desc';
+        break;
+      case 'desc':
+        nextSortOrder = 'asc';
+        break;
+      default:
+        nextSortOrder = 'desc';
+        break;
     }
 
-    this.setState({ sortField: columnKey, sortOrder: nextOrder });
-    this.props.onSort(columnKey, nextOrder);
+    sortableFields[columnKey] = nextSortOrder;
+
+    this.setState({ sortableFields });
+    this.props.onSort(columnKey, nextSortOrder);
   }
 
   onDelete(rowID) {
@@ -284,7 +294,7 @@ class ReactAsyncTable extends Component {
   }
 
   render() {
-    const { selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
+    const { sortableFields, selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
     const {
       displayHeaderSection,
       splitView,
@@ -347,6 +357,7 @@ class ReactAsyncTable extends Component {
             options={options}
             translations={translations}
             icons={icons}
+            sortableFields={sortableFields}
             expandRow={expandRow}
             selectAllItems={selectAllItems} 
             onSelect={this.onSelect}

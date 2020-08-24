@@ -20,3 +20,15 @@ export const setCurrentPage = (currentPage, perPage, totalItems) => {
 
   return 1;
 };
+
+export const setSortableFields = columns => {
+  const sortableFields = {};
+
+  columns.forEach(col => {
+    const { dataField, sort, sortOrder } = col;
+
+    if (sort && sortOrder) sortableFields[dataField] = sortOrder;
+  });
+
+  return sortableFields;
+}

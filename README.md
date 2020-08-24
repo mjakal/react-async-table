@@ -241,7 +241,7 @@ const columns = [
     text: 'Task',
     tooltip: 'Example Tooltip',
     sort: true,
-    sortOrder: 'asc' // values: asc|desc
+    sortOrder: 'default' // values: default|asc|desc
   },
   {
     dataField: 'completed',
@@ -367,7 +367,8 @@ class Example extends React.Component {
               query={search}
               displayHeaderSection={true}
               splitView={false}
-              layoutType="FLEX_VIEW" // available layout types: LIST_VIEW, GRID_VIEW, FLEX_VIEW
+              flexView={false} // table/grid view
+              layoutType="FLEX_VIEW" // available layout types: SIMPLE_VIEW, FLEX_VIEW
               bootstrapCheckbox={false}
               requestFailed={false}
               columns={columns}
@@ -408,6 +409,8 @@ class Example extends React.Component {
                 gridViewIcon: "fa fa-th",
                 tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
+                sortIconASC: 'fa fa-sort-asc',
+                sortIconDESC: 'fa fa-sort-desc',
                 expandIcon: 'fa fa-expand',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
