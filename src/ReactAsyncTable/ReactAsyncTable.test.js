@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ReactAsyncTable from 'index';
+import ReactAsyncTable from './index';
 
 describe('ReactAsyncTable', () => {
   it('renders without crashing', () => {
@@ -30,19 +30,21 @@ describe('ReactAsyncTable', () => {
         mobile: '123456789'
       }
     ];
-    const wrapper = shallow(<ReactAsyncTable 
-      keyField="id"
-      columns={columns}
-      query={''}
-      items={items}
-      currentPage={1}
-      itemsPerPage={10}
-      totalItems={items.length}
-      delay={300}
-      onChangePage={() => null}
-      onSearch={() => null}
-    />);
-    
+    const wrapper = shallow(
+      <ReactAsyncTable
+        keyField="id"
+        columns={columns}
+        query=""
+        items={items}
+        currentPage={1}
+        itemsPerPage={10}
+        totalItems={items.length}
+        delay={300}
+        onChangePage={() => null}
+        onSearch={() => null}
+      />
+    );
+
     expect(wrapper).toHaveLength(1);
   });
 });

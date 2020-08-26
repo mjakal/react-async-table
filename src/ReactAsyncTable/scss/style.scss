@@ -1,0 +1,63 @@
+/* I hate CSS & SCSS */
+
+.async-table-search-clear {
+  position: absolute;
+  top: 0;
+  right: 40px;
+  z-index: 100;
+}
+
+.async-table-header-actions {
+  button {
+    margin: 0px 0px 0px 5px;
+  }
+  .badge {
+    padding-top: 5px !important;
+  }
+}
+
+.async-table-style {
+  thead tr th {
+    vertical-align: middle;
+    .header-checkbox {
+      margin: -6px 0px 0px 0px;
+    }
+    button.btn-link {
+      margin: 0px 5px 0px 5px;
+      padding: 0;
+      text-decoration: none;
+    }
+    span.sort-icon {
+      float: right !important;
+    }
+  }
+  tbody tr td button.btn-link {
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
+  }
+  tbody tr td {
+    vertical-align: middle;
+    .body-checkbox {
+      margin: -6px 0px 0px 0px;
+    }
+    &.action-col {
+      text-align: center;
+      position: relative;
+      min-width: 100px;
+      span button {
+        padding: 0px 5px 0px 5px;
+      }
+    }
+  }
+}
+
+.async-table-header-section {
+  margin-bottom: 0px;
+}
+
+@media only screen and (max-width: 768px) {
+  .async-table-header-actions {
+    margin-top: 1rem;
+  }
+}

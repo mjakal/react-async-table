@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles.module.css';
-import Paginate from './components/Pagination/Pagination';
-import SearchBox from './components/SearchBox/SearchBox';
-import ReactAsyncTableHeader from './ReactAsyncTableHeader';
-import ReactAsyncTableBody from './ReactAsyncTableBody';
+import HeaderSection from './HeaderSection';
+import BodySection from './BodySection';
 import {
   onChangePage,
   onSearch,
@@ -17,17 +14,22 @@ import {
   onAction,
   onColumnClick
 } from './helpers/defaultEvents';
+import ConditionalWrapper from './components/ConditionalWrapper/ConditionalWrapper';
 import {
   Loader,
-  NoData,
+  CardWrapper,
+  GridItemComponent,
   ExpandableRowComponent
 } from './ReactAsyncTableComponents';
-import { debounce, setCurrentPage } from './helpers/helpers';
+import { debounce, setCurrentPage, setSortableFields } from './helpers/helpers';
+// Table styles
+// import './scss/style.scss';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
   query: PropTypes.string.isRequired,
+  activeTabID: PropTypes.string,
   requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   items: PropTypes.array.isRequired,
@@ -35,7 +37,14 @@ const propTypes = {
   itemsPerPage: PropTypes.number,
   totalItems: PropTypes.number.isRequired,
   delay: PropTypes.number,
+  splitView: PropTypes.bool,
+  flexView: PropTypes.bool,
+  layoutType: PropTypes.string,
+  bootstrapCheckbox: PropTypes.bool,
+  displayHeaderSection: PropTypes.bool,
   tableClass: PropTypes.string,
+  insertButtonClass: PropTypes.string,
+  deleteButtonClass: PropTypes.string,
   tableHeaderClass: PropTypes.string,
   options: PropTypes.objectOf(PropTypes.bool),
   translations: PropTypes.objectOf(PropTypes.string),
@@ -43,6 +52,7 @@ const propTypes = {
   loader: PropTypes.func,
   actionsComponent: PropTypes.func,
   headerActions: PropTypes.func,
+  gridItemComponent: PropTypes.func,
   expandableRowComponent: PropTypes.func,
   onChangePage: PropTypes.func,
   onSearch: PropTypes.func,
@@ -60,40 +70,22 @@ const defaultProps = {
   isLoading: false,
   requestFailed: false,
   itemsPerPage: 10,
+  activeTabID: '',
   delay: 300,
+  displayHeaderSection: true,
+  splitView: false,
+  flexView: false,
+  layoutType: 'SIMPLE_VIEW',
+  bootstrapCheckbox: false,
   tableClass: '',
+  insertButtonClass: 'btn btn-primary',
+  deleteButtonClass: 'btn btn-danger',
   tableHeaderClass: '',
-  options: {
-    searchBox: true,
-    insertButton: false,
-    multipleSelect: false,
-    expandable: false,
-    actionsColumn: false,
-    pagination: true
-  },
-  translations: {
-    searchPlaceholder: 'Search...',
-    addButton: 'Add',
-    deleteButton: 'Delete',
-    sortTitle: 'Sort',
-    actionsColumnTitle: 'Actions',
-    editAction: 'Edit',
-    deleteAction: 'Delete',
-    noDataText: 'No data found',
-    requestFailedText: 'API request failed',
-    paginationFirst: 'First',
-    paginationLast: 'Last'
-  },
-  icons: {
-    addButtonIcon: '',
-    deleteButtonIcon: '',
-    tooltipIcon: '',
-    sortIcon: '',
-    expandIcon: '',
-    editActionIcon: '',
-    deleteActionIcon: ''
-  },
+  options: {},
+  translations: {},
+  icons: {},
   loader: Loader,
+  gridItemComponent: GridItemComponent,
   expandableRowComponent: ExpandableRowComponent,
   onChangePage: onChangePage,
   onSearch: onSearch,
@@ -107,19 +99,59 @@ const defaultProps = {
   onColumnClick: onColumnClick
 };
 
+const defaultOptions = {
+  searchBox: true,
+  insertButton: false,
+  multipleSelect: false,
+  expandable: false,
+  actionsColumn: false,
+  pagination: true
+};
+
+const defaultTranslations = {
+  searchPlaceholder: 'Search...',
+  addButton: 'Add',
+  deleteButton: 'Delete',
+  listViewTitle: 'List View',
+  gridViewTitle: 'Grid View',
+  sortTitle: 'Sort',
+  actionsColumnTitle: 'Actions',
+  editAction: 'Edit',
+  deleteAction: 'Delete',
+  noDataText: 'No data found',
+  requestFailedText: 'API request failed',
+  paginationFirst: 'First',
+  paginationLast: 'Last'
+};
+
+const defaultIcons = {
+  addButtonIcon: 'fa fa-plus',
+  deleteButtonIcon: 'fa fa-trash',
+  listViewIcon: 'fa fa-list',
+  gridViewIcon: 'fa fa-th',
+  tooltipIcon: 'fa fa-question',
+  sortIcon: 'fa fa-sort',
+  sortIconASC: 'fa fa-sort-asc',
+  sortIconDESC: 'fa fa-sort-desc',
+  expandIcon: 'fa fa-expand',
+  editActionIcon: 'fa fa-pencil',
+  deleteActionIcon: 'fa fa-trash'
+};
+
 class ReactAsyncTable extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sortField: '',
-      sortOrder: '',
+      gridView: false,
+      sortableFields: {},
       selectedCount: 0,
       selectAllItems: false,
       selectedItems: {},
       expandRow: {}
     };
 
+    this.toggleGridView = this.toggleGridView.bind(this);
     this.onExpand = this.onExpand.bind(this);
     this.onMultipleSelect = this.onMultipleSelect.bind(this);
     this.onSort = this.onSort.bind(this);
@@ -129,26 +161,19 @@ class ReactAsyncTable extends Component {
   }
 
   componentDidMount() {
-    const { columns } = this.props;
+    const { columns, flexView } = this.props;
 
-    // Set the default sort order
-    for (const col of columns) {
-      if (col.sort && col.sortOrder) {
-        this.setState({
-          sortField: col.dataField,
-          sortOrder: col.sortOrder
-        });
-        break;
-      }
-    }
+    // Set the default sort order for all fields
+    const sortableFields = setSortableFields(columns);
+
+    this.setState({ gridView: flexView, sortableFields });
   }
 
-  componentDidUpdate(prevPrps) {
+  componentDidUpdate(prevProps) {
+    const { activeTabID, columns, items, options } = this.props;
+
     // reset selected items on items array update
-    if (
-      this.props.options.multipleSelect &&
-      prevPrps.items !== this.props.items
-    ) {
+    if (options.multipleSelect && prevProps.items !== items) {
       this.setState({
         selectedCount: 0,
         selectAllItems: false,
@@ -156,20 +181,44 @@ class ReactAsyncTable extends Component {
         expandRow: {}
       });
     }
+
+    // Reset sort order if activeTabID changes
+    if (prevProps.activeTabID !== activeTabID) {
+      const sortableFields = setSortableFields(columns);
+
+      this.setState({ sortableFields });
+    }
+  }
+
+  toggleGridView(gridViewState) {
+    const { gridView } = this.state;
+
+    if (gridView === gridViewState) return;
+
+    this.setState({ gridView: gridViewState });
   }
 
   onSort(columnKey) {
-    const { sortField, sortOrder } = this.state;
-    let nextOrder = '';
+    const { sortableFields } = this.state;
+    const currentSortOrder = sortableFields[columnKey];
+    let nextSortOrder = '';
 
-    if (sortField === columnKey) {
-      nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    } else {
-      nextOrder = 'asc';
+    switch (currentSortOrder) {
+      case 'asc':
+        nextSortOrder = 'desc';
+        break;
+      case 'desc':
+        nextSortOrder = 'asc';
+        break;
+      default:
+        nextSortOrder = 'desc';
+        break;
     }
 
-    this.setState({ sortField: columnKey, sortOrder: nextOrder });
-    this.props.onSort(columnKey, nextOrder);
+    sortableFields[columnKey] = nextSortOrder;
+
+    this.setState({ sortableFields });
+    this.props.onSort(columnKey, nextSortOrder);
   }
 
   onDelete(rowID) {
@@ -212,10 +261,7 @@ class ReactAsyncTable extends Component {
     const { options } = this.props;
 
     // Early exit if options.expandable prop is set to false
-    if (!options.expandable) {
-      event.preventDefault();
-      return;
-    }
+    if (!options.expandable) return;
 
     const { expandRow } = this.state;
     const prevValue = expandRow[rowID] || false;
@@ -257,64 +303,28 @@ class ReactAsyncTable extends Component {
 
   render() {
     const {
+      sortableFields,
       selectAllItems,
       selectedCount,
+      gridView,
       selectedItems,
       expandRow
     } = this.state;
-    const {
-      keyField,
-      isLoading,
-      query,
-      requestFailed,
-      columns,
-      items,
-      currentPage,
-      itemsPerPage,
-      totalItems,
-      tableClass,
-      tableHeaderClass,
-      options,
-      translations,
-      icons,
-      delay,
-      loader,
-      headerActions,
-      actionsComponent,
-      expandableRowComponent,
-      onSearch,
-      onChangePage,
-      onInsert,
-      onEdit,
-      onHeaderAction,
-      onAction,
-      onColumnClick
-    } = this.props;
-    const {
-      searchPlaceholder,
-      addButton,
-      deleteButton,
-      sortTitle,
-      actionsColumnTitle,
-      noDataText,
-      requestFailedText,
-      paginationFirst,
-      paginationLast
-    } = translations;
-    const { addButtonIcon, deleteButtonIcon, tooltipIcon, sortIcon } = icons;
-    const Loader = loader;
-    // Set number of table columns
-    const totalColumns =
-      columns.length +
-      (options.multipleSelect ? 1 : 0) +
-      (options.expandable ? 1 : 0) +
-      (options.actionsColumn ? 1 : 0);
+    const { displayHeaderSection, splitView, delay, onSearch } = this.props;
 
-    const HeaderActions = headerActions;
-    const displayNoDataComponent = requestFailed || items.length === 0;
-    const displayTableData = !requestFailed && items.length > 0;
-    const displayPagination =
-      !isLoading && !requestFailed && options.pagination;
+    // Set default values to options/translations/icons props
+    const options = {
+      ...defaultOptions,
+      ...this.props.options
+    };
+    const translations = {
+      ...defaultTranslations,
+      ...this.props.translations
+    };
+    const icons = {
+      ...defaultIcons,
+      ...this.props.icons
+    };
 
     const debounceSearch = debounce(searchTerm => {
       onSearch(searchTerm);
@@ -322,126 +332,51 @@ class ReactAsyncTable extends Component {
 
     return (
       <div className="animated fadeIn">
-        <div className="row form-group">
-          <div className="col-12 order-2 col-md-6 order-md-1 col-lg-4 col-xl-3 mb-1">
-            {options.searchBox && (
-              <SearchBox
-                styles={styles}
-                placeholder={searchPlaceholder}
-                query={query}
-                onChange={debounceSearch}
-              />
-            )}
-          </div>
-          <div className="col-12 order-1 col-md-6 order-md-2 col-lg-8 col-xl-9 mb-1">
-            <span className={`${styles.async_table__header_actions} float-right`}>
-              {options.insertButton && (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={onInsert}
-                  disabled={requestFailed || isLoading}
-                >
-                  {addButtonIcon && <i className={addButtonIcon} />} {addButton}
-                </button>
-              )}
-              {HeaderActions && (
-                <HeaderActions onHeaderAction={onHeaderAction} />
-              )}
-              {options.multipleSelect && (
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={this.onMultipleDelete}
-                  disabled={selectedCount === 0}
-                >
-                  {deleteButtonIcon && <i className={deleteButtonIcon} />}{' '}
-                  {deleteButton}{' '}
-                  <span
-                    style={{ paddingTop: '8px' }}
-                    className="badge badge-pill badge-light"
-                  >
-                    {selectedCount}
-                  </span>
-                </button>
-              )}
-            </span>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            {isLoading ? (
-              <div className="animated fadeIn">
-                <Loader />
-              </div>
-            ) : (
-              <div className="table-responsive">
-                <table className={`table ${styles.async_table__style} ${tableClass}`}>
-                  <ReactAsyncTableHeader
-                    tableHeaderClass={tableHeaderClass}
-                    selectAllItems={selectAllItems}
-                    columns={columns}
-                    options={options}
-                    tooltipIcon={tooltipIcon}
-                    sortTitle={sortTitle}
-                    sortIcon={sortIcon}
-                    actionsColumnTitle={actionsColumnTitle}
-                    onMultipleSelect={this.onMultipleSelect}
-                    onSort={this.onSort}
-                  />
-                  {displayNoDataComponent && (
-                    <NoData
-                      totalColumns={totalColumns}
-                      noDataText={
-                        requestFailed ? requestFailedText : noDataText
-                      }
-                    />
-                  )}
-                  {displayTableData &&
-                    items.map(item => (
-                      <ReactAsyncTableBody
-                        key={item[keyField]}
-                        styles={styles}
-                        keyField={keyField}
-                        item={item}
-                        selectedItems={selectedItems}
-                        actionsComponent={actionsComponent}
-                        expandRow={expandRow}
-                        columns={columns}
-                        totalColumns={totalColumns}
-                        options={options}
-                        translations={translations}
-                        icons={icons}
-                        expandableRowComponent={expandableRowComponent}
-                        onSelect={this.onSelect}
-                        onExpand={this.onExpand}
-                        onEdit={onEdit}
-                        onDelete={this.onDelete}
-                        onAction={onAction}
-                        onColumnClick={onColumnClick}
-                      />
-                    ))}
-                </table>
-              </div>
-            )}
-          </div>
-        </div>
-        {displayPagination && (
-          <div className="row form-group">
-            <div className="col-md-12">
-              <span className="float-right">
-                <Paginate
-                  currentPage={currentPage}
-                  pageSize={itemsPerPage}
-                  items={totalItems}
-                  onChangePage={onChangePage}
-                  firstLink={paginationFirst}
-                  lastLink={paginationLast}
-                />
-              </span>
-            </div>
-          </div>
-        )}
+        <ConditionalWrapper
+          condition={splitView && displayHeaderSection}
+          wrap={children => (
+            <CardWrapper cardClass="async-table-card-filter">
+              {children}
+            </CardWrapper>
+          )}
+        >
+          <HeaderSection
+            {...this.props}
+            selectedCount={selectedCount}
+            gridView={gridView}
+            toggleGridView={this.toggleGridView}
+            debounceSearch={debounceSearch}
+            options={options}
+            translations={translations}
+            icons={icons}
+            onMultipleDelete={this.onMultipleDelete}
+          />
+        </ConditionalWrapper>
+        <ConditionalWrapper
+          condition={splitView}
+          wrap={children => (
+            <CardWrapper cardClass="async-table-card-content">
+              {children}
+            </CardWrapper>
+          )}
+        >
+          <BodySection
+            {...this.props}
+            gridView={gridView}
+            selectedItems={selectedItems}
+            options={options}
+            translations={translations}
+            icons={icons}
+            sortableFields={sortableFields}
+            expandRow={expandRow}
+            selectAllItems={selectAllItems}
+            onSelect={this.onSelect}
+            onMultipleSelect={this.onMultipleSelect}
+            onDelete={this.onDelete}
+            onExpand={this.onExpand}
+            onSort={this.onSort}
+          />
+        </ConditionalWrapper>
       </div>
     );
   }

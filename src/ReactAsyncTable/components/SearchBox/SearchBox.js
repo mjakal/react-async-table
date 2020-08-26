@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../../../styles.module.css';
 
 const propTypes = {
-  styles: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
-  query: PropTypes.string.isRequired,
+  activeTabID: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
 };
 
@@ -22,18 +22,12 @@ class SearchBox extends React.Component {
     this.onClear = this.onClear.bind(this);
   }
 
-  componentDidMount() {
-    const { query } = this.props;
-    
-    this.setState({ searchTerm: query });
-  }
-
   componentDidUpdate(prevProps) {
-    if (prevProps.query !== this.props.query) {
-      // Reset search box if query is an empty string
-      if (!this.props.query && this.state.searchTerm) {
-        this.setState({ searchTerm: '' });
-      }
+    const { activeTabID } = this.props;
+
+    // Reset search box if activeTabID changes
+    if (prevProps.activeTabID !== activeTabID) {
+      this.setState({ searchTerm: '' });
     }
   }
 
@@ -51,13 +45,14 @@ class SearchBox extends React.Component {
 
   render() {
     const { searchTerm } = this.state;
-    const { styles, placeholder } = this.props;
+    const { placeholder } = this.props;
 
     return (
       <div className="input-group">
         <input
           type="text"
           className="form-control"
+          autoFocus
           name="search"
           value={searchTerm}
           placeholder={placeholder}
@@ -66,12 +61,17 @@ class SearchBox extends React.Component {
         {searchTerm && (
           <button
             type="button"
-            className={`${styles.async_table__search_clear} btn`}
+            className={`btn ${styles.search_clear}`}
             onClick={this.onClear}
           >
             &times;
           </button>
         )}
+        <div className="input-group-append async-table-search-button">
+          <span className="input-group-text">
+            <i className="fa fa-search" />
+          </span>
+        </div>
       </div>
     );
   }

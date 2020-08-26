@@ -4,38 +4,99 @@ import ReactAsyncTable from 'react-async-table';
 import 'react-async-table/dist/index.css';
 import { tasks } from './sampleData';
 
-const ExampleLoader = () => <p>This is an example loader component...</p>;
+const ExampleLoader = () => (
+  <p>This is an example loader component...</p>
+
+
+
+
+
+  
+);
 
 const ExampleHeaderActions = ({ onHeaderAction }) => (
   <span>
     <button
       type="button"
       className="btn btn-secondary"
+      data-html="true"
+      data-toggle="tooltip"
+      title="Action 1"
       onClick={e => onHeaderAction('HEADER_ACTION_1')}
     >
-      Action 1
+      <i className="fa fa-pencil" />
     </button>
     <button
       type="button"
       className="btn btn-secondary"
+      data-html="true"
+      data-toggle="tooltip"
+      title="Action 2"
       onClick={e => onHeaderAction('HEADER_ACTION_2')}
     >
-      Action 2
+      <i className="fa fa-wrench" />
     </button>
   </span>
 );
+
+const ExampleGridItemComponent = ({ row, onAction }) => {
+  const columnIcon = row['completed'] ? 'fa fa-check' : 'fa fa-times';
+  const columnText = row['completed'] ? 'Completed' : 'Pending';
+  
+  return (
+    <div className="card mb-2">
+      <div className="card-header">Task</div>
+      <div className="card-body" style={{ height: '80px' }}>
+        <p>{row["title"]}</p>
+      </div>
+      <div className="card-footer">
+        <span style={{ lineHeight: '2rem'}}><i className={columnIcon} /> {columnText}</span>
+        <span className="float-right">
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={e => onAction(e, 'EDIT_ITEM')}
+            data-html="true"
+            data-toggle="tooltip"
+            title="Edit Item"
+          >
+            <i className="fa fa-pencil" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Custom Action"
+            onClick={e => onAction(e, 'CUSTOM_ACTION')}
+          >
+            <i className="fa fa-plus" />
+          </button>
+          <button
+            type="button"
+            className="btn btn-light"
+            data-toggle="tooltip"
+            title="Delete Item"
+            onClick={e => onAction(e, 'DELETE_ITEM')}
+          >
+            <i className="fa fa-minus" />
+          </button>
+        </span>
+      </div>
+    </div>
+  )
+};
 
 const ExampleFormatedField = ({ columnKey, row, onColumnClick }) => {
   const columnIcon = row[columnKey] ? 'fa fa-check' : 'fa fa-times';
   const columnText = row[columnKey] ? 'Completed' : 'Pending';
   const onClick = () => onColumnClick(columnKey, row);
-
+  
   return (
     <button className="btn btn-link" onClick={onClick}>
       <i className={columnIcon} /> {columnText}
     </button>
   );
-};
+}
 
 const ExampleActionsComponent = ({ row, onAction }) => {
   return (
@@ -70,11 +131,13 @@ const ExampleActionsComponent = ({ row, onAction }) => {
       </button>
     </span>
   );
-};
+}
 
 const ExpandableRowComponent = ({ row }) => {
-  return <p>Testing expandable row custom component Row ID: {row.id}</p>;
-};
+  return (
+    <p>Testing expandable row custom component Row ID: {row.id}</p>
+  );
+}
 
 const columns = [
   {
@@ -83,14 +146,14 @@ const columns = [
   },
   {
     dataField: 'userId',
-    text: 'User ID'
+    text: 'User ID',
   },
   {
     dataField: 'title',
     text: 'Task',
     tooltip: 'Example Tooltip',
     sort: true,
-    sortOrder: 'asc' // values: asc|desc
+    sortOrder: 'default' // values: default|asc|desc
   },
   {
     dataField: 'completed',
@@ -103,12 +166,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = { 
       isLoading: true,
       search: '',
       items: [],
       page: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 12,
       totalItems: 0
     };
 
@@ -131,14 +194,12 @@ class App extends React.Component {
       const { search, page, itemsPerPage } = this.state;
       const currentIndex = (page - 1) * itemsPerPage;
 
-      const filteredItems = tasks.filter(
-        item => item.title.indexOf(search.toLowerCase()) !== -1
-      );
-
+      const filteredItems = tasks.filter(item => item.title.indexOf(search.toLowerCase()) !== -1);
+      
       this.setState(() => ({
         isLoading: false,
         items: filteredItems.slice(currentIndex, currentIndex + itemsPerPage),
-        totalItems: filteredItems.length
+        totalItems: filteredItems.length,
       }));
     }, dataDelay);
   }
@@ -149,6 +210,7 @@ class App extends React.Component {
   }
 
   onSearch(search) {
+    console.log("query", search);
     this.setState({ search, page: 1, isLoading: true });
     this.fakeAsyncAction();
   }
@@ -179,7 +241,7 @@ class App extends React.Component {
     console.log('onHeaderAction handler');
     console.log('type:', type);
   }
-
+  
   onAction(type, row) {
     console.log('onAction handler');
     console.log('type:', type);
@@ -199,15 +261,8 @@ class App extends React.Component {
   }
 
   render() {
-    const {
-      isLoading,
-      items,
-      page,
-      search,
-      itemsPerPage,
-      totalItems
-    } = this.state;
-
+    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
+    
     return (
       <div className="container">
         <Card>
@@ -219,13 +274,19 @@ class App extends React.Component {
           <CardBody>
             <ReactAsyncTable
               keyField="id"
+              activeTabID=""
               isLoading={isLoading}
               query={search}
+              displayHeaderSection={true}
+              splitView={false}
+              flexView={false} // table/grid view
+              layoutType="FLEX_VIEW" // available layout types: SIMPLE_VIEW, FLEX_VIEW
+              bootstrapCheckbox={false}
               requestFailed={false}
               columns={columns}
               items={items}
               tableClass="table-outline"
-              tableHeaderClass="htead-light"
+              tableHeaderClass="thead-light"
               currentPage={page}
               itemsPerPage={itemsPerPage}
               totalItems={totalItems}
@@ -242,6 +303,8 @@ class App extends React.Component {
                 searchPlaceholder: 'Search...',
                 addButton: 'Add',
                 deleteButton: 'Delete',
+                listViewTitle: "List View",
+                gridViewTitle: "Grid View",
                 sortTitle: 'Sort',
                 actionsColumnTitle: 'Actions',
                 editAction: 'Edit',
@@ -254,14 +317,19 @@ class App extends React.Component {
               icons={{
                 addButtonIcon: 'fa fa-plus',
                 deleteButtonIcon: 'fa fa-trash',
+                listViewIcon: "fa fa-list",
+                gridViewIcon: "fa fa-th",
                 tooltipIcon: 'fa fa-question',
                 sortIcon: 'fa fa-sort',
+                sortIconASC: 'fa fa-sort-asc',
+                sortIconDESC: 'fa fa-sort-desc',
                 expandIcon: 'fa fa-expand',
                 editActionIcon: 'fa fa-pencil',
                 deleteActionIcon: 'fa fa-trash'
               }}
               loader={ExampleLoader}
               headerActions={ExampleHeaderActions}
+              gridItemComponent={ExampleGridItemComponent}
               actionsComponent={ExampleActionsComponent}
               expandableRowComponent={ExpandableRowComponent}
               onChangePage={this.onChangePage}

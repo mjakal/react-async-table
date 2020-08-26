@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from './helpers/helpers';
+import Checkbox from '../Checkbox/Checkbox';
+import { isEmpty } from '../../helpers/helpers';
 
 const propTypes = {
-  styles: PropTypes.object.isRequired,
   keyField: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   selectedItems: PropTypes.object.isRequired,
+  bootstrapCheckbox: PropTypes.bool.isRequired,
   expandRow: PropTypes.object.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   totalColumns: PropTypes.number.isRequired,
@@ -23,12 +24,12 @@ const propTypes = {
   onColumnClick: PropTypes.func.isRequired
 };
 
-const ReactAsyncTableBody = props => {
+const TableItem = props => {
   const {
-    styles,
     keyField,
     item,
     selectedItems,
+    bootstrapCheckbox,
     expandRow,
     columns,
     translations,
@@ -36,9 +37,11 @@ const ReactAsyncTableBody = props => {
     actionsComponent,
     expandableRowComponent,
     totalColumns,
-    options
+    options,
+    onColumnClick
   } = props;
   const itemID = item[keyField];
+  const checkboxID = `${keyField}_${itemID}`;
   const { editAction, deleteAction } = translations;
   const { expandIcon, editActionIcon, deleteActionIcon } = icons;
   const isExpandable = options.expandable;
@@ -55,20 +58,19 @@ const ReactAsyncTableBody = props => {
     switch (type) {
       case 'EDIT_ITEM':
         props.onEdit(itemID, item);
-        return;
-      case 'DELETE_ITEM': 
+        break;
+      case 'DELETE_ITEM':
         props.onDelete(itemID);
-        return;
+        break;
       default:
+        props.onAction(type, item);
         break;
     }
-
-    props.onAction(type, item);
   };
 
   const ColumnComponent = ({ column }) => {
     // Early exit if row has no data
-    if (isEmpty(item)) return (<td />);
+    if (isEmpty(item)) return <td />;
 
     const Component = column.formatedField;
     const columnKey = column.dataField || '';
@@ -79,7 +81,7 @@ const ReactAsyncTableBody = props => {
           <Component
             columnKey={columnKey}
             row={item}
-            onColumnClick={props.onColumnClick}
+            onColumnClick={onColumnClick}
           />
         ) : (
           <span>{item[columnKey]}</span>
@@ -94,7 +96,7 @@ const ReactAsyncTableBody = props => {
     const Component = actionsComponent;
 
     return (
-      <td className={styles.action_col}>
+      <td className="action-col">
         {Component ? (
           <Component row={item} onAction={onAction} />
         ) : (
@@ -107,7 +109,7 @@ const ReactAsyncTableBody = props => {
               data-toggle="tooltip"
               title={editAction}
             >
-              {editActionIcon ? <i className={editActionIcon} /> : <i>&#9997;</i>}
+              <i className={editActionIcon} />
             </button>
             <button
               type="button"
@@ -116,7 +118,7 @@ const ReactAsyncTableBody = props => {
               title={deleteAction}
               onClick={onDelete}
             >
-              {deleteActionIcon ? <i className={deleteActionIcon} /> : <i>&minus;</i>}
+              <i className={deleteActionIcon} />
             </button>
           </span>
         )}
@@ -128,37 +130,45 @@ const ReactAsyncTableBody = props => {
     <tbody>
       <tr>
         {options.multipleSelect && (
-          <td>
-            <div className="form-check">
-              <input
-                className="form-check-input position-static"
-                type="checkbox"
-                name={itemID}
+          <td className="body-checkbox">
+            {bootstrapCheckbox ? (
+              <Checkbox
+                id={checkboxID}
+                name={`${itemID}`}
                 onChange={props.onSelect}
                 checked={selectedItems[itemID] || false}
               />
-            </div>
+            ) : (
+              <div className="form-check">
+                <input
+                  className="form-check-input position-static"
+                  type="checkbox"
+                  name={`${itemID}`}
+                  onChange={props.onSelect}
+                  checked={selectedItems[itemID] || false}
+                />
+              </div>
+            )}
           </td>
         )}
         {isExpandable && (
           <td>
-            <button 
+            <button
               type="button"
               className="btn btn-link"
               data-html="true"
               data-toggle="tooltip"
               title="Expand"
-              onClick={onExpand}>
-              {expandIcon ? <i className={expandIcon} /> : <span>&#8661;</span>}
+              onClick={onExpand}
+            >
+              <i className={expandIcon} />
             </button>
           </td>
         )}
         {columns.map((column, index) => (
           <ColumnComponent key={index} column={column} />
         ))}
-        {options.actionsColumn && (
-          <ActionsComponent />
-        )}
+        {options.actionsColumn && <ActionsComponent />}
       </tr>
       {isExpandable && (
         <tr className={`collapse ${expandRow[itemID] ? 'show' : ''}`}>
@@ -171,5 +181,5 @@ const ReactAsyncTableBody = props => {
   );
 };
 
-ReactAsyncTableBody.propTypes = propTypes;
-export default ReactAsyncTableBody;
+TableItem.propTypes = propTypes;
+export default TableItem;
