@@ -16,7 +16,7 @@ const propTypes = {
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
   activeTabID: PropTypes.string.isRequired,
-  headerActions: PropTypes.func.isRequired,
+  headerActions: PropTypes.func,
   debounceSearch: PropTypes.func.isRequired,
   toggleGridView: PropTypes.func.isRequired,
   onInsert: PropTypes.func.isRequired,
