@@ -4,6 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/react-async-table.svg)](https://www.npmjs.com/package/react-async-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+**LIVE DEMO:** [https://mjakal.github.io/react-async-table/](https://mjakal.github.io/react-async-table/)
+
 Creating yet another bootstrap based data table component, came out of necessity.
 While I was working on one of my React projects, I discovered that there are a lot of solutions out there, most of them required heavy customization or lacked basic features such as built in customizable expandable rows, asynchronous filtering and pagination, so I rolled up my sleeves and voilà :)!
 
