@@ -261,7 +261,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
+    const { isLoading, items, page, itemsPerPage, totalItems  } = this.state;
     
     return (
       <div className="container">
@@ -276,7 +276,6 @@ class App extends React.Component {
               keyField="id"
               activeTabID=""
               isLoading={isLoading}
-              query={search}
               displayHeaderSection={true}
               splitView={false}
               flexView={false} // table/grid view

@@ -28,7 +28,7 @@ import { debounce, setCurrentPage, setSortableFields } from './helpers/helpers';
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   activeTabID: PropTypes.string,
   requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
