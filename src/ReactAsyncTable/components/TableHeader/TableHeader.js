@@ -99,14 +99,15 @@ const TableHeader = props => {
                 </button>
               )}
               {isSortable && (
-                <span
-                  className="sort-icon"
+                <button
+                  type="button"
+                  className="btn btn-link float-right"
                   data-html="true"
                   data-toggle="tooltip"
                   title={sortTitle}
                 >
                   <i className={sortFieldIcon} />
-                </span>
+                </button>
               )}
             </th>
           );
