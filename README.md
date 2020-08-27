@@ -47,6 +47,7 @@ yarn add react-async-table
 ```
 import React from 'react';
 import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 
 // Table Data
 const tasks = [ ... ];
@@ -97,6 +98,7 @@ import 'bootstrap/scss/bootstrap.scss';
 import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 
 const tasks = [ ... ];
 
