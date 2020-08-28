@@ -15,6 +15,8 @@ const propTypes = {
   onSort: PropTypes.func.isRequired
 };
 
+const cursorStyle = { cursor: 'pointer' };
+
 const TableHeader = props => {
   const {
     tableHeaderClass,
@@ -86,10 +88,11 @@ const TableHeader = props => {
               }}
               style={{ cursor: `${isSortable ? 'pointer' : 'default'}` }}
             >
-              {column.text}
+              <span>{column.text}</span>
               {column.tooltip && (
                 <span
-                  className="mr-1"
+                  className="btn-link mr-1"
+                  style={cursorStyle}
                   data-html="true"
                   data-toggle="tooltip"
                   title={column.tooltip}
@@ -99,7 +102,8 @@ const TableHeader = props => {
               )}
               {isSortable && (
                 <span
-                  className="float-right"
+                  className="btn-link float-right"
+                  style={cursorStyle}
                   data-html="true"
                   data-toggle="tooltip"
                   title={sortTitle}
