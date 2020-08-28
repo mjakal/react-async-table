@@ -280,7 +280,7 @@ class App extends React.Component {
               splitView={false}
               flexView={false} // table/grid view
               layoutType="FLEX_VIEW" // available layout types: SIMPLE_VIEW, FLEX_VIEW
-              bootstrapCheckbox={false}
+              bootstrapCheckbox={true}
               requestFailed={false}
               columns={columns}
               items={items}

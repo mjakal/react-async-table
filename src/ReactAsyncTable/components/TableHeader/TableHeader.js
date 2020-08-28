@@ -88,26 +88,24 @@ const TableHeader = props => {
             >
               {column.text}
               {column.tooltip && (
-                <button
-                  type="button"
-                  className="btn btn-link"
+                <span
+                  className="mr-1"
                   data-html="true"
                   data-toggle="tooltip"
                   title={column.tooltip}
                 >
                   {tooltipIcon ? <i className={tooltipIcon} /> : <i>?</i>}
-                </button>
+                </span>
               )}
               {isSortable && (
-                <button
-                  type="button"
-                  className="btn btn-link float-right"
+                <span
+                  className="float-right"
                   data-html="true"
                   data-toggle="tooltip"
                   title={sortTitle}
                 >
                   <i className={sortFieldIcon} />
-                </button>
+                </span>
               )}
             </th>
           );

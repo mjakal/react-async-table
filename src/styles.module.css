@@ -18,15 +18,6 @@
 .table_style thead tr th {
   vertical-align: middle;
 }
-.table_style thead tr th .header-checkbox {
-  margin: -6px 0px 0px 0px;
-}
-
-.table_style thead tr th button.btn-link {
-  margin: 0px 5px 0px 5px;
-  padding: 0;
-  text-decoration: none;
-}
 
 .table_style tbody tr td button.btn-link {
   margin: 0px;
@@ -36,6 +27,10 @@
 
 .table_style tbody tr td {
   vertical-align: middle;
+}
+
+.table_style tbody tr td span {
+  line-height: 2rem;
 }
 
 .table_style tbody tr td .body-checkbox {
