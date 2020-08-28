@@ -178,6 +178,7 @@ class App extends React.Component {
     this.fakeAsyncAction = this.fakeAsyncAction.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onSearch = this.onSearch.bind(this);
+    this.onSort = this.onSort.bind(this);
     this.onInsert = this.onInsert.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onMultipleDelete = this.onMultipleDelete.bind(this);
@@ -216,9 +217,17 @@ class App extends React.Component {
   }
 
   onSort(sortField, sortOrder) {
+    const { items } = this.state;
+
     console.log('onSort handler');
     console.log('sortField:', sortField);
     console.log('sortOrder:', sortOrder);
+
+    items.sort((a, b) => a[sortField].localeCompare(b[sortField]));
+
+    const sortedItems = sortOrder === 'asc' ? items : items.reverse();
+
+    this.setState({ items, sortedItems });
   }
 
   onInsert() {
