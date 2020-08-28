@@ -1,9 +1,9 @@
 export const isEmpty = object => !(object && Object.keys(object).length);
 
-export const debounce = (callback, wait) => {
+export const debounce = (debounceCallback, wait) => {
   let timeout = null;
   return (...args) => {
-    const next = () => callback(...args);
+    const next = () => debounceCallback(...args);
     clearTimeout(timeout);
     timeout = setTimeout(next, wait);
   };
@@ -31,4 +31,4 @@ export const setSortableFields = columns => {
   });
 
   return sortableFields;
-}
+};

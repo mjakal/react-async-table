@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../../../styles.module.css';
 import TableHeader from '../TableHeader/TableHeader';
 import TableItem from './TableItem';
 import { NoData } from '../../ReactAsyncTableComponents';
@@ -28,36 +29,38 @@ const TableBody = props => {
     displayData,
     displayNoDataComponent
   } = props;
-  const { noDataText,requestFailedText } = translations;
+  const { noDataText, requestFailedText } = translations;
 
   // Set number of table columns
-  const totalColumns = columns.length +
+  const totalColumns =
+    columns.length +
     (options.multipleSelect ? 1 : 0) +
     (options.expandable ? 1 : 0) +
     (options.actionsColumn ? 1 : 0);
 
   return (
     <div className="table-responsive">
-      <table className={`table async-table-style ${tableClass}`}>
+      <table className={`table ${styles.table_style} ${tableClass}`}>
         <TableHeader {...props} />
         {displayNoDataComponent && (
-          <NoData 
-            totalColumns={totalColumns} 
+          <NoData
+            totalColumns={totalColumns}
             noDataText={requestFailed ? requestFailedText : noDataText}
           />
         )}
-        {displayData && items.map(item => (
-          <TableItem
-            key={item[keyField]}
-            {...props}
-            item={item}
-            totalColumns={totalColumns}
-          />
-        ))}
+        {displayData &&
+          items.map(item => (
+            <TableItem
+              key={item[keyField]}
+              {...props}
+              item={item}
+              totalColumns={totalColumns}
+            />
+          ))}
       </table>
     </div>
   );
-}
+};
 
 TableBody.propTypes = propTypes;
 export default TableBody;

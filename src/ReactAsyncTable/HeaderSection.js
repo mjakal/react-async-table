@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles.module.css';
 import SearchBox from './components/SearchBox/SearchBox';
 
 const propTypes = {
@@ -15,7 +16,7 @@ const propTypes = {
   translations: PropTypes.objectOf(PropTypes.string).isRequired,
   icons: PropTypes.objectOf(PropTypes.string).isRequired,
   activeTabID: PropTypes.string.isRequired,
-  headerActions: PropTypes.func.isRequired,
+  headerActions: PropTypes.func,
   debounceSearch: PropTypes.func.isRequired,
   toggleGridView: PropTypes.func.isRequired,
   onInsert: PropTypes.func.isRequired,
@@ -51,19 +52,14 @@ const HeaderSection = props => {
     listViewTitle,
     gridViewTitle
   } = translations;
-  const {
-    addButtonIcon,
-    deleteButtonIcon,
-    listViewIcon,
-    gridViewIcon
-  } = icons;
+  const { addButtonIcon, deleteButtonIcon, listViewIcon, gridViewIcon } = icons;
 
   const HeaderActions = headerActions;
 
   return (
     <React.Fragment>
       {displayHeaderSection && (
-        <div className={`row form-group ${splitView && 'async-table-header-section'}`}>
+        <div className={`row form-group ${splitView && styles.header_section}`}>
           <div className="col-xl-4 col-lg-6 col-md-6">
             {options.searchBox && (
               <SearchBox
@@ -74,11 +70,11 @@ const HeaderSection = props => {
             )}
           </div>
           <div className="col-xl-8 col-lg-6 col-md-6">
-            <span className="float-right async-table-header-actions">
+            <span className={`float-right ${styles.header_actions}`}>
               {layoutType === 'FLEX_VIEW' && (
                 <React.Fragment>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-light"
                     data-html="true"
                     data-toggle="tooltip"
@@ -88,8 +84,8 @@ const HeaderSection = props => {
                   >
                     <i className={listViewIcon} />
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-light"
                     data-html="true"
                     data-toggle="tooltip"
@@ -102,8 +98,8 @@ const HeaderSection = props => {
                 </React.Fragment>
               )}
               {options.insertButton && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className={insertButtonClass}
                   data-html="true"
                   data-toggle="tooltip"
@@ -114,7 +110,9 @@ const HeaderSection = props => {
                   <i className={addButtonIcon} />
                 </button>
               )}
-              {HeaderActions && <HeaderActions onHeaderAction={onHeaderAction} />}
+              {HeaderActions && (
+                <HeaderActions onHeaderAction={onHeaderAction} />
+              )}
               {options.multipleSelect && (
                 <button
                   type="button"
@@ -129,7 +127,7 @@ const HeaderSection = props => {
                 </button>
               )}
             </span>
-          </div>  
+          </div>
         </div>
       )}
     </React.Fragment>

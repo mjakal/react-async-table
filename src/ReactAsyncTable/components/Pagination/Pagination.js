@@ -38,7 +38,7 @@ const PaginationLink = props => (
     {props.children}
   </button>
 );
-*/  
+*/
 
 class Paginate extends React.Component {
   constructor(props) {

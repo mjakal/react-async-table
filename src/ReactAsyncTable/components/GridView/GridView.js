@@ -20,16 +20,18 @@ const GridView = props => {
     requestFailed,
     translations,
     displayNoDataComponent,
-    gridItemComponent,
+    gridItemComponent
   } = props;
   const { noDataText, requestFailedText } = translations;
 
   const GridItemComponent = gridItemComponent;
-  
+
   return (
     <React.Fragment>
       {displayNoDataComponent && (
-        <p className="text-center font-weight-normal">{requestFailed ? requestFailedText : noDataText}</p>
+        <p className="text-center font-weight-normal">
+          {requestFailed ? requestFailedText : noDataText}
+        </p>
       )}
       <div className="row">
         {items.map(item => {
@@ -40,7 +42,7 @@ const GridView = props => {
               case 'EDIT_ITEM':
                 props.onEdit(itemID, item);
                 break;
-              case 'DELETE_ITEM': 
+              case 'DELETE_ITEM':
                 props.onDelete(itemID);
                 break;
               default:
@@ -50,13 +52,14 @@ const GridView = props => {
           };
 
           return (
-            <div 
+            <div
               key={item[keyField]}
               className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12"
             >
               <GridItemComponent row={item} onAction={onAction} />
             </div>
-          )})}
+          );
+        })}
       </div>
     </React.Fragment>
   );

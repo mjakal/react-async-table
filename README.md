@@ -1,6 +1,10 @@
-# React Async Table
+# react-async-table
 
 ![React Async Table Screenshot](https://i.ibb.co/PFBwCvY/react-async-table.png)
+
+[![NPM](https://img.shields.io/npm/v/react-async-table.svg)](https://www.npmjs.com/package/react-async-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+**LIVE DEMO:** [https://mjakal.github.io/react-async-table/](https://mjakal.github.io/react-async-table/)
 
 Creating yet another bootstrap based data table component, came out of necessity.
 While I was working on one of my React projects, I discovered that there are a lot of solutions out there, most of them required heavy customization or lacked basic features such as built in customizable expandable rows, asynchronous filtering and pagination, so I rolled up my sleeves and voilà :)!
@@ -45,6 +49,7 @@ yarn add react-async-table
 ```
 import React from 'react';
 import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 
 // Table Data
 const tasks = [ ... ];
@@ -95,6 +100,7 @@ import 'bootstrap/scss/bootstrap.scss';
 import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 
 const tasks = [ ... ];
 
@@ -349,7 +355,7 @@ class Example extends React.Component {
   }
 
   render() {
-    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
+    const { isLoading, items, page, itemsPerPage, totalItems  } = this.state;
 
     return (
       <div className="container">
@@ -364,7 +370,6 @@ class Example extends React.Component {
               keyField="id"
               activeTabID=""
               isLoading={isLoading}
-              query={search}
               displayHeaderSection={true}
               splitView={false}
               flexView={false} // table/grid view
@@ -455,7 +460,13 @@ $ cd react-async-table
 # Install all dependencies
 $ npm install
 
-# Start the development server, then go to localhost:8080
+# Start the development server
+$ npm start
+
+# Open the new terminal and cd into repo/example dir
+$ cd react-async-table/example
+
+# Run the example dev server and go to localhost:3000
 $ npm start
 ```
 
@@ -465,12 +476,12 @@ $ npm start
 # Create production build
 $ npm run build
 
-# Build example project
-$ npm run build-examples
-
-# Run lint
-$ npm run lint
+# Run linter
+$ npm run test:lint
 
 # Run test suite
 $ npm run test
+
+# Deploy example project to github pages
+$ npm run deploy
 ```

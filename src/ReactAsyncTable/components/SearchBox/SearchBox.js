@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../../../styles.module.css';
 
 const propTypes = {
   placeholder: PropTypes.string,
@@ -51,7 +52,7 @@ class SearchBox extends React.Component {
         <input
           type="text"
           className="form-control"
-          autoFocus={true}
+          autoFocus
           name="search"
           value={searchTerm}
           placeholder={placeholder}
@@ -60,14 +61,16 @@ class SearchBox extends React.Component {
         {searchTerm && (
           <button
             type="button"
-            className="btn async-table-search-clear"
+            className={`btn ${styles.search_clear}`}
             onClick={this.onClear}
           >
             &times;
           </button>
         )}
         <div className="input-group-append async-table-search-button">
-          <span className="input-group-text"><i className="fa fa-search"></i></span>
+          <span className="input-group-text">
+            <i className="fa fa-search" />
+          </span>
         </div>
       </div>
     );

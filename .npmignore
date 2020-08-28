@@ -7,17 +7,11 @@ coverage
 .nyc_output
 
 # Dependency directories
-node_modules
-
-# npm package lock
-package-lock.json
-yarn.lock
+/node_modules/
 
 # project files
-config
-src
-test
-examples
+/example/
+/src/
 CHANGELOG.md
 jest.config.js
 webpack.config.babel.js
@@ -27,6 +21,10 @@ webpack.config.babel.js
 .eslintrc
 .babelrc
 .gitignore
+
+# npm package lock
+package-lock.json
+yarn.lock
 
 # others
 .git

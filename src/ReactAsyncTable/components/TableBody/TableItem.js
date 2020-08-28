@@ -37,7 +37,8 @@ const TableItem = props => {
     actionsComponent,
     expandableRowComponent,
     totalColumns,
-    options
+    options,
+    onColumnClick
   } = props;
   const itemID = item[keyField];
   const checkboxID = `${keyField}_${itemID}`;
@@ -58,7 +59,7 @@ const TableItem = props => {
       case 'EDIT_ITEM':
         props.onEdit(itemID, item);
         break;
-      case 'DELETE_ITEM': 
+      case 'DELETE_ITEM':
         props.onDelete(itemID);
         break;
       default:
@@ -69,7 +70,7 @@ const TableItem = props => {
 
   const ColumnComponent = ({ column }) => {
     // Early exit if row has no data
-    if (isEmpty(item)) return (<td />);
+    if (isEmpty(item)) return <td />;
 
     const Component = column.formatedField;
     const columnKey = column.dataField || '';
@@ -80,7 +81,7 @@ const TableItem = props => {
           <Component
             columnKey={columnKey}
             row={item}
-            onColumnClick={props.onColumnClick}
+            onColumnClick={onColumnClick}
           />
         ) : (
           <span>{item[columnKey]}</span>
@@ -152,13 +153,14 @@ const TableItem = props => {
         )}
         {isExpandable && (
           <td>
-            <button 
+            <button
               type="button"
               className="btn btn-link"
               data-html="true"
               data-toggle="tooltip"
               title="Expand"
-              onClick={onExpand}>
+              onClick={onExpand}
+            >
               <i className={expandIcon} />
             </button>
           </td>
@@ -166,9 +168,7 @@ const TableItem = props => {
         {columns.map((column, index) => (
           <ColumnComponent key={index} column={column} />
         ))}
-        {options.actionsColumn && (
-          <ActionsComponent />
-        )}
+        {options.actionsColumn && <ActionsComponent />}
       </tr>
       {isExpandable && (
         <tr className={`collapse ${expandRow[itemID] ? 'show' : ''}`}>

@@ -1,12 +1,17 @@
 import React from 'react';
-import 'bootstrap/scss/bootstrap.scss';
-import 'font-awesome/css/font-awesome.min.css';
 import { Card, CardHeader, CardBody } from 'reactstrap';
-import ReactAsyncTable from '../src/index';
+import ReactAsyncTable from 'react-async-table';
+import 'react-async-table/dist/index.css';
 import { tasks } from './sampleData';
 
 const ExampleLoader = () => (
   <p>This is an example loader component...</p>
+
+
+
+
+
+  
 );
 
 const ExampleHeaderActions = ({ onHeaderAction }) => (
@@ -157,7 +162,7 @@ const columns = [
   }
 ];
 
-class Example extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -256,7 +261,7 @@ class Example extends React.Component {
   }
 
   render() {
-    const { isLoading, items, page, search, itemsPerPage, totalItems  } = this.state;
+    const { isLoading, items, page, itemsPerPage, totalItems  } = this.state;
     
     return (
       <div className="container">
@@ -271,7 +276,6 @@ class Example extends React.Component {
               keyField="id"
               activeTabID=""
               isLoading={isLoading}
-              query={search}
               displayHeaderSection={true}
               splitView={false}
               flexView={false} // table/grid view
@@ -345,4 +349,4 @@ class Example extends React.Component {
   }
 }
 
-export default Example;
+export default App;

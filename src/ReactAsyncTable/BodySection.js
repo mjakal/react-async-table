@@ -31,7 +31,7 @@ const BodySection = props => {
     options,
     translations,
     loader,
-    onChangePage,
+    onChangePage
   } = props;
   const { paginationFirst, paginationLast } = translations;
 
@@ -49,15 +49,15 @@ const BodySection = props => {
       ) : (
         <React.Fragment>
           {gridView ? (
-            <GridView 
+            <GridView
               {...props}
               displayNoDataComponent={displayNoDataComponent}
             />
           ) : (
-            <TableBody 
+            <TableBody
               {...props}
               displayData={displayData}
-              displayNoDataComponent={displayNoDataComponent} 
+              displayNoDataComponent={displayNoDataComponent}
             />
           )}
         </React.Fragment>

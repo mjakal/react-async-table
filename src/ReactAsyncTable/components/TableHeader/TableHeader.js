@@ -16,7 +16,7 @@ const propTypes = {
 };
 
 const TableHeader = props => {
-  const { 
+  const {
     tableHeaderClass,
     selectAllItems,
     bootstrapCheckbox,
@@ -25,8 +25,8 @@ const TableHeader = props => {
     options,
     translations,
     icons,
-    onMultipleSelect, 
-    onSort 
+    onMultipleSelect,
+    onSort
   } = props;
   const { tooltipIcon, sortIcon, sortIconASC, sortIconDESC } = icons;
   const { sortTitle, actionsColumnTitle } = translations;
@@ -38,8 +38,8 @@ const TableHeader = props => {
           <th className="header-checkbox">
             {bootstrapCheckbox ? (
               <Checkbox
-                id='async_table_select_all_items'
-                name='selectAllItems'
+                id="async_table_select_all_items"
+                name="selectAllItems"
                 onChange={onMultipleSelect}
                 checked={selectAllItems}
               />
@@ -56,7 +56,7 @@ const TableHeader = props => {
             )}
           </th>
         )}
-        {options.expandable && (<th></th>)}
+        {options.expandable && <th />}
         {columns.map((column, index) => {
           const dataField = column.dataField;
           const isSortable = !!column.sort;
@@ -64,7 +64,7 @@ const TableHeader = props => {
 
           if (isSortable) {
             const currentSortOrder = sortableFields[dataField];
-            
+
             switch (currentSortOrder) {
               case 'asc':
                 sortFieldIcon = sortIconASC;
@@ -79,14 +79,16 @@ const TableHeader = props => {
           }
 
           return (
-            <th 
+            <th
               key={index}
-              onClick={event => { isSortable ? onSort(dataField) : event.preventDefault();}}
-              style={{ cursor: `${isSortable ? 'pointer' : 'default'}`}}
+              onClick={event => {
+                isSortable ? onSort(dataField) : event.preventDefault();
+              }}
+              style={{ cursor: `${isSortable ? 'pointer' : 'default'}` }}
             >
               {column.text}
               {column.tooltip && (
-                <button 
+                <button
                   type="button"
                   className="btn btn-link"
                   data-html="true"
@@ -97,14 +99,15 @@ const TableHeader = props => {
                 </button>
               )}
               {isSortable && (
-                <span 
-                  className="sort-icon"
+                <button
+                  type="button"
+                  className="btn btn-link float-right"
                   data-html="true"
                   data-toggle="tooltip"
                   title={sortTitle}
                 >
                   <i className={sortFieldIcon} />
-                </span>
+                </button>
               )}
             </th>
           );

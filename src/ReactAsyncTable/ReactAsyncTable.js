@@ -15,15 +15,20 @@ import {
   onColumnClick
 } from './helpers/defaultEvents';
 import ConditionalWrapper from './components/ConditionalWrapper/ConditionalWrapper';
-import { Loader, CardWrapper, GridItemComponent, ExpandableRowComponent } from './ReactAsyncTableComponents';
+import {
+  Loader,
+  CardWrapper,
+  GridItemComponent,
+  ExpandableRowComponent
+} from './ReactAsyncTableComponents';
 import { debounce, setCurrentPage, setSortableFields } from './helpers/helpers';
 // Table styles
-import './scss/style.scss';
+// import './scss/style.scss';
 
 const propTypes = {
   keyField: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   activeTabID: PropTypes.string,
   requestFailed: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
@@ -91,7 +96,7 @@ const defaultProps = {
   onMultipleDelete: onMultipleDelete,
   onHeaderAction: onHeaderAction,
   onAction: onAction,
-  onColumnClick: onColumnClick,
+  onColumnClick: onColumnClick
 };
 
 const defaultOptions = {
@@ -107,8 +112,8 @@ const defaultTranslations = {
   searchPlaceholder: 'Search...',
   addButton: 'Add',
   deleteButton: 'Delete',
-  listViewTitle: "List View",
-  gridViewTitle: "Grid View",
+  listViewTitle: 'List View',
+  gridViewTitle: 'Grid View',
   sortTitle: 'Sort',
   actionsColumnTitle: 'Actions',
   editAction: 'Edit',
@@ -122,15 +127,15 @@ const defaultTranslations = {
 const defaultIcons = {
   addButtonIcon: 'fa fa-plus',
   deleteButtonIcon: 'fa fa-trash',
-  listViewIcon: "fa fa-list",
-  gridViewIcon: "fa fa-th",
+  listViewIcon: 'fa fa-list',
+  gridViewIcon: 'fa fa-th',
   tooltipIcon: 'fa fa-question',
   sortIcon: 'fa fa-sort',
   sortIconASC: 'fa fa-sort-asc',
   sortIconDESC: 'fa fa-sort-desc',
   expandIcon: 'fa fa-expand',
   editActionIcon: 'fa fa-pencil',
-  deleteActionIcon: 'fa fa-trash',
+  deleteActionIcon: 'fa fa-trash'
 };
 
 class ReactAsyncTable extends Component {
@@ -225,7 +230,13 @@ class ReactAsyncTable extends Component {
   }
 
   onMultipleDelete() {
-    const { keyField, items, currentPage, itemsPerPage, totalItems } = this.props;
+    const {
+      keyField,
+      items,
+      currentPage,
+      itemsPerPage,
+      totalItems
+    } = this.props;
     const { selectedItems } = this.state;
     const values = [];
 
@@ -250,10 +261,7 @@ class ReactAsyncTable extends Component {
     const { options } = this.props;
 
     // Early exit if options.expandable prop is set to false
-    if (!options.expandable) {
-      event.preventDefault();
-      return;
-    }
+    if (!options.expandable) return;
 
     const { expandRow } = this.state;
     const prevValue = expandRow[rowID] || false;
@@ -294,24 +302,26 @@ class ReactAsyncTable extends Component {
   }
 
   render() {
-    const { sortableFields, selectAllItems, selectedCount, gridView, selectedItems, expandRow } = this.state;
     const {
-      displayHeaderSection,
-      splitView,
-      delay,
-      onSearch
-    } = this.props;
-    
+      sortableFields,
+      selectAllItems,
+      selectedCount,
+      gridView,
+      selectedItems,
+      expandRow
+    } = this.state;
+    const { displayHeaderSection, splitView, delay, onSearch } = this.props;
+
     // Set default values to options/translations/icons props
     const options = {
       ...defaultOptions,
       ...this.props.options
     };
-    const translations={
+    const translations = {
       ...defaultTranslations,
       ...this.props.translations
     };
-    const icons={
+    const icons = {
       ...defaultIcons,
       ...this.props.icons
     };
@@ -322,7 +332,7 @@ class ReactAsyncTable extends Component {
 
     return (
       <div className="animated fadeIn">
-        <ConditionalWrapper 
+        <ConditionalWrapper
           condition={splitView && displayHeaderSection}
           wrap={children => (
             <CardWrapper cardClass="async-table-card-filter">
@@ -331,7 +341,7 @@ class ReactAsyncTable extends Component {
           )}
         >
           <HeaderSection
-            {...this.props} 
+            {...this.props}
             selectedCount={selectedCount}
             gridView={gridView}
             toggleGridView={this.toggleGridView}
@@ -339,10 +349,10 @@ class ReactAsyncTable extends Component {
             options={options}
             translations={translations}
             icons={icons}
-            onMultipleDelete={this.onMultipleDelete} 
+            onMultipleDelete={this.onMultipleDelete}
           />
         </ConditionalWrapper>
-        <ConditionalWrapper 
+        <ConditionalWrapper
           condition={splitView}
           wrap={children => (
             <CardWrapper cardClass="async-table-card-content">
@@ -350,8 +360,8 @@ class ReactAsyncTable extends Component {
             </CardWrapper>
           )}
         >
-          <BodySection 
-            {...this.props} 
+          <BodySection
+            {...this.props}
             gridView={gridView}
             selectedItems={selectedItems}
             options={options}
@@ -359,7 +369,7 @@ class ReactAsyncTable extends Component {
             icons={icons}
             sortableFields={sortableFields}
             expandRow={expandRow}
-            selectAllItems={selectAllItems} 
+            selectAllItems={selectAllItems}
             onSelect={this.onSelect}
             onMultipleSelect={this.onMultipleSelect}
             onDelete={this.onDelete}
