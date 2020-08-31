@@ -29,10 +29,6 @@
   vertical-align: middle;
 }
 
-.table_style tbody tr td span {
-  line-height: 2rem;
-}
-
 .table_style tbody tr td .body-checkbox {
   margin: -6px 0px 0px 0px;
 }

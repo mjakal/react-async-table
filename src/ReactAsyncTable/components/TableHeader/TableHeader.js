@@ -88,10 +88,9 @@ const TableHeader = props => {
               }}
               style={{ cursor: `${isSortable ? 'pointer' : 'default'}` }}
             >
-              <span>{column.text}</span>
+              <span className="mr-1">{column.text}</span>
               {column.tooltip && (
                 <span
-                  className="btn-link mr-1"
                   style={cursorStyle}
                   data-html="true"
                   data-toggle="tooltip"
@@ -102,7 +101,7 @@ const TableHeader = props => {
               )}
               {isSortable && (
                 <span
-                  className="btn-link float-right"
+                  className="float-right"
                   style={cursorStyle}
                   data-html="true"
                   data-toggle="tooltip"

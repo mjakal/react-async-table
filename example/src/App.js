@@ -26,16 +26,6 @@ const ExampleHeaderActions = ({ onHeaderAction }) => (
     >
       <i className="fa fa-pencil" />
     </button>
-    <button
-      type="button"
-      className="btn btn-secondary"
-      data-html="true"
-      data-toggle="tooltip"
-      title="Action 2"
-      onClick={e => onHeaderAction('HEADER_ACTION_2')}
-    >
-      <i className="fa fa-wrench" />
-    </button>
   </span>
 );
 
