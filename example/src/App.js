@@ -40,7 +40,10 @@ const ExampleGridItemComponent = ({ row, onAction }) => {
         <p>{row["title"]}</p>
       </div>
       <div className="card-footer">
-        <span style={{ lineHeight: '2rem'}}><i className={columnIcon} /> {columnText}</span>
+        <span style={{ lineHeight: '2rem'}}>
+          <i className={`${columnIcon} mr-1`} />
+          <span style={{ fontSize: '0.7rem' }}>{columnText}</span>
+        </span>
         <span className="float-right">
           <button
             type="button"
