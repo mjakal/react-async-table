@@ -146,6 +146,8 @@ const columns = [
     text: 'Task',
     tooltip: 'Example Tooltip',
     sort: true,
+    columnClass: 'column class',
+    rowClass: 'row class',
     sortOrder: 'default' // values: default|asc|desc
   },
   {

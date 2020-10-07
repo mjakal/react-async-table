@@ -65,7 +65,9 @@ const columns = [
   },
   {
     dataField: 'title',
-    text: 'Task'
+    text: 'Task',
+    columnClass: 'some-css-class', // CSS class for the th for that particular column
+    rowClass: 'some-css-class' // CSS class for the td for that particular column
   },
   {
     dataField: 'completed',

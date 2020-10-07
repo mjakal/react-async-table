@@ -62,6 +62,7 @@ const TableHeader = props => {
         {columns.map((column, index) => {
           const dataField = column.dataField;
           const isSortable = !!column.sort;
+          const columnClass = column.columnClass || '';
           let sortFieldIcon = '';
 
           if (isSortable) {
@@ -83,6 +84,7 @@ const TableHeader = props => {
           return (
             <th
               key={index}
+              className={columnClass}
               onClick={event => {
                 isSortable ? onSort(dataField) : event.preventDefault();
               }}
