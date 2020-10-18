@@ -6,12 +6,6 @@ import { tasks } from './sampleData';
 
 const ExampleLoader = () => (
   <p>This is an example loader component...</p>
-
-
-
-
-
-  
 );
 
 const ExampleHeaderActions = ({ onHeaderAction }) => (
