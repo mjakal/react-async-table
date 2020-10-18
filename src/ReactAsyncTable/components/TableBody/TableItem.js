@@ -74,9 +74,10 @@ const TableItem = props => {
 
     const Component = column.formatedField;
     const columnKey = column.dataField || '';
+    const rowClass = column.rowClass || '';
 
     return (
-      <td>
+      <td className={rowClass}>
         {Component ? (
           <Component
             columnKey={columnKey}
