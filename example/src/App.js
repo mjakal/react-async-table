@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import ReactAsyncTable from 'react-async-table';
+import './index.css';
 import 'react-async-table/dist/index.css';
 import { tasks } from './sampleData';
 
@@ -140,8 +141,8 @@ const columns = [
     text: 'Task',
     tooltip: 'Example Tooltip',
     sort: true,
-    columnClass: 'column class',
-    rowClass: 'row class',
+    columnHeaderClass: 'some-class',
+    columnDataClass: 'some-class',
     sortOrder: 'default' // values: default|asc|desc
   },
   {
